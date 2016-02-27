@@ -41,6 +41,8 @@
     <Compile Include="DrawableObject.cs" />
     <Compile Include="Game1.cs" />
     <Compile Include="Layer.cs" />
+    <Compile Include="DrawableObject\Character.cs" />
+    <Compile Include="DrawableObject\Character\Player.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

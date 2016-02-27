@@ -12,6 +12,18 @@ namespace Fragments
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
+        /// <summary>
+        /// TODO: This should be held in the GameManager, 
+        /// which should have global access(?)
+        /// </summary>
+        public enum GameState
+        {
+            Menu, 
+            Town,
+            Battle, 
+            Map
+        }
+
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
