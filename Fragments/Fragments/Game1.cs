@@ -85,6 +85,10 @@ namespace Fragments
                     {
                         GameManager.Instance.State = GameManager.GameState.Map;
                     }
+                    else if (IsKeyPressed(kbState, oldKbState, Keys.F))
+                    {
+                        GameManager.Instance.State = GameManager.GameState.Pause;
+                    }
                     break;
 
                 case GameManager.GameState.Map:
@@ -96,12 +100,26 @@ namespace Fragments
                     {
                         GameManager.Instance.State = GameManager.GameState.Battle;
                     }
+                    else if (IsKeyPressed(kbState, oldKbState, Keys.F))
+                    {
+                        GameManager.Instance.State = GameManager.GameState.Pause;
+                    }
                     break;
 
                 case GameManager.GameState.Battle:
                     if (IsKeyPressed(kbState, oldKbState, Keys.D))
                     {
                         GameManager.Instance.State = GameManager.GameState.Map;
+                    }
+                    else if (IsKeyPressed(kbState, oldKbState, Keys.F))
+                    {
+                        GameManager.Instance.State = GameManager.GameState.Pause;
+                    }
+                    break;
+                case GameManager.GameState.Pause:
+                    if (IsKeyPressed(kbState, oldKbState, Keys.F))
+                    {
+                        GameManager.Instance.State = GameManager.Instance.PrevState;
                     }
                     break;
             }
