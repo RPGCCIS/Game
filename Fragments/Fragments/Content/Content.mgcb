@@ -19,3 +19,8 @@
 /processorParam:TextureFormat=Compressed
 /build:Georgia_32.spritefont
 
+#begin Nyala_12.xnb
+/importer:
+/processor:
+/build:Nyala_12.xnb
+
