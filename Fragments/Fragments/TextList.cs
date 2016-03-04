@@ -24,7 +24,7 @@ namespace Fragments
         //Properties
         public int Selected
         {
-            get { retrun selected; }
+            get { return selected; }
         }
 
         //Constructor
