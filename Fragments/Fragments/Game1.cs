@@ -44,11 +44,8 @@ namespace Fragments
 
             //Set up Menu
             menuOptions = new TextList(
-                font,
+                null,
                 new Vector2(100, 100));
-            menuOptions.Add("Option 1");
-            menuOptions.Add("Option 2");
-            menuOptions.Add("Play Game");
 
             base.Initialize();
         }
@@ -62,7 +59,15 @@ namespace Fragments
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            // TODO: use this.Content to load your game content here
+            font = Content.Load<SpriteFont>("Georgia_100");
+
+            //Apply loaded Content
+
+            //Menu
+            menuOptions.Font = font;
+            menuOptions.Add("Option 1");
+            menuOptions.Add("Option 2");
+            menuOptions.Add("Play Game");
         }
 
         /// <summary>
@@ -181,10 +186,13 @@ namespace Fragments
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
+            spriteBatch.Begin();
+
             switch (GameManager.Instance.State)
             {
                 case GameManager.GameState.Menu:
                     GraphicsDevice.Clear(Color.White);
+                    menuOptions.DrawText(spriteBatch);
                     break;
 
                 case GameManager.GameState.Town:
@@ -199,6 +207,9 @@ namespace Fragments
                     GraphicsDevice.Clear(Color.Red);
                     break;
             }
+
+            spriteBatch.End();
+
             base.Draw(gameTime);
         }
     }

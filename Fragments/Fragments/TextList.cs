@@ -17,11 +17,19 @@ namespace Fragments
         private Color selectedColor;
 
         private float lineHeight;
-        private float spacing;
+        private const float spacing = 20;
 
         private int selected;
 
         //Properties
+        public SpriteFont Font
+        {
+            set
+            {
+                font = value;
+                lineHeight = font.MeasureString("Test").Y;
+            }
+        }
         public int Selected
         {
             get { return selected; }
@@ -34,9 +42,7 @@ namespace Fragments
             this.font = font;
             this.position = position;
             defaultColor = Color.Black;
-            defaultColor = Color.Blue;
-
-            lineHeight = font.MeasureString("Test").Y;
+            selectedColor = Color.Blue;
 
             selected = 0;
         }
@@ -48,9 +54,7 @@ namespace Fragments
             this.position = position;
 
             defaultColor = color;
-            defaultColor = Color.Blue;
-
-            lineHeight = font.MeasureString("Test").Y;
+            selectedColor = Color.Blue;
 
             selected = 0;
         }
