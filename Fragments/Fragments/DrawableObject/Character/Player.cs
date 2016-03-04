@@ -32,11 +32,11 @@ namespace Fragments
         }
 
         //MOVEMENT FUNCTIONS
-        public void Move(KeyboardState kb)
+        public void Move(KeyboardState kb, GameManager gameManager)
         {
             switch(gameManager.State)
             {
-                case GameState.Town:
+                case GameManager.GameState.Town:
                     switch(movementState)
                     {
                         case MovementState.StandingRight:

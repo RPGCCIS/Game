@@ -9,20 +9,13 @@ namespace Fragments
     /// </summary>
     public class Game1 : Game
     {
+        //Default Variables
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
-        /// <summary>
-        /// TODO: This should be held in the GameManager, 
-        /// which should have global access(?)
-        /// </summary>
-        public enum GameState
-        {
-            Menu, 
-            Town,
-            Battle, 
-            Map
-        }
+        //Keyboard
+        KeyboardState kbState;
+        KeyboardState oldKbState;
 
         public Game1()
         {
@@ -38,7 +31,8 @@ namespace Fragments
         /// </summary>
         protected override void Initialize()
         {
-            // TODO: Add your initialization logic here
+            // Singleton initialization
+            GameManager.Instance.State = GameManager.GameState.Menu;
 
             base.Initialize();
         }
@@ -71,12 +65,55 @@ namespace Fragments
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
-                Exit();
+            kbState = Keyboard.GetState();
 
-            // TODO: Add your update logic here
+            switch(GameManager.Instance.State)
+            {
+                case GameManager.GameState.Menu:
+                    if(IsKeyPressed(kbState, oldKbState, Keys.S))
+                    {
+                        GameManager.Instance.State = GameManager.GameState.Town;
+                    }
+                    break;
+
+                case GameManager.GameState.Town:
+                    if (IsKeyPressed(kbState, oldKbState, Keys.A))
+                    {
+                        GameManager.Instance.State = GameManager.GameState.Menu;
+                    }
+                    else if (IsKeyPressed(kbState, oldKbState, Keys.D))
+                    {
+                        GameManager.Instance.State = GameManager.GameState.Map;
+                    }
+                    break;
+
+                case GameManager.GameState.Map:
+                    if (IsKeyPressed(kbState, oldKbState, Keys.S))
+                    {
+                        GameManager.Instance.State = GameManager.GameState.Town;
+                    }
+                    else if (IsKeyPressed(kbState, oldKbState, Keys.F))
+                    {
+                        GameManager.Instance.State = GameManager.GameState.Battle;
+                    }
+                    break;
+
+                case GameManager.GameState.Battle:
+                    if (IsKeyPressed(kbState, oldKbState, Keys.D))
+                    {
+                        GameManager.Instance.State = GameManager.GameState.Map;
+                    }
+                    break;
+            }
+
+            oldKbState = kbState;
 
             base.Update(gameTime);
+        }
+
+        public bool IsKeyPressed(KeyboardState current, KeyboardState old, Keys k)
+        {
+            return (current.IsKeyDown(k) && old.IsKeyUp(k));
         }
 
         /// <summary>
@@ -87,8 +124,24 @@ namespace Fragments
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            // TODO: Add your drawing code here
+            switch (GameManager.Instance.State)
+            {
+                case GameManager.GameState.Menu:
+                    GraphicsDevice.Clear(Color.White);
+                    break;
 
+                case GameManager.GameState.Town:
+                    GraphicsDevice.Clear(Color.Green);
+                    break;
+
+                case GameManager.GameState.Map:
+                    GraphicsDevice.Clear(Color.Brown);
+                    break;
+
+                case GameManager.GameState.Battle:
+                    GraphicsDevice.Clear(Color.Red);
+                    break;
+            }
             base.Draw(gameTime);
         }
     }

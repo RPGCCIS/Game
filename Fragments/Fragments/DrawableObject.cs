@@ -23,6 +23,5 @@ namespace Fragments
         public int Y { get { return rec.Y; } set { rec.Y = value; } }
         //Overrideable method for draw if we want to change how things are drawn
         abstract public void Draw(SpriteBatch spriteBatch);
-        
     }
 }
