@@ -12,13 +12,15 @@ namespace Fragments
             Menu,
             Town,
             Battle,
-            Map
+            Map,
+            Pause
         }
 
         //Member Variables
         private static GameManager instance;
 
         private GameState gameState;
+        private GameState prevState;
         private Player player;
 
         private Dictionary<string, bool> keyEvents;
@@ -40,7 +42,15 @@ namespace Fragments
         public GameState State
         {
             get { return gameState; }
-            set { gameState = value; }
+            set {
+                prevState = gameState;
+                gameState = value;
+            }
+        }
+
+        public GameState PrevState
+        {
+            get { return prevState; }
         }
 
         //Constructor
