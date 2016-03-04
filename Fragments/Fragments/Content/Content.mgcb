@@ -13,8 +13,9 @@
 
 #---------------------------------- Content ---------------------------------#
 
-#begin Georgia_12.xnb
-/importer:
-/processor:
-/build:Georgia_12.xnb
+#begin Georgia_32.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:TextureFormat=Compressed
+/build:Georgia_32.spritefont
 
