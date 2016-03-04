@@ -17,6 +17,14 @@ namespace Fragments
         KeyboardState kbState;
         KeyboardState oldKbState;
 
+        //Texture2D
+
+        //Fonts
+        SpriteFont font;
+
+        //Menu variables
+        TextList menuOptions;
+
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -33,6 +41,14 @@ namespace Fragments
         {
             // Singleton initialization
             GameManager.Instance.State = GameManager.GameState.Menu;
+
+            //Set up Menu
+            menuOptions = new TextList(
+                font,
+                new Vector2(100, 100));
+            menuOptions.Add("Option 1");
+            menuOptions.Add("Option 2");
+            menuOptions.Add("Play Game");
 
             base.Initialize();
         }
@@ -70,9 +86,32 @@ namespace Fragments
             switch(GameManager.Instance.State)
             {
                 case GameManager.GameState.Menu:
-                    if(IsKeyPressed(kbState, oldKbState, Keys.S))
+                    if (IsKeyPressed(kbState, oldKbState, Keys.W))
                     {
-                        GameManager.Instance.State = GameManager.GameState.Town;
+                        menuOptions.Previous();
+                    }
+                    if (IsKeyPressed(kbState, oldKbState, Keys.S))
+                    {
+                        menuOptions.Next();
+                    }
+
+                    if (IsKeyPressed(kbState, oldKbState, Keys.Enter))
+                    {
+                        switch(menuOptions.Selected)
+                        {
+                            //Option 1
+                            case 0:
+                                break;
+
+                            //Option 2
+                            case 1:
+                                break;
+
+                            //Play Game
+                            case 2:
+                                GameManager.Instance.State = GameManager.GameState.Town;
+                                break;
+                        }
                     }
                     break;
 
