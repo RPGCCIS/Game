@@ -18,3 +18,8 @@
 /processor:
 /build:Georgia_12.xnb
 
+#begin Nyala_12.xnb
+/importer:
+/processor:
+/build:Nyala_12.xnb
+
