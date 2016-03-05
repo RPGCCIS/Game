@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-
+using Microsoft.Xna.Framework.Content;
 namespace Fragments
 {
     /// <summary>
@@ -12,6 +12,18 @@ namespace Fragments
         //Default Variables
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
+        Map test;
+        /// <summary>
+        /// TODO: This should be held in the GameManager, 
+        /// which should have global access(?)
+        /// </summary>
+        public enum GameState
+        {
+            Menu,
+            Town,
+            Battle,
+            Map
+        }
 
         //Keyboard
         KeyboardState kbState;
@@ -29,8 +41,11 @@ namespace Fragments
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
+            graphics.PreferredBackBufferWidth = 1000;  // width of the window
+            graphics.PreferredBackBufferHeight = 750;   // height of the window
+            graphics.ApplyChanges();
         }
-        
+
         /// <summary>
         /// Allows the game to perform any initialization it needs to before starting to run.
         /// This is where it can query for any required services and load any non-graphic
@@ -39,6 +54,8 @@ namespace Fragments
         /// </summary>
         protected override void Initialize()
         {
+            // TODO: Add your initialization logic here
+            test = new Map("test");
             // Singleton initialization
             GameManager.Instance.State = GameManager.GameState.Menu;
 
@@ -48,6 +65,7 @@ namespace Fragments
                 new Vector2(100, 100));
 
             base.Initialize();
+
         }
 
         /// <summary>
@@ -59,7 +77,14 @@ namespace Fragments
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            font = Content.Load<SpriteFont>("Georgia_100");
+            foreach (Layer l in test.GetLayers())
+            {
+                l.Texture = Content.Load<Texture2D>(l.Name);
+            }
+
+            // TODO: use this.Content to load your game content here
+
+            font = Content.Load<SpriteFont>("Georgia_32");
 
             //Apply loaded Content
 
@@ -88,7 +113,7 @@ namespace Fragments
         {
             kbState = Keyboard.GetState();
 
-            switch(GameManager.Instance.State)
+            switch (GameManager.Instance.State)
             {
                 case GameManager.GameState.Menu:
                     if (IsKeyPressed(kbState, oldKbState, Keys.W))
@@ -102,7 +127,7 @@ namespace Fragments
 
                     if (IsKeyPressed(kbState, oldKbState, Keys.Enter))
                     {
-                        switch(menuOptions.Selected)
+                        switch (menuOptions.Selected)
                         {
                             //Option 1
                             case 0:
@@ -186,6 +211,8 @@ namespace Fragments
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
+
+            // TODO: Add your drawing code here
             spriteBatch.Begin();
 
             switch (GameManager.Instance.State)
@@ -197,6 +224,7 @@ namespace Fragments
 
                 case GameManager.GameState.Town:
                     GraphicsDevice.Clear(Color.Green);
+                    test.Draw(spriteBatch);
                     break;
 
                 case GameManager.GameState.Map:

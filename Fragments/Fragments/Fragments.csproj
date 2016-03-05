@@ -44,10 +44,13 @@
     <Compile Include="Layer.cs" />
     <Compile Include="DrawableObject\Character.cs" />
     <Compile Include="DrawableObject\Character\Player.cs" />
+    <Compile Include="Map.cs" />
+    <Compile Include="MovementFlags.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TextList.cs" />
     <Compile Include="TextObject.cs" />
+    <Compile Include="Tile.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="MonoGame.Framework">

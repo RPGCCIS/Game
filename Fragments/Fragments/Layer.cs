@@ -9,14 +9,24 @@ namespace Fragments
 {
     class Layer
     {
-        //LAyer Class
+        //Layer Class
+
+        //Currently nt implemented
         private float movementMulitplier;
         private float updateable;
-        private List<DrawableObject> textures;
-        //Needs to bring in drawable objects and there coordinates
-        public Layer(List<DrawableObject> d)
+
+        private Texture2D texture;
+        private string name;
+
+        public Layer(string name)
         {
-            textures = d;
+            this.name = name;
         }
+        public Texture2D Texture
+        {
+            get { return texture; }
+            set { texture = value; }
+        }
+        public string Name { get { return name; } }
     }
 }
