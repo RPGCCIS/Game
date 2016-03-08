@@ -13,6 +13,15 @@ namespace Fragments
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         Map test;
+
+        //Message testing
+        Message m;
+        TextObject message;
+        TextList messageOptions;
+        SpriteFont messageFont;
+        TextObject messageB;
+        TextList battleOptions;
+        Message battle;
         /// <summary>
         /// TODO: This should be held in the GameManager, 
         /// which should have global access(?)
@@ -58,7 +67,8 @@ namespace Fragments
             test = new Map("test");
             // Singleton initialization
             GameManager.Instance.State = GameManager.GameState.Menu;
-
+            m = new Message("scroll", false);
+            battle = new Message("scroll2", true);
             //Set up Menu
             menuOptions = new TextList(
                 null,
@@ -86,6 +96,23 @@ namespace Fragments
 
             font = Content.Load<SpriteFont>("Georgia_32");
 
+            //For Map
+            messageFont = Content.Load<SpriteFont>("LCALLIG_14");
+            message = new TextObject(messageFont, "Your adventure will be coming soon.", new Vector2(m.RectX + 150, m.RectY + 25));
+            messageOptions = new TextList(null, new Vector2(m.RectX + 175, m.RectY + 75));
+            messageOptions.Font = messageFont;
+            messageOptions.Add("Ok");
+            messageOptions.Add("Go Faster!");
+            m.Texture = Content.Load<Texture2D>(m.TextureName);
+            m = new Message(message, messageOptions,m.Texture,m.Rect);
+            //For Battle
+            messageB = new TextObject(messageFont, "In Battle.", new Vector2(battle.RectX + 150, battle.RectY + 50));
+            battleOptions = new TextList(null, new Vector2(battle.RectX + 175, battle.RectY + 125));
+            battleOptions.Font = messageFont;
+            battleOptions.Add("Fight");
+            battleOptions.Add("Run");
+            battle.Texture = Content.Load<Texture2D>(battle.TextureName);
+            battle = new Message(messageB, battleOptions, battle.Texture,battle.Rect);
             //Apply loaded Content
 
             //Menu
@@ -131,10 +158,12 @@ namespace Fragments
                         {
                             //Option 1
                             case 0:
+                                GameManager.Instance.State = GameManager.GameState.Battle;
                                 break;
 
                             //Option 2
                             case 1:
+                                GameManager.Instance.State = GameManager.GameState.Map;
                                 break;
 
                             //Play Game
@@ -161,7 +190,7 @@ namespace Fragments
                     break;
 
                 case GameManager.GameState.Map:
-                    if (IsKeyPressed(kbState, oldKbState, Keys.S))
+                    if (IsKeyPressed(kbState, oldKbState, Keys.T))
                     {
                         GameManager.Instance.State = GameManager.GameState.Town;
                     }
@@ -173,6 +202,30 @@ namespace Fragments
                     {
                         GameManager.Instance.State = GameManager.GameState.Pause;
                     }
+                    if (IsKeyPressed(kbState, oldKbState, Keys.W))
+                    {
+                        messageOptions.Previous();
+                    }
+                    if (IsKeyPressed(kbState, oldKbState, Keys.S))
+                    {
+                        messageOptions.Next();
+                    }
+                    if (IsKeyPressed(kbState, oldKbState, Keys.Enter))
+                    {
+                        switch (messageOptions.Selected)
+                        {
+                            //Option 1
+                            case 0:
+                                GameManager.Instance.State = GameManager.GameState.Menu;
+                                break;
+
+                            //Option 2
+                            case 1:
+                                GameManager.Instance.State = GameManager.GameState.Town;
+                                break;
+
+                        }
+                    }
                     break;
 
                 case GameManager.GameState.Battle:
@@ -183,6 +236,30 @@ namespace Fragments
                     else if (IsKeyPressed(kbState, oldKbState, Keys.G))
                     {
                         GameManager.Instance.State = GameManager.GameState.Pause;
+                    }
+                    if (IsKeyPressed(kbState, oldKbState, Keys.W))
+                    {
+                         battleOptions.Previous();
+                    }
+                    if (IsKeyPressed(kbState, oldKbState, Keys.S))
+                    {
+                        battleOptions.Next();
+                    }
+                    if (IsKeyPressed(kbState, oldKbState, Keys.Enter))
+                    {
+                        switch (battleOptions.Selected)
+                        {
+                            //Option 1
+                            case 0:
+                                GameManager.Instance.State = GameManager.GameState.Menu;
+                                break;
+
+                            //Option 2
+                            case 1:
+                                GameManager.Instance.State = GameManager.GameState.Town;
+                                break;
+
+                        }
                     }
                     break;
                 case GameManager.GameState.Pause:
@@ -225,14 +302,17 @@ namespace Fragments
                 case GameManager.GameState.Town:
                     GraphicsDevice.Clear(Color.Green);
                     test.Draw(spriteBatch);
+                    
                     break;
 
                 case GameManager.GameState.Map:
                     GraphicsDevice.Clear(Color.Brown);
+                    m.Draw(spriteBatch);
                     break;
 
                 case GameManager.GameState.Battle:
                     GraphicsDevice.Clear(Color.Red);
+                    battle.Draw(spriteBatch);
                     break;
             }
 
