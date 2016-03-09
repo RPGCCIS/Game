@@ -10,7 +10,7 @@ namespace Fragments
 {
     class Player : Character
     {
-        private const int movementSpeed = 3;
+        private const int movementSpeed = 4;
 
         //private List<Equipment> equippedEquippment;
 
@@ -86,10 +86,12 @@ namespace Fragments
                     //Actually move him
                     if (movementState == MovementState.WalkingRight)
                     {
+                        if(X < 800)
                         rec.X += movementSpeed;
                     }
                     else if (movementState == MovementState.WalkingLeft)
                     {
+                        if(X > 50)
                         rec.X -= movementSpeed;
                     }
 
@@ -121,5 +123,7 @@ namespace Fragments
             }
 
         }
+        public int Movement { get { return movementSpeed; } }
+        public MovementState MS { get { return movementState; } } 
     }
 }

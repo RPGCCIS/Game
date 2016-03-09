@@ -22,6 +22,8 @@ namespace Fragments
         TextObject messageB;
         TextList battleOptions;
         Message battle;
+        Player p = new Player(400, 550, 150, 200);
+
         /// <summary>
         /// TODO: This should be held in the GameManager, 
         /// which should have global access(?)
@@ -67,8 +69,11 @@ namespace Fragments
             test = new Map("test");
             // Singleton initialization
             GameManager.Instance.State = GameManager.GameState.Menu;
+
+            //Messages
             m = new Message("scroll", false);
-            battle = new Message("scroll2", true);
+            battle = new Message("scroll", true);
+
             //Set up Menu
             menuOptions = new TextList(
                 null,
@@ -93,7 +98,7 @@ namespace Fragments
             }
 
             // TODO: use this.Content to load your game content here
-
+            p.Texture = Content.Load<Texture2D>("player");
             font = Content.Load<SpriteFont>("Georgia_32");
 
             //For Map
@@ -105,14 +110,16 @@ namespace Fragments
             messageOptions.Add("Go Faster!");
             m.Texture = Content.Load<Texture2D>(m.TextureName);
             m = new Message(message, messageOptions,m.Texture,m.Rect);
+
             //For Battle
             messageB = new TextObject(messageFont, "In Battle.", new Vector2(battle.RectX + 150, battle.RectY + 50));
-            battleOptions = new TextList(null, new Vector2(battle.RectX + 175, battle.RectY + 125));
+            battleOptions = new TextList(null, new Vector2(battle.RectX + 175, battle.RectY + 125 ));
             battleOptions.Font = messageFont;
             battleOptions.Add("Fight");
             battleOptions.Add("Run");
             battle.Texture = Content.Load<Texture2D>(battle.TextureName);
             battle = new Message(messageB, battleOptions, battle.Texture,battle.Rect);
+
             //Apply loaded Content
 
             //Menu
@@ -187,6 +194,13 @@ namespace Fragments
                     {
                         GameManager.Instance.State = GameManager.GameState.Pause;
                     }
+                    p.Move(Keyboard.GetState(), GameManager.Instance);
+
+                    if(p.MS == Player.MovementState.WalkingRight && p.X > 150)
+                        test.GetLayers()[1].PosX -= p.Movement * test.GetLayers()[1].MM;
+                    if (p.MS == Player.MovementState.WalkingLeft&& p.X < 700)
+                        test.GetLayers()[1].PosX += p.Movement * test.GetLayers()[1].MM;
+
                     break;
 
                 case GameManager.GameState.Map:
@@ -302,7 +316,7 @@ namespace Fragments
                 case GameManager.GameState.Town:
                     GraphicsDevice.Clear(Color.Green);
                     test.Draw(spriteBatch);
-                    
+                    p.Draw(spriteBatch);
                     break;
 
                 case GameManager.GameState.Map:

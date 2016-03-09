@@ -39,7 +39,7 @@ namespace Fragments
         {
             try
             {
-                using (Stream inStream = File.OpenRead(name + ".map"))
+                using (Stream inStream = File.OpenRead("../../../Maps/" + name + ".map"))
                 using (BinaryReader input = new BinaryReader(inStream))
                 {
                     version = input.ReadUInt32();
@@ -90,7 +90,7 @@ namespace Fragments
             foreach (Layer l in layers)
             {
                 //everything is just currently drawn to 0,0
-                s.Draw(l.Texture, Vector2.Zero, Color.White);
+                s.Draw(l.Texture, l.Pos, Color.White);
             }
         }
         public List<Texture2D> GetTextures()
