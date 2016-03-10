@@ -59,6 +59,8 @@ namespace Fragments
         /// </summary>
         protected override void Initialize()
         {
+            this.IsMouseVisible = true;
+
             // TODO: Add your initialization logic here
             test = new Map("test");
             // Singleton initialization
@@ -86,11 +88,16 @@ namespace Fragments
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
             GameManager.Instance.CurrentMap = test;
-            foreach (Layer l in GameManager.Instance.CurrentMap.GetLayers())
+            foreach (Layer l in GameManager.Instance.CurrentMap.Layers)
             {
-                l.Texture = Content.Load<Texture2D>(l.Name);
+                l.AddObject(Content.Load<Texture2D>(l.Name), new Vector2(0));
             }
-            GameManager.Instance.CurrentMap.Wall = Content.Load<Texture2D>("wall");
+            GameManager.Instance.CurrentMap.AddTexture("wall", Content.Load<Texture2D>("wall"));
+
+            //Draw wall
+            GameManager.Instance.CurrentMap.ParallaxLayer.AddObject(
+                 GameManager.Instance.CurrentMap.Textures["wall"],
+                 new Vector2(-2000, 0));
 
             // TODO: use this.Content to load your game content here
             p.Texture = Content.Load<Texture2D>("player");
@@ -177,6 +184,7 @@ namespace Fragments
                     break;
 
                 case GameManager.GameState.Town:
+                    //State changes for testing
                     if (IsKeyPressed(kbState, oldKbState, Keys.A))
                     {
                         GameManager.Instance.State = GameManager.GameState.Menu;
@@ -191,12 +199,30 @@ namespace Fragments
                     }
                     GameManager.Instance.Player.Move(Keyboard.GetState(), GameManager.Instance);
 
+                    //Layer movement
                     if (GameManager.Instance.Player.MS == Player.MovementState.WalkingRight)
                     {
-                        GameManager.Instance.CurrentMap.GetLayers()[1].PosX -= GameManager.Instance.Player.Movement * GameManager.Instance.CurrentMap.GetLayers()[1].MM;
-                    } else if (GameManager.Instance.Player.MS == Player.MovementState.WalkingLeft)
+                        GameManager.Instance.CurrentMap.ParallaxLayer.X -= 
+                            GameManager.Instance.Player.Movement * GameManager.Instance.CurrentMap.ParallaxLayer.MM;
+
+                        if(GameManager.Instance.Player.IsColliding(
+                            GameManager.Instance.CurrentMap.ParallaxLayer))
+                        {
+                            GameManager.Instance.CurrentMap.ParallaxLayer.X +=
+                                GameManager.Instance.Player.Movement * GameManager.Instance.CurrentMap.ParallaxLayer.MM;
+                        }
+                    }
+                    else if (GameManager.Instance.Player.MS == Player.MovementState.WalkingLeft)
                     {
-                        GameManager.Instance.CurrentMap.GetLayers()[1].PosX += GameManager.Instance.Player.Movement * GameManager.Instance.CurrentMap.GetLayers()[1].MM;
+                        GameManager.Instance.CurrentMap.ParallaxLayer.X +=
+                            GameManager.Instance.Player.Movement * GameManager.Instance.CurrentMap.ParallaxLayer.MM;
+
+                        if (GameManager.Instance.Player.IsColliding(
+                            GameManager.Instance.CurrentMap.ParallaxLayer))
+                        {
+                            GameManager.Instance.CurrentMap.ParallaxLayer.X -=
+                                GameManager.Instance.Player.Movement * GameManager.Instance.CurrentMap.ParallaxLayer.MM;
+                        }
                     }
                         
             

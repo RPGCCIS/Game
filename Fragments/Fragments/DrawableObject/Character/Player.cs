@@ -83,23 +83,32 @@ namespace Fragments
                             }
                             break;
                     }
-                    //Actually move him
-                    if (movementState == MovementState.WalkingRight)
-                    {
-                        //if(X < 800)
-                        //rec.X += movementSpeed;
-                    }
-                    else if (movementState == MovementState.WalkingLeft)
-                    {
-                        //if(X > 50)
-                        //rec.X -= movementSpeed;
-                    }
 
                     //For graphics
                     flipped = (movementState == MovementState.StandingLeft 
                         || movementState == MovementState.WalkingLeft);
                     break;
             }
+        }
+
+        public bool IsColliding(Layer l)
+        {
+            foreach(KeyValuePair<Texture2D, Vector2> t in l.Objects)
+            {
+                Rectangle objRect = new Rectangle(
+                    (int)t.Value.X + (int)l.X, 
+                    (int)t.Value.Y, 
+                    t.Key.Width, 
+                    t.Key.Height);
+
+                if (this.rec.Intersects(objRect)
+                    && (t.Key == GameManager.Instance.CurrentMap.Textures["wall"]))
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         public override void Draw(SpriteBatch spriteBatch)
