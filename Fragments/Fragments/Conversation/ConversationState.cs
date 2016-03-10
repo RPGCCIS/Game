@@ -7,12 +7,36 @@ namespace Fragments.Conversation
 	{
 		public delegate void Trigger(ConversationTrigger trigger);
 
-		public event Trigger OnTrigger;
+		event Trigger DoTrigger;
 
-		string message;
-		ConversationTrigger trigger;
-		List<String> options;
-		List<String> optionText;
+		public string message;
+		public ConversationTrigger trigger;
+		public List<String> options;
+		public List<String> optionText;
+
+		public string Message
+		{
+			get
+			{
+				return message;
+			}
+		}
+
+		public List<String> Options
+		{
+			get
+			{
+				return options;
+			}
+		}
+
+		public List<String> OptionText
+		{
+			get
+			{
+				return optionText;
+			}
+		}
 
 		public ConversationState(ConversationTrigger trigger, String message, List<String> options, List<String> optionText)
 		{
@@ -20,6 +44,11 @@ namespace Fragments.Conversation
 			this.message = message;
 			this.options = options;
 			this.optionText = optionText;
+		}
+
+		public void OnTrigger()
+		{
+			if(DoTrigger != null) DoTrigger(trigger);
 		}
 	}
 }

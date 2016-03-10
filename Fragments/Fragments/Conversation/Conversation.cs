@@ -46,6 +46,11 @@ namespace Fragments.Conversation
 			state.OnTrigger();
 		}
 
+		public void MainState()
+		{
+			state = states["main"];
+		}
+
 		public void ExitState()
 		{
 			state = states["exit"];
