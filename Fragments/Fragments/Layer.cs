@@ -36,5 +36,6 @@ namespace Fragments
             get { return movementMulitplier; }
             set { movementMulitplier = value; }
         }
+        public 
     }
 }
