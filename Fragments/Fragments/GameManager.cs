@@ -22,7 +22,7 @@ namespace Fragments
         private GameState gameState;
         private GameState prevState;
         private Player player;
-
+        private Map currentMap;
         private Dictionary<string, bool> keyEvents;
 
         //Singleton property
@@ -47,7 +47,16 @@ namespace Fragments
                 gameState = value;
             }
         }
-
+        public Player Player
+        {
+            get { return player; }
+            set { player = value; }
+        }
+        public Map CurrentMap
+        {
+            get { return currentMap; }
+            set { currentMap = value; }
+        }
         public GameState PrevState
         {
             get { return prevState; }

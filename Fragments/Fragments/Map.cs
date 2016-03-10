@@ -21,6 +21,7 @@ namespace Fragments
         private String background;
         private Tile[,] tiles;
         private List<Texture2D> textures;
+        private Texture2D wall;
         Layer backgroundLayer;
         Layer parallaxLayer;
         Layer superForegroundLayer;
@@ -90,13 +91,18 @@ namespace Fragments
             foreach (Layer l in layers)
             {
                 //everything is just currently drawn to 0,0
+                
                 s.Draw(l.Texture, l.Pos, Color.White);
+                
             }
+            s.Draw(wall, new Rectangle(0, 0, 300, 720), Color.White);
+            s.Draw(wall, new Rectangle(wall.Width-300, 0, 300, 720), Color.White);
         }
         public List<Texture2D> GetTextures()
         {
             return textures;
         }
+        public Texture2D Wall { set { wall = value; } }
 
     }
 }

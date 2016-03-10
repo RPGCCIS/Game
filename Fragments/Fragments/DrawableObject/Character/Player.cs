@@ -86,13 +86,13 @@ namespace Fragments
                     //Actually move him
                     if (movementState == MovementState.WalkingRight)
                     {
-                        if(X < 800)
-                        rec.X += movementSpeed;
+                        //if(X < 800)
+                        //rec.X += movementSpeed;
                     }
                     else if (movementState == MovementState.WalkingLeft)
                     {
-                        if(X > 50)
-                        rec.X -= movementSpeed;
+                        //if(X > 50)
+                        //rec.X -= movementSpeed;
                     }
 
                     //For graphics

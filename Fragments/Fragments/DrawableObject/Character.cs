@@ -92,6 +92,11 @@ namespace Fragments
             hp -= damage;
         }
 
+        public void DealDamage(Character foe)
+        {
+            foe.Hp = (foe.hp - this.atk);
+        }
+
         //DRAWING FUNCTIONS
 
         public override void Draw(SpriteBatch spriteBatch)

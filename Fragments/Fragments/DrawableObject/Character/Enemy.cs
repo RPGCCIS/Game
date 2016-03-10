@@ -9,26 +9,19 @@ namespace Fragments
 {
     class Enemy : Character
     {
-        //enum that defines three different enemy levels
-        public enum Type
-        {
-            grunt,
-            boss,
-            final
-        }
 
         //holds an instance's type
-        private Type level;
+        private EnemyType level;
 
         //gets the instance's type
-        public Type Level
+        public EnemyType Level
         {
             get { return level; }
             set { level = value; }
         }
 
         //initial constructor for the enemy class
-        public Enemy(Type type, int x, int y, int w, int h) : base(x, y, w, h)
+        public Enemy(EnemyType type, int x, int y, int w, int h) : base(x, y, w, h)
         {
             level = type;
         }
@@ -37,6 +30,12 @@ namespace Fragments
         public override void Draw(SpriteBatch spriteBatch)
         {
             base.Draw(spriteBatch);
+        }
+
+        //what to do when enemy dies
+        public void Death()
+        {
+            //what to do when an enemy is finished.
         }
     }
 }
