@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['layer',['Layer',['../classFragments_1_1Layer.html',1,'Fragments']]],
-  ['loadcontent',['LoadContent',['../classFragments_1_1Game1.html#a8e97852755fea4d41af9d76febd17983',1,'Fragments::Game1']]]
+  ['initialize',['Initialize',['../classFragments_1_1Game1.html#a6de0d6606d0cc46004402d1131e24684',1,'Fragments::Game1']]],
+  ['isalive',['IsAlive',['../classFragments_1_1Character.html#a2679dac16953d3cd37c80b5622729072',1,'Fragments::Character']]]
 ];

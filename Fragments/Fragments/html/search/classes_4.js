@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['map',['Map',['../classFragments_1_1Map.html',1,'Fragments']]]
+  ['layer',['Layer',['../classFragments_1_1Layer.html',1,'Fragments']]]
 ];
