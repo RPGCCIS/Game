@@ -40,6 +40,8 @@
   <ItemGroup>
     <Compile Include="DrawableObject.cs" />
     <Compile Include="DrawableObject\Character\Enemy.cs" />
+    <Compile Include="EnemyManager.cs" />
+    <Compile Include="EnemyType.cs" />
     <Compile Include="Game1.cs" />
     <Compile Include="GameManager.cs" />
     <Compile Include="Layer.cs" />
