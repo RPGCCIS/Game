@@ -28,13 +28,6 @@ namespace Fragments
         /// TODO: This should be held in the GameManager, 
         /// which should have global access(?)
         /// </summary>
-        public enum GameState
-        {
-            Menu,
-            Town,
-            Battle,
-            Map
-        }
 
         //Keyboard
         KeyboardState kbState;
@@ -55,6 +48,7 @@ namespace Fragments
             graphics.PreferredBackBufferWidth = 1000;  // width of the window
             graphics.PreferredBackBufferHeight = 750;   // height of the window
             graphics.ApplyChanges();
+            GameManager.Instance.Player = p;
         }
 
         /// <summary>
@@ -65,6 +59,8 @@ namespace Fragments
         /// </summary>
         protected override void Initialize()
         {
+            this.IsMouseVisible = true;
+
             // TODO: Add your initialization logic here
             test = new Map("test");
             // Singleton initialization
@@ -91,11 +87,17 @@ namespace Fragments
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
-
-            foreach (Layer l in test.GetLayers())
+            GameManager.Instance.CurrentMap = test;
+            foreach (Layer l in GameManager.Instance.CurrentMap.Layers)
             {
-                l.Texture = Content.Load<Texture2D>(l.Name);
+                l.AddObject(Content.Load<Texture2D>(l.Name), new Vector2(0));
             }
+            GameManager.Instance.CurrentMap.AddTexture("wall", Content.Load<Texture2D>("wall"));
+
+            //Draw wall
+            GameManager.Instance.CurrentMap.ParallaxLayer.AddObject(
+                 GameManager.Instance.CurrentMap.Textures["wall"],
+                 new Vector2(-2000, 0));
 
             // TODO: use this.Content to load your game content here
             p.Texture = Content.Load<Texture2D>("player");
@@ -182,6 +184,7 @@ namespace Fragments
                     break;
 
                 case GameManager.GameState.Town:
+                    //State changes for testing
                     if (IsKeyPressed(kbState, oldKbState, Keys.A))
                     {
                         GameManager.Instance.State = GameManager.GameState.Menu;
@@ -194,13 +197,35 @@ namespace Fragments
                     {
                         GameManager.Instance.State = GameManager.GameState.Pause;
                     }
-                    p.Move(Keyboard.GetState(), GameManager.Instance);
+                    GameManager.Instance.Player.Move(Keyboard.GetState(), GameManager.Instance);
 
-                    if(p.MS == Player.MovementState.WalkingRight && p.X > 150)
-                        test.GetLayers()[1].PosX -= p.Movement * test.GetLayers()[1].MM;
-                    if (p.MS == Player.MovementState.WalkingLeft&& p.X < 700)
-                        test.GetLayers()[1].PosX += p.Movement * test.GetLayers()[1].MM;
+                    //Layer movement
+                    if (GameManager.Instance.Player.MS == Player.MovementState.WalkingRight)
+                    {
+                        GameManager.Instance.CurrentMap.ParallaxLayer.X -= 
+                            GameManager.Instance.Player.Movement * GameManager.Instance.CurrentMap.ParallaxLayer.MM;
 
+                        if(GameManager.Instance.Player.IsColliding(
+                            GameManager.Instance.CurrentMap.ParallaxLayer))
+                        {
+                            GameManager.Instance.CurrentMap.ParallaxLayer.X +=
+                                GameManager.Instance.Player.Movement * GameManager.Instance.CurrentMap.ParallaxLayer.MM;
+                        }
+                    }
+                    else if (GameManager.Instance.Player.MS == Player.MovementState.WalkingLeft)
+                    {
+                        GameManager.Instance.CurrentMap.ParallaxLayer.X +=
+                            GameManager.Instance.Player.Movement * GameManager.Instance.CurrentMap.ParallaxLayer.MM;
+
+                        if (GameManager.Instance.Player.IsColliding(
+                            GameManager.Instance.CurrentMap.ParallaxLayer))
+                        {
+                            GameManager.Instance.CurrentMap.ParallaxLayer.X -=
+                                GameManager.Instance.Player.Movement * GameManager.Instance.CurrentMap.ParallaxLayer.MM;
+                        }
+                    }
+                        
+            
                     break;
 
                 case GameManager.GameState.Map:
@@ -315,8 +340,8 @@ namespace Fragments
 
                 case GameManager.GameState.Town:
                     GraphicsDevice.Clear(Color.Green);
-                    test.Draw(spriteBatch);
-                    p.Draw(spriteBatch);
+                    GameManager.Instance.CurrentMap.Draw(spriteBatch);
+                    GameManager.Instance.Player.Draw(spriteBatch);
                     break;
 
                 case GameManager.GameState.Map:

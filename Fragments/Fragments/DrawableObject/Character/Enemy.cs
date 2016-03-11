@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Fragments
 {
+    /*
     class Enemy : Character
     {
 
@@ -38,4 +39,5 @@ namespace Fragments
             //what to do when an enemy is finished.
         }
     }
+    */
 }

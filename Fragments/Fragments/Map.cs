@@ -16,14 +16,50 @@ namespace Fragments
         public uint version;
         private int width;
         private int height;
+
         private String superForeground;
         private String parallax;
         private String background;
+
         private Tile[,] tiles;
-        private List<Texture2D> textures;
+        private Dictionary<string, Texture2D> textures;
+
         Layer backgroundLayer;
         Layer parallaxLayer;
+        Layer foregroundLayer;
         Layer superForegroundLayer;
+
+        //Properties
+        public List<Layer> Layers
+        {
+            get { return layers; }
+        }
+
+        public Layer BackgroundLayer
+        {
+            get { return backgroundLayer; }
+        }
+
+        public Layer ParallaxLayer
+        {
+            get { return parallaxLayer; }
+        }
+
+        public Layer Foreground
+        {
+            get { return foregroundLayer; }
+        }
+
+        public Layer SuperForeGround
+        {
+            get { return superForegroundLayer; }
+        }
+
+        public Dictionary<string, Texture2D> Textures
+        {
+            get { return textures; }
+        }
+
         //Hold for when we actually get a class for entities
         //List<DrawableObject> entities;
         public Map(string name)
@@ -31,9 +67,16 @@ namespace Fragments
             mapName = name;
             layers = new List<Layer>();
 
-            textures = new List<Texture2D>();
+            textures = new Dictionary<string, Texture2D>();
             Load(name);
         }
+
+        //Add
+        public void AddTexture(string name, Texture2D texture)
+        {
+            Textures.Add(name, texture);
+        }
+
         //Loading map from file
         public void Load(string name)
         {
@@ -77,6 +120,7 @@ namespace Fragments
             layers.Add(parallaxLayer);
             layers.Add(superForegroundLayer);
         }
+        /*
         /// <summary>
         /// Get layers
         /// </summary>
@@ -85,18 +129,16 @@ namespace Fragments
         {
             return layers;
         }
+        */
         public void Draw(SpriteBatch s)
         {
             foreach (Layer l in layers)
             {
                 //everything is just currently drawn to 0,0
-                s.Draw(l.Texture, l.Pos, Color.White);
+
+                l.Draw(s);
+                                
             }
         }
-        public List<Texture2D> GetTextures()
-        {
-            return textures;
-        }
-
     }
 }

@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['fragments',['Fragments',['../namespaceFragments.html',1,'']]]
+  ['enemy',['Enemy',['../classFragments_1_1Enemy.html',1,'Fragments']]],
+  ['enemymanager',['EnemyManager',['../classFragments_1_1EnemyManager.html',1,'Fragments']]]
 ];

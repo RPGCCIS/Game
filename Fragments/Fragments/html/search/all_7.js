@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['player',['Player',['../classFragments_1_1Player.html',1,'Fragments']]]
+  ['map',['Map',['../classFragments_1_1Map.html',1,'Fragments']]],
+  ['message',['Message',['../classFragments_1_1Message.html',1,'Fragments']]]
 ];

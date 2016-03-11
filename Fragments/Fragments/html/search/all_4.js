@@ -1,5 +1,6 @@
 var searchData=
 [
-  ['initialize',['Initialize',['../classFragments_1_1Game1.html#a6de0d6606d0cc46004402d1131e24684',1,'Fragments::Game1']]],
-  ['isalive',['IsAlive',['../classFragments_1_1Character.html#a2679dac16953d3cd37c80b5622729072',1,'Fragments::Character']]]
+  ['game1',['Game1',['../classFragments_1_1Game1.html',1,'Fragments']]],
+  ['gamemanager',['GameManager',['../classFragments_1_1GameManager.html',1,'Fragments']]],
+  ['getlayers',['GetLayers',['../classFragments_1_1Map.html#aa652a4ea098413ad43f8d9a483e8867a',1,'Fragments::Map']]]
 ];
