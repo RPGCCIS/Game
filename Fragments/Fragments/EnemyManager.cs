@@ -7,6 +7,7 @@ namespace Fragments
 {
     class EnemyManager
     {
+        /*
         //fields
         private static EnemyManager instance;
         private Enemy foe;
@@ -66,5 +67,7 @@ namespace Fragments
                 foe.Death();
             }
         }
+        */
     }
+    
 }
