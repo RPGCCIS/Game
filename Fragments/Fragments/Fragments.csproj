@@ -46,6 +46,7 @@
     <Compile Include="DrawableObject\Character.cs" />
     <Compile Include="DrawableObject\Character\Player.cs" />
     <Compile Include="Map.cs" />
+    <Compile Include="MapManager.cs" />
     <Compile Include="Message.cs" />
     <Compile Include="MovementFlags.cs" />
     <Compile Include="Program.cs" />
@@ -91,7 +92,5 @@
   <Target Name="AfterBuild">
   </Target>
   -->
-  <ItemGroup>
-    <Folder Include="Conversation\" />
-  </ItemGroup>
+  <ItemGroup />
 </Project>
