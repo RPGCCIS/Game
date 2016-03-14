@@ -26,16 +26,16 @@ namespace Fragments
         bool flipped; //SpriteEffect
 
         //Constructor
-        public Player(int x, int y, int w, int h) 
-            : base(x, y, w, h)
+        public Player(int x, int y, int w, int h, Texture2D texture) 
+            : base(x, y, w, h, texture)
         {
             //TODO
         }
 
         //MOVEMENT FUNCTIONS
-        public void Move(KeyboardState kb, GameManager gameManager)
+        public void Move(KeyboardState kb)
         {
-            switch(gameManager.State)
+            switch(GameManager.Instance.State)
             {
                 case GameManager.GameState.Town:
                     switch(movementState)
@@ -92,18 +92,40 @@ namespace Fragments
             }
         }
 
+        /*
         public bool IsColliding(Layer l)
         {
-            foreach(KeyValuePair<Texture2D, Vector2> t in l.Objects)
+            foreach(DrawableObject obj in l.Objects)
             {
                 Rectangle objRect = new Rectangle(
-                    (int)t.Value.X + (int)l.X, 
-                    (int)t.Value.Y, 
-                    t.Key.Width, 
-                    t.Key.Height);
+                    obj.X + (int)l.X, 
+                    obj.Y, 
+                    obj.Texture.Width,
+                    obj.Texture.Height);
 
                 if (this.rec.Intersects(objRect)
-                    && (t.Key == GameManager.Instance.CurrentMap.Textures["wall"]))
+                    && (obj.Texture == GameManager.Instance.CurrentMap.Textures["wall"]))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+        */
+
+        public bool IsColliding(Layer l, TypeOfObject type)
+        {
+            foreach (DrawableObject obj in l.Objects)
+            {
+                Rectangle objRect = new Rectangle(
+                    obj.X + (int)l.X,
+                    obj.Y,
+                    obj.Rec.Width,
+                    obj.Rec.Height);
+
+                if (this.rec.Intersects(objRect)
+                    && (obj.Type == type))
                 {
                     return true;
                 }

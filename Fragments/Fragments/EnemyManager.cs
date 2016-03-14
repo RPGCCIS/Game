@@ -7,10 +7,11 @@ namespace Fragments
 {
     class EnemyManager
     {
-        /*
+        
         //fields
         private static EnemyManager instance;
         private Enemy foe;
+        Random randy = new Random();
 
         //instance for gamemanager
         public static EnemyManager Instance
@@ -47,11 +48,12 @@ namespace Fragments
         //this one updates the enemy in battle, should only be called during the player's turn
         public void Update()
         {
+            
             if (foe.IsAlive())
             {
                 if (foe.GetType().Equals(EnemyType.grunt))
                 {
-                    //grunt level AI
+                    foe.DealDamage(BattleManager.Instance.Player);
                 }
                 else if (foe.GetType().Equals(EnemyType.boss))
                 {
@@ -64,10 +66,10 @@ namespace Fragments
             }
             else
             {
-                foe.Death();
+                //foe.Death();
             }
+            
         }
-        */
     }
     
 }

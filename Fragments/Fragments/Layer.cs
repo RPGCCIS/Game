@@ -15,7 +15,7 @@ namespace Fragments
         private float movementMulitplier =10.6f;
         private float updateable;
 
-        private List<KeyValuePair<Texture2D, Vector2>> objects;
+        private List<DrawableObject> objects;
         private float layerOffset;
         private string name;
 
@@ -26,7 +26,7 @@ namespace Fragments
             set { layerOffset = value; }
         }
 
-        public List<KeyValuePair<Texture2D, Vector2>> Objects
+        public List<DrawableObject> Objects
         {
             get { return objects; }
         }
@@ -38,7 +38,7 @@ namespace Fragments
             layerOffset = 0;
             //pos = new Vector2(0, 0); // Initial anchor point
 
-            objects = new List<KeyValuePair<Texture2D, Vector2>>();
+            objects = new List<DrawableObject>();
         }
 
     public string Name { get { return name; } }
@@ -50,18 +50,40 @@ namespace Fragments
             set { movementMulitplier = value; }
         }
 
-        public void AddObject (Texture2D text, Vector2 pos)
+        public void AddObject (Texture2D text, Vector2 pos, TypeOfObject type = TypeOfObject.Normal)
         {
-            objects.Add(new KeyValuePair<Texture2D, Vector2>(text, pos));
+            objects.Add(new DrawableObject(
+                (int)pos.X, 
+                (int)pos.Y, 
+                text.Width, 
+                text.Height, 
+                text, type));
+        }
+
+        public void AddObject(Texture2D text, Vector2 pos, Vector2 dimensions, TypeOfObject type = TypeOfObject.Normal)
+        {
+            objects.Add(new DrawableObject(
+                (int)pos.X,
+                (int)pos.Y,
+                (int)dimensions.X,
+                (int)dimensions.Y,
+                text, type));
         }
 
         //Drawing
         public void Draw(SpriteBatch s)
         {
             //Key = texture, value = position
-            foreach(KeyValuePair<Texture2D, Vector2> t in objects)
+            foreach(DrawableObject obj in objects)
             {
-                s.Draw(t.Key, t.Value + new Vector2(layerOffset, 0), Color.White);
+                s.Draw(
+                    obj.Texture, 
+                    new Rectangle(
+                        obj.Rec.Location.X + (int)layerOffset,
+                        obj.Rec.Location.Y,
+                        obj.Rec.Width,
+                        obj.Rec.Height), 
+                    Color.White);
             }
         }
         public void Clear()

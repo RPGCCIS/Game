@@ -66,8 +66,8 @@ namespace Fragments
 
         //Constructor
 
-        public Character(int x, int y, int w, int h)
-            : base(x, y, w, h)
+        public Character(int x, int y, int w, int h, Texture2D texture)
+            : base(x, y, w, h, texture)
         {
             //EMPTY
         }
