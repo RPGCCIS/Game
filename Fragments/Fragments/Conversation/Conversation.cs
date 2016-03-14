@@ -31,8 +31,8 @@ namespace Fragments.Conversation
 				}
 				states[name] = new ConversationState(trigger, message, options, optionText);
 				hasNextConversationState = r.ReadBoolean();
-				state = states["main"];
 			}
+			state = states["main"];
 		}
 
 		public ConversationState GetCurrentState()
