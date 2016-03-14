@@ -99,7 +99,7 @@ namespace Fragments
 
         //DRAWING FUNCTIONS
 
-        public override void Draw(SpriteBatch spriteBatch)
+        public void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(
                 texture,

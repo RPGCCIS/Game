@@ -28,7 +28,7 @@ namespace Fragments
         }
 
         //a temporary draw method
-        public override void Draw(SpriteBatch spriteBatch)
+        public void Draw(SpriteBatch spriteBatch)
         {
             base.Draw(spriteBatch);
         }

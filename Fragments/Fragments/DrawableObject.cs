@@ -9,7 +9,7 @@ using Microsoft.Xna.Framework.Content;
 
 namespace Fragments
 {
-    abstract class DrawableObject
+    class DrawableObject
     {
         protected Rectangle rec;
         protected Texture2D texture;
@@ -23,6 +23,6 @@ namespace Fragments
         public int X { get { return rec.X; } set { rec.X = value; } }
         public int Y { get { return rec.Y; } set { rec.Y = value; } }
         //Overrideable method for draw if we want to change how things are drawn
-        abstract public void Draw(SpriteBatch spriteBatch);
+        public void Draw(SpriteBatch spriteBatch) { }
     }
 }

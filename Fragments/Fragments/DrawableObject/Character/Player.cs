@@ -112,7 +112,7 @@ namespace Fragments
             return false;
         }
 
-        public override void Draw(SpriteBatch spriteBatch)
+        public void Draw(SpriteBatch spriteBatch)
         {
             if (flipped)
             {
