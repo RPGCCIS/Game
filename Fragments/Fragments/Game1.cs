@@ -24,11 +24,6 @@ namespace Fragments
         Message battle;
         Player p = new Player(400, 550, 150, 200);
 
-        /// <summary>
-        /// TODO: This should be held in the GameManager, 
-        /// which should have global access(?)
-        /// </summary>
-
         //Keyboard
         KeyboardState kbState;
         KeyboardState oldKbState;
@@ -147,176 +142,11 @@ namespace Fragments
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-            kbState = Keyboard.GetState();
-
-            switch (GameManager.Instance.State)
-            {
-                case GameManager.GameState.Menu:
-                    if (IsKeyPressed(kbState, oldKbState, Keys.W))
-                    {
-                        menuOptions.Previous();
-                    }
-                    if (IsKeyPressed(kbState, oldKbState, Keys.S))
-                    {
-                        menuOptions.Next();
-                    }
-
-                    if (IsKeyPressed(kbState, oldKbState, Keys.Enter))
-                    {
-                        switch (menuOptions.Selected)
-                        {
-                            //Option 1
-                            case 0:
-                                GameManager.Instance.State = GameManager.GameState.Battle;
-                                break;
-
-                            //Option 2
-                            case 1:
-                                GameManager.Instance.State = GameManager.GameState.Map;
-                                break;
-
-                            //Play Game
-                            case 2:
-                                GameManager.Instance.State = GameManager.GameState.Town;
-                                break;
-                        }
-                    }
-                    break;
-
-                case GameManager.GameState.Town:
-                    //State changes for testing
-                    if (IsKeyPressed(kbState, oldKbState, Keys.A))
-                    {
-                        GameManager.Instance.State = GameManager.GameState.Menu;
-                    }
-                    else if (IsKeyPressed(kbState, oldKbState, Keys.D))
-                    {
-                        GameManager.Instance.State = GameManager.GameState.Map;
-                    }
-                    else if (IsKeyPressed(kbState, oldKbState, Keys.G))
-                    {
-                        GameManager.Instance.State = GameManager.GameState.Pause;
-                    }
-                    GameManager.Instance.Player.Move(Keyboard.GetState(), GameManager.Instance);
-
-                    //Layer movement
-                    if (GameManager.Instance.Player.MS == Player.MovementState.WalkingRight)
-                    {
-                        GameManager.Instance.CurrentMap.ParallaxLayer.X -= 
-                            GameManager.Instance.Player.Movement * GameManager.Instance.CurrentMap.ParallaxLayer.MM;
-
-                        if(GameManager.Instance.Player.IsColliding(
-                            GameManager.Instance.CurrentMap.ParallaxLayer))
-                        {
-                            GameManager.Instance.CurrentMap.ParallaxLayer.X +=
-                                GameManager.Instance.Player.Movement * GameManager.Instance.CurrentMap.ParallaxLayer.MM;
-                        }
-                    }
-                    else if (GameManager.Instance.Player.MS == Player.MovementState.WalkingLeft)
-                    {
-                        GameManager.Instance.CurrentMap.ParallaxLayer.X +=
-                            GameManager.Instance.Player.Movement * GameManager.Instance.CurrentMap.ParallaxLayer.MM;
-
-                        if (GameManager.Instance.Player.IsColliding(
-                            GameManager.Instance.CurrentMap.ParallaxLayer))
-                        {
-                            GameManager.Instance.CurrentMap.ParallaxLayer.X -=
-                                GameManager.Instance.Player.Movement * GameManager.Instance.CurrentMap.ParallaxLayer.MM;
-                        }
-                    }
-                        
-            
-                    break;
-
-                case GameManager.GameState.Map:
-                    if (IsKeyPressed(kbState, oldKbState, Keys.T))
-                    {
-                        GameManager.Instance.State = GameManager.GameState.Town;
-                    }
-                    else if (IsKeyPressed(kbState, oldKbState, Keys.F))
-                    {
-                        GameManager.Instance.State = GameManager.GameState.Battle;
-                    }
-                    else if (IsKeyPressed(kbState, oldKbState, Keys.G))
-                    {
-                        GameManager.Instance.State = GameManager.GameState.Pause;
-                    }
-                    if (IsKeyPressed(kbState, oldKbState, Keys.W))
-                    {
-                        messageOptions.Previous();
-                    }
-                    if (IsKeyPressed(kbState, oldKbState, Keys.S))
-                    {
-                        messageOptions.Next();
-                    }
-                    if (IsKeyPressed(kbState, oldKbState, Keys.Enter))
-                    {
-                        switch (messageOptions.Selected)
-                        {
-                            //Option 1
-                            case 0:
-                                GameManager.Instance.State = GameManager.GameState.Menu;
-                                break;
-
-                            //Option 2
-                            case 1:
-                                GameManager.Instance.State = GameManager.GameState.Town;
-                                break;
-
-                        }
-                    }
-                    break;
-
-                case GameManager.GameState.Battle:
-                    if (IsKeyPressed(kbState, oldKbState, Keys.D))
-                    {
-                        GameManager.Instance.State = GameManager.GameState.Map;
-                    }
-                    else if (IsKeyPressed(kbState, oldKbState, Keys.G))
-                    {
-                        GameManager.Instance.State = GameManager.GameState.Pause;
-                    }
-                    if (IsKeyPressed(kbState, oldKbState, Keys.W))
-                    {
-                         battleOptions.Previous();
-                    }
-                    if (IsKeyPressed(kbState, oldKbState, Keys.S))
-                    {
-                        battleOptions.Next();
-                    }
-                    if (IsKeyPressed(kbState, oldKbState, Keys.Enter))
-                    {
-                        switch (battleOptions.Selected)
-                        {
-                            //Option 1
-                            case 0:
-                                GameManager.Instance.State = GameManager.GameState.Menu;
-                                break;
-
-                            //Option 2
-                            case 1:
-                                GameManager.Instance.State = GameManager.GameState.Town;
-                                break;
-
-                        }
-                    }
-                    break;
-                case GameManager.GameState.Pause:
-                    if (IsKeyPressed(kbState, oldKbState, Keys.G))
-                    {
-                        GameManager.Instance.State = GameManager.Instance.PrevState;
-                    }
-                    break;
-            }
-
             oldKbState = kbState;
+            kbState = Keyboard.GetState();
+            GameManager.Instance.Update(menuOptions, messageOptions, battleOptions, kbState, oldKbState);
 
             base.Update(gameTime);
-        }
-
-        public bool IsKeyPressed(KeyboardState current, KeyboardState old, Keys k)
-        {
-            return (current.IsKeyDown(k) && old.IsKeyUp(k));
         }
 
         /// <summary>
@@ -330,31 +160,7 @@ namespace Fragments
 
             // TODO: Add your drawing code here
             spriteBatch.Begin();
-
-            switch (GameManager.Instance.State)
-            {
-                case GameManager.GameState.Menu:
-                    GraphicsDevice.Clear(Color.White);
-                    menuOptions.DrawText(spriteBatch);
-                    break;
-
-                case GameManager.GameState.Town:
-                    GraphicsDevice.Clear(Color.Green);
-                    GameManager.Instance.CurrentMap.Draw(spriteBatch);
-                    GameManager.Instance.Player.Draw(spriteBatch);
-                    break;
-
-                case GameManager.GameState.Map:
-                    GraphicsDevice.Clear(Color.Brown);
-                    m.Draw(spriteBatch);
-                    break;
-
-                case GameManager.GameState.Battle:
-                    GraphicsDevice.Clear(Color.Red);
-                    battle.Draw(spriteBatch);
-                    break;
-            }
-
+            GameManager.Instance.Draw(spriteBatch, menuOptions, battle, this.GraphicsDevice, m);
             spriteBatch.End();
 
             base.Draw(gameTime);
