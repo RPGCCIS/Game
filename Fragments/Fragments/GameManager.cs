@@ -200,6 +200,7 @@ namespace Fragments
                     break;
 
                 case GameManager.GameState.Battle:
+                    BattleManager.Instance.Player = player;
                     if (IsKeyPressed(kbState, oldKbState, Keys.D))
                     {
                         GameManager.Instance.State = GameManager.GameState.Map;
