@@ -23,7 +23,9 @@ namespace Fragments
         TextObject messageB;
         TextList battleOptions;
         Message battle;
-        Player p = new Player(400, 550, 150, 200);
+
+        Player p;
+        Texture2D playerText;
 
         //Keyboard
         KeyboardState kbState;
@@ -44,7 +46,6 @@ namespace Fragments
             graphics.PreferredBackBufferWidth = 1000;  // width of the window
             graphics.PreferredBackBufferHeight = 750;   // height of the window
             graphics.ApplyChanges();
-            GameManager.Instance.Player = p;
         }
 
         /// <summary>
@@ -89,8 +90,11 @@ namespace Fragments
             
             
 
-            // TODO: use this.Content to load your game content here
-            p.Texture = Content.Load<Texture2D>("player");
+            // Load the player
+            playerText = Content.Load<Texture2D>("player");
+            p = new Player(400, 430, 200, 300, playerText);
+            GameManager.Instance.Player = p;
+
             font = Content.Load<SpriteFont>("Georgia_32");
 
             //For Map
@@ -139,6 +143,7 @@ namespace Fragments
         {
             oldKbState = kbState;
             kbState = Keyboard.GetState();
+
             GameManager.Instance.Update(menuOptions, messageOptions, battleOptions, kbState, oldKbState);
 
             base.Update(gameTime);

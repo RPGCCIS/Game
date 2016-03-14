@@ -69,9 +69,10 @@ namespace Fragments
         public Map(string name)
         {
             mapName = name;
-            layers = new List<Layer>();
 
+            layers = new List<Layer>();
             textures = new Dictionary<string, Texture2D>();
+
             Load(name);
         }
 

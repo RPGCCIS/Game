@@ -109,7 +109,7 @@ namespace Fragments
 
                             //Play Game
                             case 2:
-                                GameManager.Instance.State = GameManager.GameState.Town;
+                                MapManager.Instance.LoadMap("test");
                                 break;
                         }
                     }
@@ -129,7 +129,20 @@ namespace Fragments
                     {
                         GameManager.Instance.State = GameManager.GameState.Pause;
                     }
-                    GameManager.Instance.Player.Move(Keyboard.GetState(), GameManager.Instance);
+
+                    //Interactable
+                    else if (IsKeyPressed(kbState, oldKbState, Keys.Enter))
+                    {
+                        if (GameManager.Instance.Player.IsColliding(
+                            GameManager.Instance.CurrentMap.ParallaxLayer,
+                            TypeOfObject.Interactable))
+                        {
+                            MapManager.Instance.LoadMap("test1");
+                        }
+                    }
+
+                    //Player movement
+                    GameManager.Instance.Player.Move(Keyboard.GetState());
 
                     //Layer movement
                     if (GameManager.Instance.Player.MS == Player.MovementState.WalkingRight)
@@ -138,7 +151,8 @@ namespace Fragments
                             GameManager.Instance.Player.Movement * GameManager.Instance.CurrentMap.ParallaxLayer.MM;
 
                         if (GameManager.Instance.Player.IsColliding(
-                            GameManager.Instance.CurrentMap.ParallaxLayer))
+                            GameManager.Instance.CurrentMap.ParallaxLayer,
+                            TypeOfObject.Solid))
                         {
                             GameManager.Instance.CurrentMap.ParallaxLayer.X +=
                                 GameManager.Instance.Player.Movement * GameManager.Instance.CurrentMap.ParallaxLayer.MM;
@@ -150,13 +164,13 @@ namespace Fragments
                             GameManager.Instance.Player.Movement * GameManager.Instance.CurrentMap.ParallaxLayer.MM;
 
                         if (GameManager.Instance.Player.IsColliding(
-                            GameManager.Instance.CurrentMap.ParallaxLayer))
+                            GameManager.Instance.CurrentMap.ParallaxLayer,
+                            TypeOfObject.Solid))
                         {
                             GameManager.Instance.CurrentMap.ParallaxLayer.X -=
                                 GameManager.Instance.Player.Movement * GameManager.Instance.CurrentMap.ParallaxLayer.MM;
                         }
                     }
-
 
                     break;
 
@@ -194,7 +208,6 @@ namespace Fragments
                             case 1:
                                 GameManager.Instance.State = GameManager.GameState.Town;
                                 break;
-
                         }
                     }
                     break;

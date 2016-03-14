@@ -13,7 +13,7 @@ namespace Fragments
 
         private static MapManager instance;
         private ContentManager content;
-        private Map currentMap;
+        //private Map currentMap;
 
         public static MapManager Instance
         {
@@ -31,30 +31,72 @@ namespace Fragments
             set { content = value; }
         }
 
-
-        public void LoadMap(Map m)
+        // Loads the map as a whole
+        // i.e. a town
+        public void LoadMap(string m)
         {
-            if(currentMap != null)
-                currentMap.ClearMap();
+            switch (m)
+            {
+                case "test":
+                    LoadMapFromFile("test");
+
+                    //Draw a wall
+                    GameManager.Instance.CurrentMap.AddTexture(
+                        "wall", 
+                        content.Load<Texture2D>("wall"));
+
+                    GameManager.Instance.CurrentMap.ParallaxLayer.AddObject(
+                         GameManager.Instance.CurrentMap.Textures["wall"],
+                         new Vector2(-2000, 0),
+                         TypeOfObject.Solid);
+
+                    GameManager.Instance.CurrentMap.ParallaxLayer.AddObject(
+                         GameManager.Instance.CurrentMap.Textures["wall"],
+                         new Vector2(800, 0),
+                         new Vector2(600, 1000),
+                         TypeOfObject.Interactable);
+
+                    break;
+
+                case "test1":
+                    LoadMapFromFile("test");
+
+                    GameManager.Instance.CurrentMap.AddTexture("wall", content.Load<Texture2D>("wall"));
+
+                    GameManager.Instance.CurrentMap.ParallaxLayer.AddObject(
+                         GameManager.Instance.CurrentMap.Textures["wall"],
+                         new Vector2(-3000, 0),
+                         TypeOfObject.Solid);
+
+                    GameManager.Instance.CurrentMap.ParallaxLayer.AddObject(
+                         GameManager.Instance.CurrentMap.Textures["wall"],
+                         new Vector2(1600, 0),
+                         new Vector2(600, 1000),
+                         TypeOfObject.Interactable);
+                    break;
+            }
+
+            GameManager.Instance.State = GameManager.GameState.Town;
+        }
+
+        // Loads just the map data
+        // that exists in the .map file
+        public void LoadMapFromFile(string file)
+        {
+            if (GameManager.Instance.CurrentMap != null)
+            {
+                GameManager.Instance.CurrentMap.ClearMap();
+                GameManager.Instance.CurrentMap.Load(file);
+            }
+            else
+            {
+                GameManager.Instance.CurrentMap = new Map(file);
+            }
+
             foreach (Layer l in GameManager.Instance.CurrentMap.Layers)
             {
                 l.AddObject(content.Load<Texture2D>(l.Name), new Vector2(0));
             }
-            switch (m.MapName)
-            {
-                case "test":
-                    GameManager.Instance.CurrentMap.AddTexture("wall", content.Load<Texture2D>("wall"));
-
-                    //Draw wall
-                    GameManager.Instance.CurrentMap.ParallaxLayer.AddObject(
-                         GameManager.Instance.CurrentMap.Textures["wall"],
-                         new Vector2(-2000, 0));
-                    break;
-            }
-            currentMap = m;
-            GameManager.Instance.State = GameManager.GameState.Town;
-            GameManager.Instance.CurrentMap = m;
-            
         }
     }
 }
