@@ -64,5 +64,9 @@ namespace Fragments
                 s.Draw(t.Key, t.Value + new Vector2(layerOffset, 0), Color.White);
             }
         }
+        public void Clear()
+        {
+            objects.Clear();
+        }
     }
 }

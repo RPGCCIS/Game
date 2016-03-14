@@ -13,6 +13,7 @@ namespace Fragments
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         Map test;
+        Map test2;
 
         //Message testing
         Message m;
@@ -63,6 +64,7 @@ namespace Fragments
 
             // TODO: Add your initialization logic here
             test = new Map("test");
+            test2 = new Map("test2");
             // Singleton initialization
             GameManager.Instance.State = GameManager.GameState.Menu;
 
@@ -88,16 +90,9 @@ namespace Fragments
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
             GameManager.Instance.CurrentMap = test;
-            foreach (Layer l in GameManager.Instance.CurrentMap.Layers)
-            {
-                l.AddObject(Content.Load<Texture2D>(l.Name), new Vector2(0));
-            }
-            GameManager.Instance.CurrentMap.AddTexture("wall", Content.Load<Texture2D>("wall"));
-
-            //Draw wall
-            GameManager.Instance.CurrentMap.ParallaxLayer.AddObject(
-                 GameManager.Instance.CurrentMap.Textures["wall"],
-                 new Vector2(-2000, 0));
+            MapManager.Instance.Content = Content;
+            
+            
 
             // TODO: use this.Content to load your game content here
             p.Texture = Content.Load<Texture2D>("player");
@@ -177,7 +172,7 @@ namespace Fragments
 
                             //Play Game
                             case 2:
-                                GameManager.Instance.State = GameManager.GameState.Town;
+                                MapManager.Instance.LoadMap(test);
                                 break;
                         }
                     }
@@ -224,8 +219,11 @@ namespace Fragments
                                 GameManager.Instance.Player.Movement * GameManager.Instance.CurrentMap.ParallaxLayer.MM;
                         }
                     }
-                        
-            
+                    if (IsKeyPressed(kbState, oldKbState, Keys.V))
+                    {
+                        MapManager.Instance.LoadMap(test2);
+                    }
+
                     break;
 
                 case GameManager.GameState.Map:

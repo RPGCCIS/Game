@@ -59,6 +59,10 @@ namespace Fragments
         {
             get { return textures; }
         }
+        public string MapName
+        {
+            get { return mapName; }
+        }
 
         //Hold for when we actually get a class for entities
         //List<DrawableObject> entities;
@@ -130,6 +134,14 @@ namespace Fragments
             return layers;
         }
         */
+        public void ClearMap()
+        {
+            foreach(Layer l in layers)
+            {
+                l.Clear();
+            }
+            textures.Clear();
+        }
         public void Draw(SpriteBatch s)
         {
             foreach (Layer l in layers)
