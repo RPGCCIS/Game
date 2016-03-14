@@ -7,10 +7,8 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Fragments
 {
-    /*
     class Enemy : Character
     {
-
         //holds an instance's type
         private EnemyType level;
 
@@ -26,7 +24,7 @@ namespace Fragments
         {
             level = type;
         }
-
+        /*
         //a temporary draw method
         public void Draw(SpriteBatch spriteBatch)
         {
@@ -38,6 +36,6 @@ namespace Fragments
         {
             //what to do when an enemy is finished.
         }
+        */
     }
-    */
 }
