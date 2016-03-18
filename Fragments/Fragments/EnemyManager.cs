@@ -42,7 +42,7 @@ namespace Fragments
         //two instances of this method exist. This one is used at the start of battle to create an enemy 
         public void Update(EnemyType type)
         {
-            foe = new Enemy(type, 10, 10, 10, 10);
+            foe = new Enemy(type, 10, 10, 10, 10, null);
         }
 
         //this one updates the enemy in battle, should only be called during the player's turn

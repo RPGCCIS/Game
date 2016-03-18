@@ -87,8 +87,6 @@ namespace Fragments
             spriteBatch = new SpriteBatch(GraphicsDevice);
             GameManager.Instance.CurrentMap = test;
             MapManager.Instance.Content = Content;
-            
-            
 
             // Load the player
             playerText = Content.Load<Texture2D>("player");

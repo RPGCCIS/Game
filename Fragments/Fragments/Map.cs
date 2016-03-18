@@ -94,6 +94,7 @@ namespace Fragments
                     width = input.ReadInt32();
                     height = input.ReadInt32();
                     tiles = new Tile[width, height];
+
                     for (int i = 0; i < width; ++i)
                     {
                         for (int j = 0; j < height; ++j)
@@ -101,9 +102,11 @@ namespace Fragments
                             tiles[i, j] = new Tile((MovementFlags)input.ReadInt32(), input.ReadString());
                         }
                     }
+
                     background = input.ReadString();
                     parallax = input.ReadString();
                     superForeground = input.ReadString();
+
                     while (input.ReadBoolean())
                     {
                         //Will not currently load entities
@@ -118,9 +121,13 @@ namespace Fragments
             {
                 Console.WriteLine("File error:" + e.Message);
             }
+
             backgroundLayer = new Layer(background);
             parallaxLayer = new Layer(parallax);
             superForegroundLayer = new Layer(superForeground);
+
+            layers.Clear();
+
             layers.Add(backgroundLayer);
             layers.Add(parallaxLayer);
             layers.Add(superForegroundLayer);
@@ -143,6 +150,7 @@ namespace Fragments
             }
             textures.Clear();
         }
+
         public void Draw(SpriteBatch s)
         {
             foreach (Layer l in layers)

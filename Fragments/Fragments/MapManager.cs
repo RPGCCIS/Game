@@ -13,7 +13,6 @@ namespace Fragments
 
         private static MapManager instance;
         private ContentManager content;
-        //private Map currentMap;
 
         public static MapManager Instance
         {
@@ -40,9 +39,9 @@ namespace Fragments
                 case "test":
                     LoadMapFromFile("test");
 
-                    //Draw a wall
+                    //Draw everything
                     GameManager.Instance.CurrentMap.AddTexture(
-                        "wall", 
+                        "wall",
                         content.Load<Texture2D>("wall"));
 
                     GameManager.Instance.CurrentMap.ParallaxLayer.AddObject(
@@ -54,25 +53,27 @@ namespace Fragments
                          GameManager.Instance.CurrentMap.Textures["wall"],
                          new Vector2(800, 0),
                          new Vector2(600, 1000),
-                         TypeOfObject.Interactable);
+                         "test1");
 
                     break;
 
                 case "test1":
                     LoadMapFromFile("test");
 
-                    GameManager.Instance.CurrentMap.AddTexture("wall", content.Load<Texture2D>("wall"));
+                    GameManager.Instance.CurrentMap.AddTexture(
+                        "wall", 
+                        content.Load<Texture2D>("wall"));
 
                     GameManager.Instance.CurrentMap.ParallaxLayer.AddObject(
                          GameManager.Instance.CurrentMap.Textures["wall"],
-                         new Vector2(-3000, 0),
+                         new Vector2(-2500, 0),
                          TypeOfObject.Solid);
 
                     GameManager.Instance.CurrentMap.ParallaxLayer.AddObject(
                          GameManager.Instance.CurrentMap.Textures["wall"],
-                         new Vector2(1600, 0),
+                         new Vector2(800, 0),
                          new Vector2(600, 1000),
-                         TypeOfObject.Interactable);
+                         "test");
                     break;
             }
 
@@ -88,6 +89,7 @@ namespace Fragments
                 GameManager.Instance.CurrentMap.ClearMap();
                 GameManager.Instance.CurrentMap.Load(file);
             }
+
             else
             {
                 GameManager.Instance.CurrentMap = new Map(file);
@@ -97,6 +99,11 @@ namespace Fragments
             {
                 l.AddObject(content.Load<Texture2D>(l.Name), new Vector2(0));
             }
+        }
+
+        public void ClearMap()
+        {
+            GameManager.Instance.CurrentMap.ClearMap();
         }
     }
 }

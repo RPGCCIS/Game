@@ -41,9 +41,8 @@ namespace Fragments
             objects = new List<DrawableObject>();
         }
 
-    public string Name { get { return name; } }
-        //public float PosX { get { return pos.X; } set { pos.X = value; } }
-        //public Vector2 Pos { get { return pos; } }
+        public string Name { get { return name; } }
+
         public float MM
         {
             get { return movementMulitplier; }
@@ -60,6 +59,16 @@ namespace Fragments
                 text, type));
         }
 
+        public void AddObject(Texture2D text, Vector2 pos, string destination)
+        {
+            objects.Add(new InteractableObject(
+                (int)pos.X,
+                (int)pos.Y,
+                text.Width,
+                text.Height,
+                text, destination));
+        }
+
         public void AddObject(Texture2D text, Vector2 pos, Vector2 dimensions, TypeOfObject type = TypeOfObject.Normal)
         {
             objects.Add(new DrawableObject(
@@ -68,6 +77,16 @@ namespace Fragments
                 (int)dimensions.X,
                 (int)dimensions.Y,
                 text, type));
+        }
+
+        public void AddObject(Texture2D text, Vector2 pos, Vector2 dimensions, string dest)
+        {
+            objects.Add(new InteractableObject(
+                (int)pos.X,
+                (int)pos.Y,
+                (int)dimensions.X,
+                (int)dimensions.Y,
+                text, dest));
         }
 
         //Drawing
