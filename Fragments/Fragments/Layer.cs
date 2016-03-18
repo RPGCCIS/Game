@@ -11,8 +11,8 @@ namespace Fragments
     {
         //Layer Class
 
-        //Currently nt implemented
-        private float movementMulitplier =10.6f;
+        private float multiplier;
+
         private float updateable;
 
         private List<DrawableObject> objects;
@@ -32,9 +32,11 @@ namespace Fragments
         }
 
         //Constructor
-        public Layer(string name)
+        public Layer(string name, float multiplier)
         {
             this.name = name;
+            this.multiplier = multiplier;
+
             layerOffset = 0;
             //pos = new Vector2(0, 0); // Initial anchor point
 
@@ -43,10 +45,9 @@ namespace Fragments
 
         public string Name { get { return name; } }
 
-        public float MM
+        public float Multiplier
         {
-            get { return movementMulitplier; }
-            set { movementMulitplier = value; }
+            get { return multiplier; }
         }
 
         public void AddObject (Texture2D text, Vector2 pos, TypeOfObject type = TypeOfObject.Normal)

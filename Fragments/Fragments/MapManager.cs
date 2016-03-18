@@ -66,7 +66,7 @@ namespace Fragments
 
                     GameManager.Instance.CurrentMap.ParallaxLayer.AddObject(
                          GameManager.Instance.CurrentMap.Textures["wall"],
-                         new Vector2(-2500, 0),
+                         new Vector2(-4000, 0),
                          TypeOfObject.Solid);
 
                     GameManager.Instance.CurrentMap.ParallaxLayer.AddObject(
