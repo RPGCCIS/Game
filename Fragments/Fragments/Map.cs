@@ -21,6 +21,11 @@ namespace Fragments
         private String parallax;
         private String background;
 
+        //Multipliers
+        private const float backgroundMultiplier = 0.2f;
+        private const float parallaxMultiplier = 40;
+        private const float superForegroundMultiplier = 0;
+
         private Tile[,] tiles;
         private Dictionary<string, Texture2D> textures;
 
@@ -122,9 +127,9 @@ namespace Fragments
                 Console.WriteLine("File error:" + e.Message);
             }
 
-            backgroundLayer = new Layer(background);
-            parallaxLayer = new Layer(parallax);
-            superForegroundLayer = new Layer(superForeground);
+            backgroundLayer = new Layer(background, backgroundMultiplier);
+            parallaxLayer = new Layer(parallax, parallaxMultiplier);
+            superForegroundLayer = new Layer(superForeground, superForegroundMultiplier);
 
             layers.Clear();
 
@@ -149,6 +154,25 @@ namespace Fragments
                 l.Clear();
             }
             textures.Clear();
+        }
+
+        public void MoveLayers(bool isMovingRight = true)
+        {
+            if (isMovingRight)
+            {
+                foreach (Layer l in layers)
+                {
+                    l.X -= l.Multiplier;
+                }
+            }
+            else
+            {
+                foreach (Layer l in layers)
+                {
+                    l.X += l.Multiplier;
+                }
+            }
+
         }
 
         public void Draw(SpriteBatch s)

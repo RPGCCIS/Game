@@ -11,8 +11,6 @@ namespace Fragments
 {
     class Player : Character
     {
-        private const int movementSpeed = 4;
-
         //private List<Equipment> equippedEquippment;
 
         public enum MovementState
@@ -127,6 +125,12 @@ namespace Fragments
                 if (this.rec.Intersects(objRect)
                     && (obj.Type == type))
                 {
+                    if(type == TypeOfObject.Interactable)
+                    {
+                        InteractableObject iObj = (InteractableObject)(obj);
+                        MapManager.Instance.LoadMap(iObj.Destination);
+                    }
+
                     return true;
                 }
             }
@@ -155,7 +159,6 @@ namespace Fragments
             }
 
         }
-        public int Movement { get { return movementSpeed; } }
         public MovementState MS { get { return movementState; } } 
     }
 }
