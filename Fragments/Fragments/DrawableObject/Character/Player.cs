@@ -22,7 +22,21 @@ namespace Fragments
         }
         private MovementState movementState;
         bool flipped; //SpriteEffect
-
+        private Vector2 mapPos = new Vector2(9, 12);
+        public Vector2 MapPos
+        {
+            get { return mapPos; }
+        }
+        public float mapX
+        {
+            get { return mapPos.X; }
+            set { mapPos.X = value; }
+        }
+        public float mapY
+        {
+            get { return mapPos.Y; }
+            set { mapPos.Y = value; }
+        }
         //Constructor
         public Player(int x, int y, int w, int h, Texture2D texture) 
             : base(x, y, w, h, texture)
@@ -159,6 +173,10 @@ namespace Fragments
             }
 
         }
-        public MovementState MS { get { return movementState; } } 
+        public MovementState MS { get { return movementState; } }
+        public void DrawOverworld(SpriteBatch spriteBatch)
+        {
+            spriteBatch.Draw(MapManager.Instance.Content.Load<Texture2D>("playerOverworld"), new Rectangle((900 / 14)*(int)mapPos.X, (750 / 14) *(int)mapPos.Y, 900 / 14, 750 / 14), Color.White);
+        }
     }
 }

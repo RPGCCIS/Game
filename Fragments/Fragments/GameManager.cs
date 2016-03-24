@@ -21,13 +21,13 @@ namespace Fragments
 
         //Member Variables
         private static GameManager instance;
-
+        private Map overworld;
         private GameState gameState;
         private GameState prevState;
         private Player player;
         private Map currentMap;
         private Dictionary<string, bool> keyEvents;
-
+        private List<Vector2> townLocations = new List<Vector2>();
         //Singleton property
         public static GameManager Instance
         {
@@ -36,6 +36,7 @@ namespace Fragments
                 if (instance == null)
                 {
                     instance = new GameManager();
+                    
                 }
                 return instance;
             }
@@ -69,6 +70,11 @@ namespace Fragments
         private GameManager()
         {
             //EMPTY
+            townLocations.Add(new Vector2(9, 12));
+            townLocations.Add(new Vector2(8, 2));
+            townLocations.Add(new Vector2(9, 12));
+            townLocations.Add(new Vector2(9, 12));
+            townLocations.Add(new Vector2(9, 12));
         }
 
         //Method
@@ -103,7 +109,10 @@ namespace Fragments
                                 break;
 
                             //Option 2
+                            //Loading the overworld map
                             case 1:
+                                overworld = new Map("overworld");
+                                GameManager.Instance.currentMap = overworld;
                                 GameManager.Instance.State = GameManager.GameState.Map;
                                 break;
 
@@ -171,37 +180,54 @@ namespace Fragments
                 case GameManager.GameState.Map:
                     if (IsKeyPressed(kbState, oldKbState, Keys.T))
                     {
-                        GameManager.Instance.State = GameManager.GameState.Town;
+                        GameManager.Instance.State = GameManager.GameState.Menu;
                     }
-                    else if (IsKeyPressed(kbState, oldKbState, Keys.F))
+                    
+                    //overworld movement
+                    //Checks the movement flags
+                    if (IsKeyPressed(kbState, oldKbState, Keys.Up))
                     {
-                        GameManager.Instance.State = GameManager.GameState.Battle;
+                        if (CurrentMap.Tiles[(int)player.mapX, (int)player.mapY].Flags.HasFlag(MovementFlags.UP))
+                        {
+                            player.mapY--;
+                        }
+                        
                     }
-                    else if (IsKeyPressed(kbState, oldKbState, Keys.G))
+                    else if (IsKeyPressed(kbState, oldKbState, Keys.Down))
                     {
-                        GameManager.Instance.State = GameManager.GameState.Pause;
+                        if (CurrentMap.Tiles[(int)player.mapX, (int)player.mapY].Flags.HasFlag(MovementFlags.DOWN))
+                        {
+                            player.mapY++;
+                        }
+                        
                     }
-                    if (IsKeyPressed(kbState, oldKbState, Keys.W))
+                    else if (IsKeyPressed(kbState, oldKbState, Keys.Left))
                     {
-                        messageOptions.Previous();
+                        if (CurrentMap.Tiles[(int)player.mapX, (int)player.mapY].Flags.HasFlag(MovementFlags.LEFT))
+                        {
+                            player.mapX--;
+                        }
+                        
                     }
-                    if (IsKeyPressed(kbState, oldKbState, Keys.S))
+                    else if (IsKeyPressed(kbState, oldKbState, Keys.Right))
                     {
-                        messageOptions.Next();
+                        if (CurrentMap.Tiles[(int)player.mapX, (int)player.mapY].Flags.HasFlag(MovementFlags.RIGHT))
+                        {
+                            player.mapX++;
+                        }
+                        
                     }
+
+                    //If the location of the player when they press enter is within the townLoactions list
+                    //it will load the map at that location
                     if (IsKeyPressed(kbState, oldKbState, Keys.Enter))
                     {
-                        switch (messageOptions.Selected)
+                        if (townLocations.Contains(player.MapPos))
                         {
-                            //Option 1
-                            case 0:
-                                GameManager.Instance.State = GameManager.GameState.Menu;
-                                break;
-
-                            //Option 2
-                            case 1:
-                                GameManager.Instance.State = GameManager.GameState.Town;
-                                break;
+                            if(player.MapPos == townLocations[0])
+                            {
+                                MapManager.Instance.LoadMap("test");
+                            }
                         }
                     }
                     break;
@@ -274,7 +300,10 @@ namespace Fragments
 
                 case GameManager.GameState.Map:
                     graphics.Clear(Color.Brown);
-                    m.Draw(spriteBatch);
+                    GameManager.Instance.CurrentMap = overworld;
+                    GameManager.Instance.CurrentMap.DrawOverworld(spriteBatch);
+                    GameManager.Instance.Player.DrawOverworld(spriteBatch);
+                    //m.Draw(spriteBatch);
                     break;
 
                 case GameManager.GameState.Battle:

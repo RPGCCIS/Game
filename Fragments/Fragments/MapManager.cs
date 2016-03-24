@@ -27,6 +27,7 @@ namespace Fragments
         }
         public ContentManager Content
         {
+            get { return content; }
             set { content = value; }
         }
 
