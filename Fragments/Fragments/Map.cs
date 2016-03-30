@@ -195,7 +195,7 @@ namespace Fragments
             for(int i = 0; i < 14; i++)
             {
                 for(int j = 0; j < 14; j++)
-                {                  
+                {
                     s.Draw(MapManager.Instance.Content.Load<Texture2D>(tiles[i,j].Filename), new Rectangle(900/14* i, 750/14 * j, 900/14, 750/14), Color.White);
                 }
             }
