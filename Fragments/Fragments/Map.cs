@@ -27,7 +27,6 @@ namespace Fragments
         private const float superForegroundMultiplier = 0;
 
         private Tile[,] tiles;
-        private Dictionary<string, Texture2D> textures;
 
         Layer backgroundLayer;
         Layer parallaxLayer;
@@ -60,14 +59,11 @@ namespace Fragments
             get { return superForegroundLayer; }
         }
 
-        public Dictionary<string, Texture2D> Textures
-        {
-            get { return textures; }
-        }
         public string MapName
         {
             get { return mapName; }
         }
+
         public Tile[,] Tiles
         {
             get { return tiles; }
@@ -80,15 +76,22 @@ namespace Fragments
             mapName = name;
 
             layers = new List<Layer>();
-            textures = new Dictionary<string, Texture2D>();
 
             Load(name);
         }
 
-        //Add
-        public void AddTexture(string name, Texture2D texture)
+        // Get/add Texture
+
+        public Texture2D GetTexture(string name)
         {
-            Textures.Add(name, texture);
+            if(!MapManager.Instance.Textures.ContainsKey(name))
+            {
+                MapManager.Instance.Textures.Add(
+                   name,
+                   MapManager.Instance.Content.Load<Texture2D>(name)); 
+            }
+
+            return MapManager.Instance.Textures[name];
         }
 
         //Loading map from file
@@ -141,23 +144,14 @@ namespace Fragments
             layers.Add(parallaxLayer);
             layers.Add(superForegroundLayer);
         }
-        /*
-        /// <summary>
-        /// Get layers
-        /// </summary>
-        /// <returns>list of layers</returns>
-        public List<Layer> GetLayers()
-        {
-            return layers;
-        }
-        */
+
         public void ClearMap()
         {
             foreach(Layer l in layers)
             {
                 l.Clear();
             }
-            textures.Clear();
+            MapManager.Instance.Textures.Clear();
         }
 
         public void MoveLayers(bool isMovingRight = true)
@@ -196,9 +190,14 @@ namespace Fragments
             {
                 for(int j = 0; j < 14; j++)
                 {                  
-                    s.Draw(MapManager.Instance.Content.Load<Texture2D>(tiles[i,j].Filename), new Rectangle(900/14* i, 750/14 * j, 900/14, 750/14), Color.White);
+                    s.Draw(
+                        GetTexture(tiles[i,j].Filename), 
+                        new Rectangle(900/14* i, 750/14 * j, 900/14, 750/14), 
+                        Color.White);
                 }
             }
+
+            GameManager.Instance.Player.DrawOverworld(s);
         }
     }
 }

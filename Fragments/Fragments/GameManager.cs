@@ -21,13 +21,17 @@ namespace Fragments
 
         //Member Variables
         private static GameManager instance;
+
+        private Map currentMap;
         private Map overworld;
+
         private GameState gameState;
         private GameState prevState;
+
         private Player player;
-        private Map currentMap;
         private Dictionary<string, bool> keyEvents;
         private List<Vector2> townLocations = new List<Vector2>();
+
         //Singleton property
         public static GameManager Instance
         {
@@ -36,8 +40,8 @@ namespace Fragments
                 if (instance == null)
                 {
                     instance = new GameManager();
-                    
                 }
+
                 return instance;
             }
         }
@@ -51,16 +55,19 @@ namespace Fragments
                 gameState = value;
             }
         }
+
         public Player Player
         {
             get { return player; }
             set { player = value; }
         }
+
         public Map CurrentMap
         {
             get { return currentMap; }
             set { currentMap = value; }
         }
+
         public GameState PrevState
         {
             get { return prevState; }
@@ -69,12 +76,14 @@ namespace Fragments
         //Constructor
         private GameManager()
         {
-            //EMPTY
             townLocations.Add(new Vector2(9, 12));
             townLocations.Add(new Vector2(8, 2));
             townLocations.Add(new Vector2(9, 12));
             townLocations.Add(new Vector2(9, 12));
             townLocations.Add(new Vector2(9, 12));
+
+            //Overworld
+            overworld = new Map("overworld");
         }
 
         //Method
@@ -111,7 +120,6 @@ namespace Fragments
                             //Option 2
                             //Loading the overworld map
                             case 1:
-                                overworld = new Map("overworld");
                                 GameManager.Instance.currentMap = overworld;
                                 GameManager.Instance.State = GameManager.GameState.Map;
                                 break;
@@ -300,9 +308,7 @@ namespace Fragments
 
                 case GameManager.GameState.Map:
                     graphics.Clear(Color.Brown);
-                    GameManager.Instance.CurrentMap = overworld;
                     GameManager.Instance.CurrentMap.DrawOverworld(spriteBatch);
-                    GameManager.Instance.Player.DrawOverworld(spriteBatch);
                     //m.Draw(spriteBatch);
                     break;
 

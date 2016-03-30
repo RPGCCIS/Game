@@ -10,9 +10,10 @@ namespace Fragments
 {
     class MapManager
     {
-
         private static MapManager instance;
+
         private ContentManager content;
+        private Dictionary<string, Texture2D> textures;
 
         public static MapManager Instance
         {
@@ -25,10 +26,22 @@ namespace Fragments
                 return instance;
             }
         }
+
         public ContentManager Content
         {
             get { return content; }
             set { content = value; }
+        }
+
+        public Dictionary<string, Texture2D> Textures
+        {
+            get { return textures; }
+        }
+
+        //Constructor
+        public MapManager()
+        {
+            textures = new Dictionary<string, Texture2D>();
         }
 
         // Loads the map as a whole
@@ -41,40 +54,29 @@ namespace Fragments
                     LoadMapFromFile("test");
 
                     //Draw everything
-                    GameManager.Instance.CurrentMap.AddTexture(
-                        "wall",
-                        content.Load<Texture2D>("wall"));
+
+                    GameManager.Instance.CurrentMap.ParallaxLayer.AddHouse(
+                        100, 
+                        "test1");
 
                     GameManager.Instance.CurrentMap.ParallaxLayer.AddObject(
-                         GameManager.Instance.CurrentMap.Textures["wall"],
+                         GameManager.Instance.CurrentMap.GetTexture("wall"),
                          new Vector2(-2000, 0),
                          TypeOfObject.Solid);
-
-                    GameManager.Instance.CurrentMap.ParallaxLayer.AddObject(
-                         GameManager.Instance.CurrentMap.Textures["wall"],
-                         new Vector2(800, 0),
-                         new Vector2(600, 1000),
-                         "test1");
 
                     break;
 
                 case "test1":
                     LoadMapFromFile("test");
 
-                    GameManager.Instance.CurrentMap.AddTexture(
-                        "wall", 
-                        content.Load<Texture2D>("wall"));
-
                     GameManager.Instance.CurrentMap.ParallaxLayer.AddObject(
-                         GameManager.Instance.CurrentMap.Textures["wall"],
+                         GameManager.Instance.CurrentMap.GetTexture("wall"),
                          new Vector2(-4000, 0),
                          TypeOfObject.Solid);
 
-                    GameManager.Instance.CurrentMap.ParallaxLayer.AddObject(
-                         GameManager.Instance.CurrentMap.Textures["wall"],
-                         new Vector2(800, 0),
-                         new Vector2(600, 1000),
-                         "test");
+                    GameManager.Instance.CurrentMap.ParallaxLayer.AddHouse(
+                        300,
+                        "test");
                     break;
             }
 
@@ -98,8 +100,12 @@ namespace Fragments
 
             foreach (Layer l in GameManager.Instance.CurrentMap.Layers)
             {
-                l.AddObject(content.Load<Texture2D>(l.Name), new Vector2(0));
+                l.AddObject(
+                    GameManager.Instance.CurrentMap.GetTexture(l.Name), 
+                    new Vector2(0));
             }
+
+            GameManager.Instance.CurrentMap.ParallaxLayer.Clear();
         }
 
         public void ClearMap()

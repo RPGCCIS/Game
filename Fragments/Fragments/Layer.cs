@@ -38,7 +38,6 @@ namespace Fragments
             this.multiplier = multiplier;
 
             layerOffset = 0;
-            //pos = new Vector2(0, 0); // Initial anchor point
 
             objects = new List<DrawableObject>();
         }
@@ -50,6 +49,58 @@ namespace Fragments
             get { return multiplier; }
         }
 
+        //Specific objects
+        public void AddHouse(int position)
+        {
+            //Get the textures you need
+            Texture2D house = GameManager.Instance.CurrentMap.GetTexture("house");
+            Texture2D door = GameManager.Instance.CurrentMap.GetTexture("door");
+
+            //Add house
+            objects.Add(new DrawableObject(
+                position,
+                205,
+                house.Width,
+                house.Height,
+                house,
+                TypeOfObject.Normal));
+
+            //Add door
+            objects.Add(new DrawableObject(
+                position + (house.Width / 2) - (door.Width / 2),
+                205 + (house.Height) - (door.Height),
+                door.Width,
+                door.Height,
+                door,
+                TypeOfObject.Normal));
+        }
+
+        public void AddHouse(int position, string destination)
+        {
+            //Get the textures you need
+            Texture2D house = GameManager.Instance.CurrentMap.GetTexture("house");
+            Texture2D door = GameManager.Instance.CurrentMap.GetTexture("door");
+
+            //Add house
+            objects.Add(new DrawableObject(
+                position,
+                205,
+                house.Width,
+                house.Height,
+                house, 
+                TypeOfObject.Normal));
+
+            //Add door
+            objects.Add(new InteractableObject(
+                position + (house.Width / 2) - (door.Width / 2),
+                205 + (house.Height) - (door.Height),
+                door.Width,
+                door.Height,
+                door,
+                destination));
+        }
+
+        //General objects
         public void AddObject (Texture2D text, Vector2 pos, TypeOfObject type = TypeOfObject.Normal)
         {
             objects.Add(new DrawableObject(

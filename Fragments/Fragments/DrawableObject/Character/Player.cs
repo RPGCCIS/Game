@@ -174,9 +174,13 @@ namespace Fragments
 
         }
         public MovementState MS { get { return movementState; } }
+
         public void DrawOverworld(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(MapManager.Instance.Content.Load<Texture2D>("playerOverworld"), new Rectangle((900 / 14)*(int)mapPos.X, (750 / 14) *(int)mapPos.Y, 900 / 14, 750 / 14), Color.White);
+            spriteBatch.Draw(
+                GameManager.Instance.CurrentMap.GetTexture("playerOverworld"), 
+                new Rectangle((900 / 14)*(int)mapPos.X, (750 / 14) *(int)mapPos.Y, 
+                900 / 14, 750 / 14), Color.White);
         }
     }
 }
