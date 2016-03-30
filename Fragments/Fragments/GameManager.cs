@@ -140,6 +140,7 @@ namespace Fragments
                     }
                     else if (IsKeyPressed(kbState, oldKbState, Keys.D))
                     {
+                        GameManager.Instance.currentMap = overworld;
                         GameManager.Instance.State = GameManager.GameState.Map;
                     }
                     else if (IsKeyPressed(kbState, oldKbState, Keys.G))
@@ -244,6 +245,7 @@ namespace Fragments
                     //BattleManager.Instance.Player = player;
                     if (IsKeyPressed(kbState, oldKbState, Keys.D))
                     {
+                        GameManager.Instance.currentMap = overworld;
                         GameManager.Instance.State = GameManager.GameState.Map;
                     }
                     else if (IsKeyPressed(kbState, oldKbState, Keys.G))
@@ -269,7 +271,8 @@ namespace Fragments
 
                             //Option 2
                             case 1:
-                                GameManager.Instance.State = GameManager.GameState.Town;
+                                GameManager.Instance.currentMap = overworld;
+                                GameManager.Instance.State = GameManager.GameState.Map;
                                 break;
                         }
                     }
@@ -309,7 +312,6 @@ namespace Fragments
                 case GameManager.GameState.Map:
                     graphics.Clear(Color.Brown);
                     GameManager.Instance.CurrentMap.DrawOverworld(spriteBatch);
-                    //m.Draw(spriteBatch);
                     break;
 
                 case GameManager.GameState.Battle:

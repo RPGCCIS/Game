@@ -66,7 +66,7 @@ namespace Fragments
             switch (turn)
             {
                 case Turn.self:
-                    //take player input ad react accordingly
+                    //take player input and react accordingly
                     break;
                 case Turn.foe:
                     EnemyManager.Instance.Update();
