@@ -50,7 +50,8 @@ namespace Fragments
         public GameState State
         {
             get { return gameState; }
-            set {
+            set
+            {
                 prevState = gameState;
                 gameState = value;
             }
@@ -76,6 +77,7 @@ namespace Fragments
         //Constructor
         private GameManager()
         {
+
             townLocations.Add(new Vector2(9, 12));
             townLocations.Add(new Vector2(8, 2));
             townLocations.Add(new Vector2(9, 12));
@@ -86,7 +88,8 @@ namespace Fragments
             overworld = new Map("overworld");
         }
 
-        //Method
+        //Methods
+
         public GameState RunMenu()
         {
             return GameState.Town;
@@ -155,6 +158,10 @@ namespace Fragments
                         GameManager.Instance.Player.IsColliding(
                             GameManager.Instance.CurrentMap.ParallaxLayer,
                             TypeOfObject.Interactable);
+
+                        GameManager.Instance.Player.IsColliding(
+                            GameManager.Instance.CurrentMap.ParallaxLayer,
+                            TypeOfObject.Gate);
                     }
 
                     //Player movement

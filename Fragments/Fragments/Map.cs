@@ -80,8 +80,20 @@ namespace Fragments
             Load(name);
         }
 
-        // Get/add Texture
+        //Fonts
+        public SpriteFont GetFont(string name)
+        {
+            if (!MapManager.Instance.Fonts.ContainsKey(name))
+            {
+                MapManager.Instance.Fonts.Add(
+                   name,
+                   MapManager.Instance.Content.Load<SpriteFont>(name));
+            }
 
+            return MapManager.Instance.Fonts[name];
+        }
+
+        // Get/add Texture
         public Texture2D GetTexture(string name)
         {
             if(!MapManager.Instance.Textures.ContainsKey(name))
