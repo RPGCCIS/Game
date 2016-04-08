@@ -286,6 +286,9 @@ namespace Fragments
                                 else if (battleOptions.Options[0].Text.Equals("Attack"))
                                 {
                                     battleOptions.Clear();
+                                    battleOptions.Add("You swung your sword!");
+                                    //battle animation
+                                    battleOptions.Clear();
                                     battleOptions.Add("Fight");
                                     battleOptions.Add("Run");
                                 }
@@ -293,15 +296,28 @@ namespace Fragments
 
                             //Option 2
                             case 1:
-                                battleOptions.Clear();
-                                battleOptions.Add("You managed to escape!(Press Q to return to the overworld)");
-                                GameManager.Instance.currentMap = overworld;
-                                GameManager.Instance.State = GameManager.GameState.Map;
+                                if (battleOptions.Options[1].Text.Equals("Run"))
+                                {
+                                    battleOptions.Clear();
+                                    battleOptions.Add("You managed to escape!(Press Q to return to the overworld)");
+                                }
+                                else if (battleOptions.Options[1].Text.Equals("Magic"))
+                                {
+                                    battleOptions.Clear();
+                                    battleOptions.Add("You used Magic!");
+                                    //battle animation
+                                    battleOptions.Clear();
+                                    battleOptions.Add("Fight");
+                                    battleOptions.Add("Run");
+                                }
                                 break;
                         }
                     }
                     if (IsKeyPressed(kbState, oldKbState, Keys.Q))
                     {
+                        battleOptions.Clear();
+                        battleOptions.Add("Fight");
+                        battleOptions.Add("Run");
                         overworld = new Map("overworld");
                         GameManager.Instance.currentMap = overworld;
                         GameManager.Instance.State = GameManager.GameState.Map;
