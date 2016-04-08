@@ -23,7 +23,7 @@ namespace Fragments
 
         //Multipliers
         private const float backgroundMultiplier = 0.2f;
-        private const float parallaxMultiplier = 40;
+        private const float parallaxMultiplier = 7;
         private const float superForegroundMultiplier = 0;
 
         private Tile[,] tiles;

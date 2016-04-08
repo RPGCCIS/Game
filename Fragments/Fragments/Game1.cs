@@ -90,9 +90,9 @@ namespace Fragments
 
             // Load the player
             playerText = Content.Load<Texture2D>("player");
-            p = new Player(400, 430, 200, 300, playerText);
+            p = new Player(400, 605, 200, 300, playerText);
             GameManager.Instance.Player = p;
-
+            GameManager.Instance.Player.SpriteSheet = Content.Load<Texture2D>("rpg_sprite_walk");
             font = Content.Load<SpriteFont>("Georgia_32");
 
             //For Map
@@ -142,7 +142,7 @@ namespace Fragments
             oldKbState = kbState;
             kbState = Keyboard.GetState();
 
-            GameManager.Instance.Update(menuOptions, messageOptions, battleOptions, kbState, oldKbState);
+            GameManager.Instance.Update(menuOptions, messageOptions, battleOptions, kbState, oldKbState,gameTime);
 
             base.Update(gameTime);
         }

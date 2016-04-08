@@ -93,7 +93,7 @@ namespace Fragments
         }
 
         //Update and check for switches between game states
-        public void Update(TextList menuOptions, TextList messageOptions, TextList battleOptions, KeyboardState kbState, KeyboardState oldKbState)
+        public void Update(TextList menuOptions, TextList messageOptions, TextList battleOptions, KeyboardState kbState, KeyboardState oldKbState,GameTime gameTime)
         {
             switch (GameManager.Instance.State)
             {
@@ -158,7 +158,7 @@ namespace Fragments
                     }
 
                     //Player movement
-                    GameManager.Instance.Player.Move(Keyboard.GetState());
+                    GameManager.Instance.Player.Move(Keyboard.GetState(),gameTime);
 
                     //Layer movement
                     if (GameManager.Instance.Player.MS == Player.MovementState.WalkingRight)
