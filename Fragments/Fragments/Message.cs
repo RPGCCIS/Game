@@ -49,7 +49,8 @@ namespace Fragments
         }
         public float RectX { get { return rect.X; } }
         public float RectY { get { return rect.Y; } }
-        public Rectangle Rect { get { return rect; } }
+        public Rectangle Rect { get { return rect; }
+            set { rect = value; }}
         public string TextureName { get { return textureName; } }
     }
 }

@@ -16,7 +16,8 @@ namespace Fragments
             Town,
             Battle,
             Map,
-            Pause
+            Pause,
+            Shop
         }
 
         //Member Variables
@@ -95,6 +96,7 @@ namespace Fragments
         //Update and check for switches between game states
         public void Update(TextList menuOptions, TextList messageOptions, TextList battleOptions, KeyboardState kbState, KeyboardState oldKbState,GameTime gameTime)
         {
+            
             switch (GameManager.Instance.State)
             {
                 case GameManager.GameState.Menu:
@@ -134,6 +136,12 @@ namespace Fragments
 
                 case GameManager.GameState.Town:
                     //State changes for testing
+                    ShopManager.Instance.Current = new Shop();
+                    if (IsKeyPressed(kbState, oldKbState, Keys.P))
+                    {
+                        ShopManager.Instance.UpdateShop();
+                        GameManager.Instance.State = GameManager.GameState.Shop;
+                    }
                     if (IsKeyPressed(kbState, oldKbState, Keys.A))
                     {
                         GameManager.Instance.State = GameManager.GameState.Menu;
@@ -283,6 +291,20 @@ namespace Fragments
                         GameManager.Instance.State = GameManager.Instance.PrevState;
                     }
                     break;
+                case GameManager.GameState.Shop:
+                    if (IsKeyPressed(kbState, oldKbState, Keys.W))
+                    {
+                        ShopManager.Instance.Options.Previous();
+                    }
+                    if (IsKeyPressed(kbState, oldKbState, Keys.S))
+                    {
+                        ShopManager.Instance.Options.Next();
+                    }
+                    if (IsKeyPressed(kbState, oldKbState, Keys.Escape))
+                    {
+                        GameManager.Instance.State = GameManager.GameState.Town;
+                    }
+                    break;
             }
 
             oldKbState = kbState;
@@ -317,6 +339,10 @@ namespace Fragments
                 case GameManager.GameState.Battle:
                     graphics.Clear(Color.Red);
                     battle.Draw(spriteBatch);
+                    break;
+                case GameManager.GameState.Shop:
+                    graphics.Clear(Color.Black);
+                    ShopManager.Instance.DrawItems(spriteBatch);
                     break;
             }
         }
