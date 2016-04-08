@@ -91,7 +91,7 @@ namespace Fragments
         }
 
         //Drawing
-        public void Draw(SpriteBatch s)
+        public void Draw(SpriteBatch s, Color col)
         {
             //Key = texture, value = position
             foreach(DrawableObject obj in objects)
@@ -103,7 +103,7 @@ namespace Fragments
                         obj.Rec.Location.Y,
                         obj.Rec.Width,
                         obj.Rec.Height), 
-                    Color.White);
+                    col);
             }
         }
         public void Clear()

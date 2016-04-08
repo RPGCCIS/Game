@@ -105,6 +105,8 @@ namespace Fragments
                         {
                             //Option 1
                             case 0:
+                                overworld = new Map("overworld");
+                                GameManager.Instance.CurrentMap = overworld;
                                 GameManager.Instance.State = GameManager.GameState.Battle;
                                 break;
 
@@ -184,6 +186,14 @@ namespace Fragments
                     {
                         GameManager.Instance.State = GameManager.GameState.Menu;
                     }
+                    if (IsKeyPressed(kbState, oldKbState, Keys.G))
+                    {
+                        GameManager.Instance.State = GameManager.GameState.Pause;
+                    }
+                    if (IsKeyPressed(kbState, oldKbState, Keys.Z))
+                    {
+                        GameManager.Instance.State = GameManager.GameState.Battle;
+                    }
                     
                     //overworld movement
                     //Checks the movement flags
@@ -236,16 +246,6 @@ namespace Fragments
 
                 case GameManager.GameState.Battle:
                     //BattleManager.Instance.Player = player;
-                    if (IsKeyPressed(kbState, oldKbState, Keys.D))
-                    {
-                        overworld = new Map("overworld");
-                        GameManager.Instance.currentMap = overworld;
-                        GameManager.Instance.State = GameManager.GameState.Map;
-                    }
-                    else if (IsKeyPressed(kbState, oldKbState, Keys.G))
-                    {
-                        GameManager.Instance.State = GameManager.GameState.Pause;
-                    }
                     if (IsKeyPressed(kbState, oldKbState, Keys.W))
                     {
                         battleOptions.Previous();
@@ -260,16 +260,33 @@ namespace Fragments
                         {
                             //Option 1
                             case 0:
-                                GameManager.Instance.State = GameManager.GameState.Menu;
+                                if (battleOptions.Options[0].Text.Equals("Fight"))
+                                {
+                                    battleOptions.Clear();
+                                    battleOptions.Add("Attack");
+                                    battleOptions.Add("Magic");
+                                    battleOptions.Add("Defend");
+                                }
+                                else if (battleOptions.Options[0].Text.Equals("Attack"))
+                                {
+                                    battleOptions.Clear();
+                                    battleOptions.Add("Fight");
+                                    battleOptions.Add("Run");
+                                }
                                 break;
 
                             //Option 2
                             case 1:
-                                overworld = new Map("overworld");
-                                GameManager.Instance.currentMap = overworld;
-                                GameManager.Instance.State = GameManager.GameState.Map;
+                                battleOptions.Clear();
+                                battleOptions.Add("You managed to escape!(Press Q to return to the overworld)");
                                 break;
                         }
+                    }
+                    if (IsKeyPressed(kbState, oldKbState, Keys.Q))
+                    {
+                        overworld = new Map("overworld");
+                        GameManager.Instance.currentMap = overworld;
+                        GameManager.Instance.State = GameManager.GameState.Map;
                     }
                     break;
                 case GameManager.GameState.Pause:
@@ -300,21 +317,25 @@ namespace Fragments
 
                 case GameManager.GameState.Town:
                     graphics.Clear(Color.Green);
-                    GameManager.Instance.CurrentMap.Draw(spriteBatch);
+                    GameManager.Instance.CurrentMap.Draw(spriteBatch, Color.White);
                     GameManager.Instance.Player.Draw(spriteBatch);
                     break;
 
                 case GameManager.GameState.Map:
                     graphics.Clear(Color.Brown);
                     GameManager.Instance.CurrentMap = overworld;
-                    GameManager.Instance.CurrentMap.DrawOverworld(spriteBatch);
+                    GameManager.Instance.CurrentMap.DrawOverworld(spriteBatch, Color.White);
                     GameManager.Instance.Player.DrawOverworld(spriteBatch);
                     //m.Draw(spriteBatch);
                     break;
 
                 case GameManager.GameState.Battle:
-                    graphics.Clear(Color.Red);
+                    GameManager.Instance.CurrentMap = overworld;
+                    GameManager.Instance.CurrentMap.DrawOverworld(spriteBatch, Color.DarkSlateGray);
                     battle.Draw(spriteBatch);
+                    break;
+                case GameManager.GameState.Pause:
+                    GameManager.Instance.CurrentMap.Draw(spriteBatch, Color.DarkSlateGray);
                     break;
             }
         }
