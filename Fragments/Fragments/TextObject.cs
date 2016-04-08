@@ -20,6 +20,10 @@ namespace Fragments
         private Vector2 position;
 
         //Properties
+        public string Text
+        {
+            get { return text; }
+        }
 
 
         //Constructor

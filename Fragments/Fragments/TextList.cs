@@ -37,6 +37,11 @@ namespace Fragments
             get { return selected; }
         }
 
+        public List<TextObject> Options
+        {
+            get { return textObjects; }
+        }
+
         //Constructor
         public TextList(SpriteFont font, Vector2 position)
         {
@@ -83,6 +88,11 @@ namespace Fragments
             {
                 selected += textObjects.Count;
             }
+        }
+
+        public void Clear()
+        {
+            textObjects.Clear();
         }
 
         //Drawing
