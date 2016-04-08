@@ -56,7 +56,7 @@ namespace Fragments
         
         public void UpdateShop()
         {
-            Console.WriteLine(GameManager.Instance.CurrentMap.MapName);
+            Console.WriteLine("Entering " + GameManager.Instance.CurrentMap.MapName);
             message = new TextObject(font, "Hello, and welcome to my shop in " + GameManager.Instance.CurrentMap.MapName, new Vector2(shop.RectX + 150, shop.RectY + 50));
             options = new TextList(null, new Vector2(shop.RectX + 175, shop.RectY + 125));
             options.Font = font;

@@ -13,7 +13,8 @@ namespace Fragments
     {
         Normal,
         Solid,
-        Interactable
+        Interactable,
+        Gate
     }
 
     class DrawableObject

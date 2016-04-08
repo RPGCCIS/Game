@@ -14,6 +14,7 @@ namespace Fragments
 
         private ContentManager content;
         private Dictionary<string, Texture2D> textures;
+        private Dictionary<string, SpriteFont> fonts;
 
         public static MapManager Instance
         {
@@ -33,6 +34,11 @@ namespace Fragments
             set { content = value; }
         }
 
+        public Dictionary<string, SpriteFont> Fonts
+        {
+            get { return fonts; }
+        }
+
         public Dictionary<string, Texture2D> Textures
         {
             get { return textures; }
@@ -42,6 +48,9 @@ namespace Fragments
         public MapManager()
         {
             textures = new Dictionary<string, Texture2D>();
+
+            //Fonts
+            fonts = new Dictionary<string, SpriteFont>();
         }
 
         // Loads the map as a whole
@@ -52,23 +61,35 @@ namespace Fragments
             {
                 case "test":
                     LoadMapFromFile("test");
-
+                    //GameManager.Instance.CurrentMap = new Map("test");
                     //Draw everything
 
                     GameManager.Instance.CurrentMap.ParallaxLayer.AddHouse(
                         100, 
                         "test1");
 
+                    GameManager.Instance.CurrentMap.ParallaxLayer.AddGate(800);
+
+                    GameManager.Instance.CurrentMap.ParallaxLayer.AddHouse(
+                        1500,
+                        true,
+                        "Inn");
+
+                    GameManager.Instance.CurrentMap.ParallaxLayer.AddHouse(
+                        2200,
+                        true,
+                        "Shop");
+
                     GameManager.Instance.CurrentMap.ParallaxLayer.AddObject(
                          GameManager.Instance.CurrentMap.GetTexture("wall"),
-                         new Vector2(-2000, 0),
+                         new Vector2(-2000, 0), 
                          TypeOfObject.Solid);
 
                     break;
 
                 case "test1":
-                    LoadMapFromFile("test");
-
+                    LoadMapFromFile("test1");
+                    //GameManager.Instance.CurrentMap = new Map("test2");
                     GameManager.Instance.CurrentMap.ParallaxLayer.AddObject(
                          GameManager.Instance.CurrentMap.GetTexture("wall"),
                          new Vector2(-4000, 0),
@@ -90,12 +111,15 @@ namespace Fragments
             if (GameManager.Instance.CurrentMap != null)
             {
                 GameManager.Instance.CurrentMap.ClearMap();
+                GameManager.Instance.CurrentMap = new Map(file);
                 GameManager.Instance.CurrentMap.Load(file);
+                
             }
 
             else
             {
                 GameManager.Instance.CurrentMap = new Map(file);
+                GameManager.Instance.CurrentMap.Load(file);
             }
 
             foreach (Layer l in GameManager.Instance.CurrentMap.Layers)

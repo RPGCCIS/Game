@@ -20,7 +20,7 @@ namespace Fragments
         private String superForeground;
         private String parallax;
         private String background;
-
+        Map overworld;
         //Multipliers
         private const float backgroundMultiplier = 0.2f;
         private const float parallaxMultiplier = 7;
@@ -77,11 +77,29 @@ namespace Fragments
 
             layers = new List<Layer>();
 
-            Load(name);
+            //Load(name);
+        }
+        public Map()
+        {
+            mapName = "overworld";
+            layers = new List<Layer>();
+            Load("overworld");
+        }
+
+        //Fonts
+        public SpriteFont GetFont(string name)
+        {
+            if (!MapManager.Instance.Fonts.ContainsKey(name))
+            {
+                MapManager.Instance.Fonts.Add(
+                   name,
+                   MapManager.Instance.Content.Load<SpriteFont>(name));
+            }
+
+            return MapManager.Instance.Fonts[name];
         }
 
         // Get/add Texture
-
         public Texture2D GetTexture(string name)
         {
             if(!MapManager.Instance.Textures.ContainsKey(name))
@@ -173,23 +191,25 @@ namespace Fragments
 
         }
 
-        public void Draw(SpriteBatch s)
+        public void Draw(SpriteBatch s, Color col)
         {
             foreach (Layer l in layers)
             {
                 //everything is just currently drawn to 0,0
 
-                l.Draw(s);
+                l.Draw(s, col);
                                 
             }
         }
         //For drawing overworld tiles
-        public void DrawOverworld(SpriteBatch s)
+        public void DrawOverworld(SpriteBatch s, Color col)
         {
+            
             for(int i = 0; i < 14; i++)
             {
                 for (int j = 0; j < 14; j++)
                 {
+                    s.Draw(MapManager.Instance.Content.Load<Texture2D>(tiles[i,j].Filename), new Rectangle(900/14* i, 750/14 * j, 900/14, 750/14), col);
                     s.Draw(
                         GetTexture(tiles[i, j].Filename),
                         new Rectangle(900 / 14 * i, 750 / 14 * j, 900 / 14, 750 / 14),

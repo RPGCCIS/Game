@@ -192,6 +192,11 @@ namespace Fragments
                         MapManager.Instance.LoadMap(iObj.Destination);
                     }
 
+                    if (type == TypeOfObject.Gate)
+                    {
+                        GameManager.Instance.State = GameManager.GameState.Map;
+                    }
+
                     return true;
                 }
             }

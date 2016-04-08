@@ -20,6 +20,10 @@ namespace Fragments
         private Vector2 position;
 
         //Properties
+        public string Text
+        {
+            get { return text; }
+        }
 
 
         //Constructor
@@ -38,6 +42,19 @@ namespace Fragments
                 font,
                 text,
                 position,
+                color
+                );
+        }
+
+        public void DrawText(SpriteBatch spriteBatch, int offset)
+        {
+            Vector2 adjustedPosition = position;
+            adjustedPosition.X += offset;
+
+            spriteBatch.DrawString(
+                font,
+                text,
+                adjustedPosition,
                 color
                 );
         }

@@ -15,16 +15,16 @@ namespace Fragments
             get { return items; }
         }
 
-        public Shop()
+        public Shop(string name)
         {
             items = new List<Item>();
-            LoadItems();
+            LoadItems(name);
         }
-        public void LoadItems()
+        public void LoadItems(string name)
         {
             try
             {
-                using (Stream inStream = File.OpenRead("../../../Shops/" + GameManager.Instance.CurrentMap.MapName + ".txt"))
+                using (Stream inStream = File.OpenRead("../../../Shops/" + name + ".txt"))
                 using (StreamReader input = new StreamReader(inStream))
                 {
                     int count = int.Parse(input.ReadLine());
