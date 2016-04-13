@@ -77,6 +77,7 @@ namespace Fragments
 
                     GameManager.Instance.CurrentMap.ParallaxLayer.AddHouse(
                         2200,
+                        "Shop",
                         true,
                         "Shop");
 

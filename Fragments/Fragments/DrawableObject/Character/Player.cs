@@ -189,7 +189,17 @@ namespace Fragments
                     if(type == TypeOfObject.Interactable)
                     {
                         InteractableObject iObj = (InteractableObject)(obj);
-                        MapManager.Instance.LoadMap(iObj.Destination);
+                        if (iObj.Destination == "Shop")
+                        {
+                            ShopManager.Instance.UpdateShop();
+                            GameManager.Instance.State = GameManager.GameState.Shop;
+                        }
+                        else
+                        {
+                            
+                            MapManager.Instance.LoadMap(iObj.Destination);
+                        }
+
                     }
 
                     if (type == TypeOfObject.Gate)
