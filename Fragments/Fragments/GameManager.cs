@@ -311,6 +311,11 @@ namespace Fragments
                                     battleOptions.Add("Run");
                                 }
                                 break;
+                            case 2:
+                                battleOptions.Clear();
+                                battleOptions.Add("Fight");
+                                battleOptions.Add("Run");
+                                break;
                         }
                     }
                     if (IsKeyPressed(kbState, oldKbState, Keys.Q))
