@@ -19,7 +19,7 @@ namespace Fragments
         private Color selectedColor;
 
         private float lineHeight;
-        private const float spacing = 20;
+        private float spacing = 20;
 
         private int selected;
 
@@ -41,7 +41,8 @@ namespace Fragments
         {
             get { return textObjects; }
         }
-
+        public float Spacing { set { spacing = value; } }
+        public Color DefaultColor { set { defaultColor = value; } }
         //Constructor
         public TextList(SpriteFont font, Vector2 position)
         {
