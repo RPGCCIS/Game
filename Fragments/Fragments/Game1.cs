@@ -87,9 +87,11 @@ namespace Fragments
             spriteBatch = new SpriteBatch(GraphicsDevice);
             GameManager.Instance.CurrentMap = test;
             MapManager.Instance.Content = Content;
+            ShopManager.Instance.Font = Content.Load<SpriteFont>("LCALLIG_14");
+            ShopManager.Instance.Scroll = Content.Load<Texture2D>("scroll");
 
             // Load the player
-            playerText = Content.Load<Texture2D>("player");
+            //playerText = Content.Load<Texture2D>("player");
             p = new Player(400, 605, 200, 300, playerText);
             GameManager.Instance.Player = p;
             GameManager.Instance.Player.SpriteSheet = Content.Load<Texture2D>("rpg_sprite_walk");
@@ -153,12 +155,16 @@ namespace Fragments
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsDevice.Clear(Color.Black);
 
 
             // TODO: Add your drawing code here
             spriteBatch.Begin();
+            //ShopManager.Instance.SpriteBatch = spriteBatch;
+            
             GameManager.Instance.Draw(spriteBatch, menuOptions, battle, this.GraphicsDevice, m);
+            
+            //GameManager.Instance.Draw(spriteBatch, menuOptions, battle, this.GraphicsDevice, m);
             spriteBatch.End();
 
             base.Draw(gameTime);

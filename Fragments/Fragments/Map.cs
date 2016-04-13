@@ -20,7 +20,7 @@ namespace Fragments
         private String superForeground;
         private String parallax;
         private String background;
-
+        Map overworld;
         //Multipliers
         private const float backgroundMultiplier = 0.2f;
         private const float parallaxMultiplier = 7;
@@ -77,11 +77,29 @@ namespace Fragments
 
             layers = new List<Layer>();
 
-            Load(name);
+            //Load(name);
+        }
+        public Map()
+        {
+            mapName = "overworld";
+            layers = new List<Layer>();
+            Load("overworld");
+        }
+
+        //Fonts
+        public SpriteFont GetFont(string name)
+        {
+            if (!MapManager.Instance.Fonts.ContainsKey(name))
+            {
+                MapManager.Instance.Fonts.Add(
+                   name,
+                   MapManager.Instance.Content.Load<SpriteFont>(name));
+            }
+
+            return MapManager.Instance.Fonts[name];
         }
 
         // Get/add Texture
-
         public Texture2D GetTexture(string name)
         {
             if(!MapManager.Instance.Textures.ContainsKey(name))
@@ -186,6 +204,7 @@ namespace Fragments
         //For drawing overworld tiles
         public void DrawOverworld(SpriteBatch s, Color col)
         {
+            
             for(int i = 0; i < 14; i++)
             {
                 for (int j = 0; j < 14; j++)

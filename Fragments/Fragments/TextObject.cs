@@ -46,6 +46,19 @@ namespace Fragments
                 );
         }
 
+        public void DrawText(SpriteBatch spriteBatch, int offset)
+        {
+            Vector2 adjustedPosition = position;
+            adjustedPosition.X += offset;
+
+            spriteBatch.DrawString(
+                font,
+                text,
+                adjustedPosition,
+                color
+                );
+        }
+
         public void DrawText(SpriteBatch spriteBatch, Vector2 pos, Color c)
         {
             spriteBatch.DrawString(

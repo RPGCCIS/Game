@@ -16,7 +16,8 @@ namespace Fragments
             Town,
             Battle,
             Map,
-            Pause
+            Pause,
+            Shop
         }
 
         //Member Variables
@@ -50,7 +51,8 @@ namespace Fragments
         public GameState State
         {
             get { return gameState; }
-            set {
+            set
+            {
                 prevState = gameState;
                 gameState = value;
             }
@@ -76,6 +78,7 @@ namespace Fragments
         //Constructor
         private GameManager()
         {
+
             townLocations.Add(new Vector2(9, 12));
             townLocations.Add(new Vector2(8, 2));
             townLocations.Add(new Vector2(9, 12));
@@ -83,10 +86,11 @@ namespace Fragments
             townLocations.Add(new Vector2(9, 12));
 
             //Overworld
-            overworld = new Map("overworld");
+            overworld = new Map();
         }
 
-        //Method
+        //Methods
+
         public GameState RunMenu()
         {
             return GameState.Town;
@@ -95,6 +99,7 @@ namespace Fragments
         //Update and check for switches between game states
         public void Update(TextList menuOptions, TextList messageOptions, TextList battleOptions, KeyboardState kbState, KeyboardState oldKbState,GameTime gameTime)
         {
+            
             switch (GameManager.Instance.State)
             {
                 case GameManager.GameState.Menu:
@@ -114,7 +119,8 @@ namespace Fragments
                         {
                             //Option 1
                             case 0:
-                                overworld = new Map("overworld");
+                                overworld = new Map();
+                                overworld.Load(overworld.MapName);
                                 GameManager.Instance.CurrentMap = overworld;
                                 GameManager.Instance.State = GameManager.GameState.Battle;
                                 break;
@@ -136,6 +142,12 @@ namespace Fragments
 
                 case GameManager.GameState.Town:
                     //State changes for testing
+                    ShopManager.Instance.Current = new Shop(GameManager.Instance.CurrentMap.MapName);
+                    if (IsKeyPressed(kbState, oldKbState, Keys.P))
+                    {
+                        ShopManager.Instance.UpdateShop();
+                        GameManager.Instance.State = GameManager.GameState.Shop;
+                    }
                     if (IsKeyPressed(kbState, oldKbState, Keys.A))
                     {
                         GameManager.Instance.State = GameManager.GameState.Menu;
@@ -157,6 +169,10 @@ namespace Fragments
                         GameManager.Instance.Player.IsColliding(
                             GameManager.Instance.CurrentMap.ParallaxLayer,
                             TypeOfObject.Interactable);
+
+                        GameManager.Instance.Player.IsColliding(
+                            GameManager.Instance.CurrentMap.ParallaxLayer,
+                            TypeOfObject.Gate);
                     }
 
                     //Player movement
@@ -323,7 +339,7 @@ namespace Fragments
                         battleOptions.Clear();
                         battleOptions.Add("Fight");
                         battleOptions.Add("Run");
-                        overworld = new Map("overworld");
+                        overworld = new Map();
                         GameManager.Instance.currentMap = overworld;
                         GameManager.Instance.State = GameManager.GameState.Map;
                     }
@@ -332,6 +348,20 @@ namespace Fragments
                     if (IsKeyPressed(kbState, oldKbState, Keys.G))
                     {
                         GameManager.Instance.State = GameManager.Instance.PrevState;
+                    }
+                    break;
+                case GameManager.GameState.Shop:
+                    if (IsKeyPressed(kbState, oldKbState, Keys.W))
+                    {
+                        ShopManager.Instance.Options.Previous();
+                    }
+                    if (IsKeyPressed(kbState, oldKbState, Keys.S))
+                    {
+                        ShopManager.Instance.Options.Next();
+                    }
+                    if (IsKeyPressed(kbState, oldKbState, Keys.Escape))
+                    {
+                        GameManager.Instance.State = GameManager.GameState.Town;
                     }
                     break;
             }
@@ -362,17 +392,22 @@ namespace Fragments
 
                 case GameManager.GameState.Map:
                     graphics.Clear(Color.Brown);
+                    overworld = new Map();
                     GameManager.Instance.CurrentMap = overworld;
                     GameManager.Instance.CurrentMap.DrawOverworld(spriteBatch, Color.White);
                     GameManager.Instance.Player.DrawOverworld(spriteBatch);
                     //m.Draw(spriteBatch);
-                    GameManager.Instance.CurrentMap.DrawOverworld(spriteBatch, Color.White);
+                    //GameManager.Instance.CurrentMap.DrawOverworld(spriteBatch, Color.White);
                     break;
 
                 case GameManager.GameState.Battle:
                     GameManager.Instance.CurrentMap = overworld;
                     GameManager.Instance.CurrentMap.DrawOverworld(spriteBatch, Color.DarkSlateGray);
                     battle.Draw(spriteBatch);
+                    break;
+                case GameManager.GameState.Shop:
+                    graphics.Clear(Color.Black);
+                    ShopManager.Instance.DrawItems(spriteBatch);
                     break;
                 case GameManager.GameState.Pause:
                     GameManager.Instance.CurrentMap.Draw(spriteBatch, Color.DarkSlateGray);

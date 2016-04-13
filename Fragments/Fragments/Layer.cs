@@ -16,8 +16,15 @@ namespace Fragments
         private float updateable;
 
         private List<DrawableObject> objects;
+        private List<TextObject> txtObjects;
+
         private float layerOffset;
         private string name;
+
+        //House constants
+        private const int houseHeight = 205;
+        private const int signHeight = 100;
+        private const int gateHeight = 210;
 
         //Properties
         public float X
@@ -40,6 +47,7 @@ namespace Fragments
             layerOffset = 0;
 
             objects = new List<DrawableObject>();
+            txtObjects = new List<TextObject>();
         }
 
         public string Name { get { return name; } }
@@ -50,16 +58,18 @@ namespace Fragments
         }
 
         //Specific objects
-        public void AddHouse(int position)
+        //A house that is only a visual
+        public void AddHouse(int position, bool hasSign = false, string signTxt = null)
         {
             //Get the textures you need
             Texture2D house = GameManager.Instance.CurrentMap.GetTexture("house");
             Texture2D door = GameManager.Instance.CurrentMap.GetTexture("door");
+            Texture2D sign = GameManager.Instance.CurrentMap.GetTexture("sign");
 
             //Add house
             objects.Add(new DrawableObject(
                 position,
-                205,
+                houseHeight,
                 house.Width,
                 house.Height,
                 house,
@@ -68,23 +78,49 @@ namespace Fragments
             //Add door
             objects.Add(new DrawableObject(
                 position + (house.Width / 2) - (door.Width / 2),
-                205 + (house.Height) - (door.Height),
+                houseHeight + (house.Height) - (door.Height),
                 door.Width,
                 door.Height,
                 door,
                 TypeOfObject.Normal));
+
+            //Add sign
+            if (hasSign)
+            {
+                //Sign
+                objects.Add(new DrawableObject(
+                    position + (house.Width / 2) - (sign.Width / 2),
+                    houseHeight + signHeight,
+                    sign.Width,
+                    sign.Height,
+                    sign,
+                    TypeOfObject.Normal));
+
+                //Text
+                Vector2 txtPosition = new Vector2();
+                SpriteFont txtFont = GameManager.Instance.CurrentMap.GetFont("Georgia_32");
+                txtPosition.X = position + (house.Width / 2) - (txtFont.MeasureString(signTxt).X / 2);
+                txtPosition.Y = houseHeight + signHeight + (sign.Height / 2) - (txtFont.MeasureString(signTxt).Y / 2);
+
+                txtObjects.Add(new TextObject(
+                    txtFont,
+                    signTxt,
+                    txtPosition));
+            }
         }
 
-        public void AddHouse(int position, string destination)
+        //A house that leads somewhere
+        public void AddHouse(int position, string destination, bool hasSign = false, string signTxt = null)
         {
             //Get the textures you need
             Texture2D house = GameManager.Instance.CurrentMap.GetTexture("house");
             Texture2D door = GameManager.Instance.CurrentMap.GetTexture("door");
+            Texture2D sign = GameManager.Instance.CurrentMap.GetTexture("sign");
 
             //Add house
             objects.Add(new DrawableObject(
                 position,
-                205,
+                houseHeight,
                 house.Width,
                 house.Height,
                 house, 
@@ -93,11 +129,49 @@ namespace Fragments
             //Add door
             objects.Add(new InteractableObject(
                 position + (house.Width / 2) - (door.Width / 2),
-                205 + (house.Height) - (door.Height),
+                houseHeight + (house.Height) - (door.Height),
                 door.Width,
                 door.Height,
                 door,
                 destination));
+
+            //Add sign
+            if (hasSign)
+            {
+                //Sign
+                objects.Add(new DrawableObject(
+                    position + (house.Width / 2) - (sign.Width / 2),
+                    houseHeight + signHeight,
+                    sign.Width,
+                    sign.Height,
+                    sign,
+                    TypeOfObject.Normal));
+
+                //Text
+                Vector2 txtPosition = new Vector2();
+                SpriteFont txtFont = GameManager.Instance.CurrentMap.GetFont("Georgia_32");
+                txtPosition.X = position + (house.Width / 2) - (txtFont.MeasureString(signTxt).X / 2);
+                txtPosition.Y = houseHeight + signHeight + (sign.Height / 2) - (txtFont.MeasureString(signTxt).Y / 2);
+
+                txtObjects.Add(new TextObject(
+                    txtFont,
+                    signTxt,
+                    txtPosition));
+            }
+        }
+
+        //Gate
+        public void AddGate(int position)
+        {
+            Texture2D gate = GameManager.Instance.CurrentMap.GetTexture("gate");
+
+            objects.Add(new DrawableObject(
+                position,
+                gateHeight,
+                gate.Width,
+                gate.Height,
+                gate,
+                TypeOfObject.Gate));
         }
 
         //General objects
@@ -156,7 +230,19 @@ namespace Fragments
                         obj.Rec.Height), 
                     col);
             }
+
+            DrawTxt(s);
         }
+
+        public void DrawTxt(SpriteBatch s)
+        {
+            //Key = texture, value = position
+            foreach (TextObject txt in txtObjects)
+            {
+                txt.DrawText(s, (int)layerOffset);
+            }
+        }
+
         public void Clear()
         {
             objects.Clear();
