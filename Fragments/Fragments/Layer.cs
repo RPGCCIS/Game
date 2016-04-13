@@ -175,6 +175,16 @@ namespace Fragments
         }
 
         //General objects
+        public void AddObject(DrawableObject obj)
+        {
+            objects.Add(obj);
+        }
+
+        public void AddObject(int index, DrawableObject obj)
+        {
+            objects.Insert(index, obj);
+        }
+
         public void AddObject (Texture2D text, Vector2 pos, TypeOfObject type = TypeOfObject.Normal)
         {
             objects.Add(new DrawableObject(

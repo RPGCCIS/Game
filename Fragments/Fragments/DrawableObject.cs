@@ -12,6 +12,9 @@ namespace Fragments
     public enum TypeOfObject
     {
         Normal,
+        BGL, //Background Left
+        BGC, //Background Center
+        BGR, //Background Right
         Solid,
         Interactable,
         Gate

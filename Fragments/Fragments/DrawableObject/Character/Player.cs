@@ -34,12 +34,16 @@ namespace Fragments
         double timePerFrame;
 
         // Constants for "source" rectangle (inside the image)
-        const int WALK_FRAME_COUNT = 7;         
-        const int PLAYER_RECT_Y_OFFSET = 65;    
+        const int WALK_FRAME_COUNT = 7;
+                 
+        const int PLAYER_RECT_Y_OFFSET = 65;
+            
         const int PLAYER_RECT_HEIGHT = 31;       
         const int PLAYER_RECT_WIDTH = 18;
+
         const int PLAYER_FRAME_OFFSET = 6;
         const float PLAYER_SIZE = 4.5f;
+
         public Texture2D SpriteSheet
         {
             set { spriteSheet = value; }
@@ -60,7 +64,7 @@ namespace Fragments
         }
         //Constructor
         public Player(int x, int y, int w, int h, Texture2D texture) 
-            : base(x, y, w, h, texture)
+            : base(x, y, (int)(PLAYER_RECT_WIDTH * PLAYER_SIZE), (int)(PLAYER_RECT_HEIGHT * PLAYER_SIZE), texture)
         {
             playerLoc = new Vector2(x, y);
             fps = 10.0;

@@ -65,8 +65,10 @@ namespace Fragments
                     //Draw everything
 
                     GameManager.Instance.CurrentMap.ParallaxLayer.AddHouse(
-                        100, 
-                        "test1");
+                        100,
+                        "test1",
+                        true, 
+                        "Test Land");
 
                     GameManager.Instance.CurrentMap.ParallaxLayer.AddGate(800);
 
@@ -80,6 +82,11 @@ namespace Fragments
                         "Shop",
                         true,
                         "Shop");
+
+                    GameManager.Instance.CurrentMap.ParallaxLayer.AddHouse(
+                        2900,
+                        true,
+                        "Fight Club");
 
                     GameManager.Instance.CurrentMap.ParallaxLayer.AddObject(
                          GameManager.Instance.CurrentMap.GetTexture("wall"),

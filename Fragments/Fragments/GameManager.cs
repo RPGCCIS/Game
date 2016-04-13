@@ -380,7 +380,7 @@ namespace Fragments
                     break;
 
                 case GameManager.GameState.Town:
-                    graphics.Clear(Color.Green);
+                    graphics.Clear(new Color(140, 100, 0));
                     GameManager.Instance.CurrentMap.Draw(spriteBatch, Color.White);
                     GameManager.Instance.Player.Draw(spriteBatch);
                     break;
