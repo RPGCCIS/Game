@@ -117,7 +117,11 @@ namespace Fragments
             battle = new Message(messageB, battleOptions, battle.Texture,battle.Rect);
 
             //Apply loaded Content
-
+            GameManager.Instance.PauseMenu = new TextList(font, new Vector2(350, 250));
+            GameManager.Instance.PauseMenu.Add("Resume");
+            GameManager.Instance.PauseMenu.Add("Load");
+            //GameManager.Instance.PauseMenu.DefaultColor = Color.Wheat;
+            GameManager.Instance.ScrollTexture = Content.Load<Texture2D>("scroll");
             //Menu
             menuOptions.Font = font;
             menuOptions.Add("Option 1");

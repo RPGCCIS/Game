@@ -32,6 +32,9 @@ namespace Fragments
         private Player player;
         private Dictionary<string, bool> keyEvents;
         private List<Vector2> townLocations = new List<Vector2>();
+        private TextList pauseMenu;
+        private Texture2D scroll;
+
 
         //Singleton property
         public static GameManager Instance
@@ -74,7 +77,10 @@ namespace Fragments
         {
             get { return prevState; }
         }
-
+        public TextList PauseMenu {
+            
+            get { return pauseMenu; } set { pauseMenu = value; } }
+        public Texture2D ScrollTexture { set { scroll = value; } }
         //Constructor
         private GameManager()
         {
@@ -84,7 +90,10 @@ namespace Fragments
             townLocations.Add(new Vector2(9, 12));
             townLocations.Add(new Vector2(9, 12));
             townLocations.Add(new Vector2(9, 12));
-
+            
+            pauseMenu = new TextList(
+                null,
+                Vector2.Zero);
             //Overworld
             overworld = new Map();
         }
@@ -143,11 +152,6 @@ namespace Fragments
                 case GameManager.GameState.Town:
                     //State changes for testing
                     ShopManager.Instance.Current = new Shop(GameManager.Instance.CurrentMap.MapName);
-                    if (IsKeyPressed(kbState, oldKbState, Keys.P))
-                    {
-                        ShopManager.Instance.UpdateShop();
-                        GameManager.Instance.State = GameManager.GameState.Shop;
-                    }
                     if (IsKeyPressed(kbState, oldKbState, Keys.A))
                     {
                         GameManager.Instance.State = GameManager.GameState.Menu;
@@ -157,7 +161,7 @@ namespace Fragments
                         GameManager.Instance.currentMap = overworld;
                         GameManager.Instance.State = GameManager.GameState.Map;
                     }
-                    else if (IsKeyPressed(kbState, oldKbState, Keys.G))
+                    else if (IsKeyPressed(kbState, oldKbState, Keys.Escape))
                     {
                         GameManager.Instance.State = GameManager.GameState.Pause;
                     }
@@ -345,9 +349,28 @@ namespace Fragments
                     }
                     break;
                 case GameManager.GameState.Pause:
-                    if (IsKeyPressed(kbState, oldKbState, Keys.G))
+                    if (IsKeyPressed(kbState, oldKbState, Keys.W))
                     {
-                        GameManager.Instance.State = GameManager.Instance.PrevState;
+                        pauseMenu.Previous();
+                    }
+                    if (IsKeyPressed(kbState, oldKbState, Keys.S))
+                    {
+                        pauseMenu.Next();
+                    }
+                    if (IsKeyPressed(kbState, oldKbState, Keys.Enter))
+                    {
+                        switch (pauseMenu.Selected)
+                        {
+                            //Resume
+                            case 0:
+                               GameManager.Instance.State = GameManager.Instance.PrevState;                       
+                            break;
+                            //load
+                            case 1:
+
+                                break;
+
+                        }
                     }
                     break;
                 case GameManager.GameState.Shop:
@@ -410,7 +433,12 @@ namespace Fragments
                     ShopManager.Instance.DrawItems(spriteBatch);
                     break;
                 case GameManager.GameState.Pause:
-                    GameManager.Instance.CurrentMap.Draw(spriteBatch, Color.DarkSlateGray);
+
+                    GameManager.Instance.CurrentMap.Draw(spriteBatch, new Color(50,50,50));
+                    spriteBatch.Draw(scroll, new Rectangle(190, 125, 450, 500), Color.White);
+                    pauseMenu.Spacing = 100;
+                    pauseMenu.DrawText(spriteBatch);
+                    
                     break;
             }
         }
