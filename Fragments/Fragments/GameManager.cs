@@ -273,15 +273,6 @@ namespace Fragments
 
                 case GameManager.GameState.Battle:
                     //BattleManager.Instance.Player = player;
-                    if (IsKeyPressed(kbState, oldKbState, Keys.D))
-                    {
-                        GameManager.Instance.currentMap = overworld;
-                        GameManager.Instance.State = GameManager.GameState.Map;
-                    }
-                    else if (IsKeyPressed(kbState, oldKbState, Keys.G))
-                    {
-                        GameManager.Instance.State = GameManager.GameState.Pause;
-                    }
                     if (IsKeyPressed(kbState, oldKbState, Keys.W))
                     {
                         battleOptions.Previous();
@@ -319,7 +310,7 @@ namespace Fragments
                                 if (battleOptions.Options[1].Text.Equals("Run"))
                                 {
                                     battleOptions.Clear();
-                                    battleOptions.Add("You managed to escape!(Press Q to return to the overworld)");
+                                    battleOptions.Add("You managed to escape!(Press Esc to return to the overworld)");
                                 }
                                 else if (battleOptions.Options[1].Text.Equals("Magic"))
                                 {
@@ -338,7 +329,7 @@ namespace Fragments
                                 break;
                         }
                     }
-                    if (IsKeyPressed(kbState, oldKbState, Keys.Q))
+                    if (IsKeyPressed(kbState, oldKbState, Keys.Escape))
                     {
                         battleOptions.Clear();
                         battleOptions.Add("Fight");
