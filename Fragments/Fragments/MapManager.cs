@@ -87,6 +87,11 @@ namespace Fragments
                         2900,
                         true,
                         "Fight Club");
+                    GameManager.Instance.CurrentMap.ParallaxLayer.AddHouse(
+                        3600,
+                        "Inn",
+                        true,
+                        "Inn");
 
                     GameManager.Instance.CurrentMap.ParallaxLayer.AddObject(
                          GameManager.Instance.CurrentMap.GetTexture("wall"),
@@ -96,6 +101,7 @@ namespace Fragments
                     break;
 
                 case "test1":
+                    Console.WriteLine("TEST!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
                     LoadMapFromFile("test1");
                     //GameManager.Instance.CurrentMap = new Map("test2");
                     GameManager.Instance.CurrentMap.ParallaxLayer.AddObject(
@@ -106,6 +112,11 @@ namespace Fragments
                     GameManager.Instance.CurrentMap.ParallaxLayer.AddHouse(
                         300,
                         "test");
+                    GameManager.Instance.CurrentMap.ParallaxLayer.AddHouse(
+                        1000,
+                        "Inn",
+                        true,
+                        "Inn");
                     break;
             }
 

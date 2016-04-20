@@ -5,7 +5,7 @@ using System.Text;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
-
+using System.IO;
 namespace Fragments
 {
     class GameManager
@@ -34,6 +34,7 @@ namespace Fragments
         private List<Vector2> townLocations = new List<Vector2>();
         private TextList pauseMenu;
         private Texture2D scroll;
+        private SpriteFont font;
 
 
         //Singleton property
@@ -81,6 +82,7 @@ namespace Fragments
             
             get { return pauseMenu; } set { pauseMenu = value; } }
         public Texture2D ScrollTexture { set { scroll = value; } }
+        public SpriteFont Font { set { font = value; } }
         //Constructor
         private GameManager()
         {
@@ -106,7 +108,7 @@ namespace Fragments
         }
 
         //Update and check for switches between game states
-        public void Update(TextList menuOptions, TextList messageOptions, TextList battleOptions, KeyboardState kbState, KeyboardState oldKbState,GameTime gameTime)
+        public void Update(TextList menuOptions, TextList messageOptions, TextList battleOptions, KeyboardState kbState, KeyboardState oldKbState,GameTime gameTime,SpriteBatch sb)
         {
             
             switch (GameManager.Instance.State)
@@ -137,8 +139,11 @@ namespace Fragments
                             //Option 2
                             //Loading the overworld map
                             case 1:
-                                GameManager.Instance.currentMap = overworld;
-                                GameManager.Instance.State = GameManager.GameState.Map;
+                                //Loads saved town and player information                              
+                                if (Load())
+                                {
+                                    MapManager.Instance.LoadMap(GameManager.Instance.CurrentMap.MapName);
+                                }                            
                                 break;
 
                             //Play Game
@@ -163,6 +168,7 @@ namespace Fragments
                     }
                     else if (IsKeyPressed(kbState, oldKbState, Keys.Escape))
                     {
+                        pauseMenu.Selected = 0;
                         GameManager.Instance.State = GameManager.GameState.Pause;
                     }
 
@@ -266,7 +272,11 @@ namespace Fragments
                             if(player.MapPos == townLocations[0])
                             {
                                 MapManager.Instance.LoadMap("test");
+                            }else if(player.MapPos == townLocations[1])
+                            {
+                                MapManager.Instance.LoadMap("test1");
                             }
+                            
                         }
                     }
                     break;
@@ -358,7 +368,10 @@ namespace Fragments
                             break;
                             //load
                             case 1:
-
+                                if (Load())
+                                {
+                                    MapManager.Instance.LoadMap(GameManager.Instance.CurrentMap.MapName);
+                                }
                                 break;
 
                         }
@@ -432,6 +445,74 @@ namespace Fragments
                     
                     break;
             }
+        }
+        public void Save()
+        {
+            StreamWriter output = null;
+
+            try
+            {
+                // Create the writer
+                output = new StreamWriter("../../../save.txt");
+                output.WriteLine(Player.Atk);
+                output.WriteLine(Player.Def);
+                output.WriteLine(Player.MaxHp);
+                output.WriteLine(Player.MaxSp);
+                output.WriteLine(Player.Spd);
+                output.WriteLine(Player.mapX);
+                output.WriteLine(Player.mapY);
+                output.WriteLine(GameManager.Instance.CurrentMap.MapName);
+                
+
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Problem with file: " + e.Message);
+            }
+            finally
+            {
+                // Close the file as long as it's actually open
+                if (output != null)
+                    output.Close();
+            }
+        }
+        public bool Load()
+        {
+            StreamReader input = null;
+
+            try
+            {
+                input = new StreamReader("../../../save.txt");
+                // Set up some variables for the read
+                Player.Atk = int.Parse(input.ReadLine());
+                Player.Def = int.Parse(input.ReadLine());
+                Player.MaxHp = int.Parse(input.ReadLine());
+                Player.MaxSp = int.Parse(input.ReadLine());
+                Player.Spd = int.Parse(input.ReadLine());
+                Player.MapPos = new Vector2(int.Parse(input.ReadLine()), int.Parse(input.ReadLine()));
+                GameManager.Instance.CurrentMap = new Map(input.ReadLine());
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Error reading file: " + e.Message);
+            }
+            finally
+            {
+                if (input != null)
+                {
+                    input.Close();
+                }
+                    
+            }
+            if(input != null)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+            
         }
     }
 }

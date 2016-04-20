@@ -93,6 +93,14 @@ namespace Fragments
             // Load the player
             //playerText = Content.Load<Texture2D>("player");
             p = new Player(400, 605, 200, 300, playerText);
+            p.Atk = 5;
+            p.Def = 4;
+            p.MaxHp = 55;
+            p.MaxSp = 20;
+            p.Spd = 6;
+            p.Sp = p.MaxSp;
+            p.Hp = p.MaxHp;
+            
             GameManager.Instance.Player = p;
             GameManager.Instance.Player.SpriteSheet = Content.Load<Texture2D>("rpg_sprite_walk");
             font = Content.Load<SpriteFont>("Georgia_32");
@@ -122,10 +130,11 @@ namespace Fragments
             GameManager.Instance.PauseMenu.Add("Load");
             //GameManager.Instance.PauseMenu.DefaultColor = Color.Wheat;
             GameManager.Instance.ScrollTexture = Content.Load<Texture2D>("scroll");
+            GameManager.Instance.Font = font;
             //Menu
             menuOptions.Font = font;
             menuOptions.Add("Option 1");
-            menuOptions.Add("Option 2");
+            menuOptions.Add("Load");
             menuOptions.Add("Play Game");
         }
 
@@ -148,7 +157,7 @@ namespace Fragments
             oldKbState = kbState;
             kbState = Keyboard.GetState();
 
-            GameManager.Instance.Update(menuOptions, messageOptions, battleOptions, kbState, oldKbState,gameTime);
+            GameManager.Instance.Update(menuOptions, messageOptions, battleOptions, kbState, oldKbState,gameTime,spriteBatch);
 
             base.Update(gameTime);
         }

@@ -35,6 +35,7 @@ namespace Fragments
         public int Selected
         {
             get { return selected; }
+            set { selected = value; }
         }
 
         public List<TextObject> Options

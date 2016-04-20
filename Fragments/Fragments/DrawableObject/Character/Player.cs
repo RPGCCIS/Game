@@ -51,6 +51,7 @@ namespace Fragments
         public Vector2 MapPos
         {
             get { return mapPos; }
+            set { mapPos = value; }
         }
         public float mapX
         {
@@ -198,7 +199,14 @@ namespace Fragments
                             ShopManager.Instance.UpdateShop();
                             GameManager.Instance.State = GameManager.GameState.Shop;
                         }
-                        else
+                        else if(iObj.Destination == "Inn")
+                        {
+                            GameManager.Instance.Player.Hp = MaxHp;
+                            GameManager.Instance.Player.Sp = MaxSp;
+                            GameManager.Instance.Save();
+                            
+                        }
+                        else 
                         {
                             
                             MapManager.Instance.LoadMap(iObj.Destination);
