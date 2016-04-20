@@ -160,7 +160,7 @@ namespace Fragments
 
             layers.Add(backgroundLayer);
             layers.Add(parallaxLayer);
-            layers.Add(superForegroundLayer);
+            //layers.Add(superForegroundLayer);
         }
 
         public void ClearMap()
