@@ -9,7 +9,7 @@ namespace Fragments
     {
         private DialogueNodes rootNode;
         private DialogueNodes current;
-        private Dictionary<string, DialogueNodes> capNodes;\
+        private Dictionary<string, DialogueNodes> capNodes;
         public Dictionary<string,DialogueNodes> CapNodes
         {
             get { return capNodes; }
