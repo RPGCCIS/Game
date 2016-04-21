@@ -98,29 +98,28 @@ namespace Fragments
                     //ADD NPCS
 
                     //Shopkeeper
-                    ConversationTree shopKeeperDialogue = new ConversationTree("Buy something, will ya?");
-
+                    ConversationTree shopKeeperDialogue = new ConversationTree("Buy something, will ya?", new String[] {"Sure","Nah"});
+                    
                     //---Root
 
                     //Sure
-                    shopKeeperDialogue.AddNode("Good choice, what do you need");
+                    shopKeeperDialogue.AddNode("Good choice, what do you need", new String[] { "Items", "Gear" });
                     //Nah
-                    shopKeeperDialogue.AddCapNode("A", "Well that's too bad"); //End
+                    shopKeeperDialogue.AddCapNode("D", "Well that's too bad", new String[] { "Back" }); //End
                     
-
-                    //---Nah
+                    //---Sure
 
                     //Items
-                    shopKeeperDialogue.AddCapNode("B", "Best to be prepared!", new int[] { 0 }); //End
+                    shopKeeperDialogue.AddCapNode("B", "Best to be prepared!", new int[] { 0 }, new String[] { "Enter" }); //End
                     //Gear
-                    shopKeeperDialogue.AddCapNode("C", "I'll make you tough!", new int[] { 0 }); //End
+                    shopKeeperDialogue.AddCapNode("C", "I'll make you tough!", new int[] { 0 }, new String[] { "Enter" }); //End
 
+                    //---Nah
                     GameManager.Instance.CurrentMap.ParallaxLayer.AddNPC(2200, shopKeeperDialogue);
 
                     break;
 
                 case "test1":
-                    Console.WriteLine("TEST!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
                     LoadMapFromFile("test1");
                     //GameManager.Instance.CurrentMap = new Map("test2");
                     GameManager.Instance.CurrentMap.ParallaxLayer.AddObject(
