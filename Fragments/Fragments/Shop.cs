@@ -34,7 +34,7 @@ namespace Fragments
                     }
                     input.Close();
                 }
-            }catch(Exception e)
+            }catch(Exception)
             {
 
             }
