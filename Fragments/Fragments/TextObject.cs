@@ -39,6 +39,10 @@ namespace Fragments
         //Drawing
         public void DrawText(SpriteBatch spriteBatch)
         {
+            if (text == null)
+            {
+                text = "";
+            }
             spriteBatch.DrawString(
                 font,
                 text,

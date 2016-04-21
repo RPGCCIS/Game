@@ -106,7 +106,8 @@ namespace Fragments
 
             //Temporary EnemyContent
             enemyText = Content.Load<Texture2D>("Goomba");
-            BattleManager.Instance.ETexture = enemyText;
+            Enemy e = new Enemy(EnemyType.grunt, 300, 300, 100, 100, enemyText);
+            BattleManager.Instance.Enemy = e;
 
             //For Battle
             messageFont = Content.Load<SpriteFont>("LCALLIG_14");

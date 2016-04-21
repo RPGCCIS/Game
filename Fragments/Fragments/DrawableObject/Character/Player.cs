@@ -221,7 +221,7 @@ namespace Fragments
             return false;
         }
 
-        public void Draw(SpriteBatch spriteBatch,Color c)
+        public new void Draw(SpriteBatch spriteBatch,Color c)
         {
             if (flipped)
             {
