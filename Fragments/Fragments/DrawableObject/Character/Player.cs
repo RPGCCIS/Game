@@ -207,7 +207,11 @@ namespace Fragments
 
                     if (type == TypeOfObject.NPC)
                     {
+                        Console.WriteLine("ASDASDSADASDADS");
                         //TODO
+                        NPC npc = (NPC)(obj);
+                        GameManager.Instance.CT = npc.Conversation;
+                        GameManager.Instance.Conversation = true;
                     }
 
                     return true;

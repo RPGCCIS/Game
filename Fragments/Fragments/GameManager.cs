@@ -41,6 +41,7 @@ namespace Fragments
         private bool paused = false;
         private bool conversation = false;
         private Message dialog;
+        private ConversationTree ct;
         //Singleton property
         public static GameManager Instance
         {
@@ -86,8 +87,14 @@ namespace Fragments
             
             get { return pauseMenu; } set { pauseMenu = value; } }
         public Texture2D ScrollTexture { set { scroll = value; } }
+
         public SpriteFont Font { set { font = value; } }
+
         public SpriteFont MFont { set { mFont = value; } }
+        
+        public ConversationTree CT { set { ct = value; } }
+
+        public bool Conversation { set { conversation = value; } }
         //Constructor
         private GameManager()
         {
@@ -205,6 +212,18 @@ namespace Fragments
                             GameManager.Instance.Player.IsColliding(
                                 GameManager.Instance.CurrentMap.ParallaxLayer,
                                 TypeOfObject.Gate);
+                            if(GameManager.Instance.Player.IsColliding(
+                               GameManager.Instance.CurrentMap.ParallaxLayer,
+                               TypeOfObject.NPC))
+                            {
+                                dialog = new Message("scroll", false);
+                                TextObject message = new TextObject(mFont, ct.Current.Message, new Vector2(dialog.RectX + 150, dialog.RectY + 25));
+                                TextList dialogOptions = new TextList(null, new Vector2(dialog.RectX + 200, dialog.RectY + 75));
+                                dialogOptions.Font = mFont;
+                                dialogOptions.Add("Sure");
+                                dialogOptions.Add("Nah");
+                                dialog = new Message(message, dialogOptions, scroll, dialog.Rect);
+                            }
                         }
 
                         //Player movement
@@ -279,6 +298,39 @@ namespace Fragments
                         {
                             dialog.Options.Next();
                         }
+                        if (IsKeyPressed(kbState, oldKbState, Keys.Enter))
+                        {
+                            switch (dialog.Options.Selected)
+                            {
+                                case 0:
+                                    if (!ct.Current.IsCapNode)
+                                    {
+                                        ct.Current = ct.Current.NextNodes[0];              
+                                    }
+                                    else
+                                    {
+                                        conversation = false;
+                                    }
+                                                                  
+                                    break;
+                                case 1:
+                                    if (!ct.Current.IsCapNode)
+                                    {
+                                        ct.Current = ct.Current.NextNodes[1];
+                                    }
+                                    else
+                                    {
+                                        conversation = false;
+                                    }
+                                    break;
+                            }
+                            if (ct.Current.IsCapNode)
+                            {
+                                dialog.Options.Clear();
+                            }
+                            dialog.Mess = new TextObject(mFont, ct.Current.Message, new Vector2(dialog.RectX + 150, dialog.RectY + 25));
+                        }
+
 
                     }
                     break;

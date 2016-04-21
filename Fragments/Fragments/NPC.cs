@@ -16,6 +16,7 @@ namespace Fragments
         public ConversationTree Conversation
         {
             get { return conversation; }
+            set { conversation = value; }
         }
 
         //Constructor

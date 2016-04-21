@@ -9,7 +9,16 @@ namespace Fragments
     {
         private string message;
         private List<DialogueNodes> nextNodes;
+        private bool isCapNode = false;
 
+        public bool IsCapNode
+        {
+            get { return isCapNode; }
+            set
+            {
+                isCapNode = value;
+            }
+        }
         //Property 
         public List<DialogueNodes> NextNodes
         {
@@ -38,8 +47,8 @@ namespace Fragments
         public DialogueNodes AddCapNode(string message)
         {
             DialogueNodes capNode = new DialogueNodes(message);
+            capNode.IsCapNode = true;
             nextNodes.Add(capNode);
-
             return capNode;
         }
     }
