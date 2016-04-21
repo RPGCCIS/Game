@@ -64,34 +64,31 @@ namespace Fragments
                     //GameManager.Instance.CurrentMap = new Map("test");
                     //Draw everything
 
-                    GameManager.Instance.CurrentMap.ParallaxLayer.AddHouse(
-                        100,
-                        "test1",
-                        true, 
-                        "Test Land");
+                    //GameManager.Instance.CurrentMap.ParallaxLayer.AddHouse(
+                    //    100,
+                    //    "test1",
+                    //    true, 
+                    //    "Test Land");
 
-                    GameManager.Instance.CurrentMap.ParallaxLayer.AddGate(800);
+                    GameManager.Instance.CurrentMap.ParallaxLayer.AddGate(100);
 
                     GameManager.Instance.CurrentMap.ParallaxLayer.AddHouse(
-                        1500,
+                        800,
+                        "Inn",
                         true,
                         "Inn");
 
                     GameManager.Instance.CurrentMap.ParallaxLayer.AddHouse(
-                        2200,
+                        1500,
                         "Shop",
                         true,
                         "Shop");
 
                     GameManager.Instance.CurrentMap.ParallaxLayer.AddHouse(
-                        2900,
+                        2200,
                         true,
                         "Fight Club");
-                    GameManager.Instance.CurrentMap.ParallaxLayer.AddHouse(
-                        3600,
-                        "Inn",
-                        true,
-                        "Inn");
+                    
 
                     GameManager.Instance.CurrentMap.ParallaxLayer.AddObject(
                          GameManager.Instance.CurrentMap.GetTexture("wall"),
@@ -109,14 +106,15 @@ namespace Fragments
                          new Vector2(-4000, 0),
                          TypeOfObject.Solid);
 
+                    //GameManager.Instance.CurrentMap.ParallaxLayer.AddHouse(
+                    //    300,
+                    //    "test");
                     GameManager.Instance.CurrentMap.ParallaxLayer.AddHouse(
-                        300,
-                        "test");
-                    GameManager.Instance.CurrentMap.ParallaxLayer.AddHouse(
-                        1000,
+                        800,
                         "Inn",
                         true,
                         "Inn");
+                    GameManager.Instance.CurrentMap.ParallaxLayer.AddGate(0);
                     break;
             }
 

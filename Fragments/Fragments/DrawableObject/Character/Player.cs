@@ -226,7 +226,7 @@ namespace Fragments
             return false;
         }
 
-        public void Draw(SpriteBatch spriteBatch)
+        public void Draw(SpriteBatch spriteBatch,Color c)
         {
             if (flipped)
             {
@@ -250,7 +250,7 @@ namespace Fragments
                     PLAYER_RECT_Y_OFFSET,        //	   where "inside" the texture
                     PLAYER_RECT_WIDTH,           //     to get pixels (We don't want to
                     PLAYER_RECT_HEIGHT),         //     draw the whole thing)
-                    Color.White,                    // - The color
+                    c,                    // - The color
                     0,                              // - Rotation (none currently)
                     Vector2.Zero,                   // - Origin inside the image (top left)
                     PLAYER_SIZE,                           // - Scale (100% - no change)
@@ -267,7 +267,7 @@ namespace Fragments
                     PLAYER_RECT_Y_OFFSET,        //	   where "inside" the texture
                     PLAYER_RECT_WIDTH,           //     to get pixels (We don't want to
                     PLAYER_RECT_HEIGHT),         //     draw the whole thing)
-                Color.White,                    // - The color
+                c,                    // - The color
                 0,                              // - Rotation (none currently)
                 Vector2.Zero,                   // - Origin inside the image (top left)
                 PLAYER_SIZE,                           // - Scale (100% - no change)
@@ -288,7 +288,7 @@ namespace Fragments
                     PLAYER_RECT_Y_OFFSET,        //	   where "inside" the texture
                     PLAYER_RECT_WIDTH,           //     to get pixels (We don't want to
                     PLAYER_RECT_HEIGHT),         //     draw the whole thing)
-                    Color.White,                    // - The color
+                    c,                    // - The color
                     0,                              // - Rotation (none currently)
                     Vector2.Zero,                   // - Origin inside the image (top left)
                     PLAYER_SIZE,                           // - Scale (100% - no change)
@@ -305,7 +305,7 @@ namespace Fragments
                     PLAYER_RECT_Y_OFFSET,        //	   where "inside" the texture
                     PLAYER_RECT_WIDTH,           //     to get pixels (We don't want to
                     PLAYER_RECT_HEIGHT),         //     draw the whole thing)
-                Color.White,                    // - The color
+                c,                    // - The color
                 0,                              // - Rotation (none currently)
                 Vector2.Zero,                   // - Origin inside the image (top left)
                 PLAYER_SIZE,                           // - Scale (100% - no change)

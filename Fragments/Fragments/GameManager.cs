@@ -163,11 +163,6 @@ namespace Fragments
                         {
                             GameManager.Instance.State = GameManager.GameState.Menu;
                         }
-                        else if (IsKeyPressed(kbState, oldKbState, Keys.D))
-                        {
-                            GameManager.Instance.currentMap = overworld;
-                            GameManager.Instance.State = GameManager.GameState.Map;
-                        }
                         else if (IsKeyPressed(kbState, oldKbState, Keys.Escape))
                         {
                             pauseMenu.Selected = 0;
@@ -449,13 +444,16 @@ namespace Fragments
                     {
                         graphics.Clear(new Color(140, 100, 0));
                         GameManager.Instance.CurrentMap.Draw(spriteBatch, Color.White);
-                        GameManager.Instance.Player.Draw(spriteBatch);
+                        GameManager.Instance.Player.Draw(spriteBatch, Color.White);
                     }
                     else
                     {
                         graphics.Clear(new Color(35, 25, 0));
+                        
                         GameManager.Instance.CurrentMap.Draw(spriteBatch, new Color(50, 50, 50));
+                        GameManager.Instance.Player.Draw(spriteBatch, new Color(50, 50, 50));
                         spriteBatch.Draw(scroll, new Rectangle(190, 125, 450, 500), Color.White);
+                        
                         pauseMenu.Spacing = 100;
                         pauseMenu.DrawText(spriteBatch);
                     }
