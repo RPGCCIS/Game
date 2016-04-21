@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Content;
+
 namespace Fragments
 {
     /// <summary>
@@ -55,9 +56,9 @@ namespace Fragments
         {
             this.IsMouseVisible = true;
 
-            // TODO: Add your initialization logic here
             test = new Map("test");
             test2 = new Map("test2");
+
             // Singleton initialization
             GameManager.Instance.State = GameManager.GameState.Menu;
 
@@ -85,10 +86,19 @@ namespace Fragments
             MapManager.Instance.Content = Content;
             ShopManager.Instance.Font = Content.Load<SpriteFont>("LCALLIG_14");
             ShopManager.Instance.Scroll = Content.Load<Texture2D>("scroll");
-
+            
+            
             // Load the player
             //playerText = Content.Load<Texture2D>("player");
             p = new Player(400, 605, 200, 300, playerText);
+            p.Atk = 5;
+            p.Def = 4;
+            p.MaxHp = 55;
+            p.MaxSp = 20;
+            p.Spd = 6;
+            p.Sp = p.MaxSp;
+            p.Hp = p.MaxHp;
+            
             GameManager.Instance.Player = p;
             GameManager.Instance.Player.SpriteSheet = Content.Load<Texture2D>("rpg_sprite_walk");
             font = Content.Load<SpriteFont>("Georgia_32");
@@ -103,11 +113,18 @@ namespace Fragments
             BattleManager.Instance.Player = p;
 
             //Apply loaded Content
+            GameManager.Instance.PauseMenu = new TextList(font, new Vector2(350, 250));
+            GameManager.Instance.PauseMenu.Add("Resume");
+            GameManager.Instance.PauseMenu.Add("Load");
+
+            //GameManager.Instance.PauseMenu.DefaultColor = Color.Wheat;
+            GameManager.Instance.ScrollTexture = Content.Load<Texture2D>("scroll");
+            GameManager.Instance.Font = font;
 
             //Menu
             menuOptions.Font = font;
             menuOptions.Add("Option 1");
-            menuOptions.Add("Option 2");
+            menuOptions.Add("Load");
             menuOptions.Add("Play Game");
         }
 
@@ -130,7 +147,7 @@ namespace Fragments
             oldKbState = kbState;
             kbState = Keyboard.GetState();
 
-            GameManager.Instance.Update(menuOptions, kbState, oldKbState,gameTime);
+            GameManager.Instance.Update(menuOptions, kbState, oldKbState,gameTime,spriteBatch);
 
             base.Update(gameTime);
         }

@@ -1,11 +1,13 @@
 ﻿using System;
+using System.Threading;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
-
+using System.IO;
 namespace Fragments
 {
     class GameManager
@@ -19,7 +21,7 @@ namespace Fragments
             Pause,
             Shop
         }
-
+        
         //Member Variables
         private static GameManager instance;
 
@@ -32,6 +34,10 @@ namespace Fragments
         private Player player;
         private Dictionary<string, bool> keyEvents;
         private List<Vector2> townLocations = new List<Vector2>();
+        private TextList pauseMenu;
+        private Texture2D scroll;
+        private SpriteFont font;
+        private bool paused = false;
 
         private bool pause = false;
 
@@ -76,7 +82,11 @@ namespace Fragments
         {
             get { return prevState; }
         }
-
+        public TextList PauseMenu {
+            
+            get { return pauseMenu; } set { pauseMenu = value; } }
+        public Texture2D ScrollTexture { set { scroll = value; } }
+        public SpriteFont Font { set { font = value; } }
         //Constructor
         private GameManager()
         {
@@ -86,6 +96,10 @@ namespace Fragments
             townLocations.Add(new Vector2(9, 12));
             townLocations.Add(new Vector2(9, 12));
             townLocations.Add(new Vector2(9, 12));
+            
+            pauseMenu = new TextList(
+                null,
+                Vector2.Zero);
 
             //Overworld
             overworld = new Map();
@@ -99,7 +113,7 @@ namespace Fragments
         }
 
         //Update and check for switches between game states
-        public void Update(TextList m, KeyboardState kbState, KeyboardState oldKbState,GameTime gameTime)
+        public void Update(TextList menuOptions, KeyboardState kbState, KeyboardState oldKbState,GameTime gameTime, SpriteBatch sb)
         {
             
             switch (GameManager.Instance.State)
@@ -107,17 +121,17 @@ namespace Fragments
                 case GameManager.GameState.Menu:
                     if (IsKeyPressed(kbState, oldKbState, Keys.W))
                     {
-                        m.Previous();
+                        menuOptions.Previous();
                         
                     }
                     if (IsKeyPressed(kbState, oldKbState, Keys.S))
                     {
-                        m.Next();
+                        menuOptions.Next();
                     }
 
                     if (IsKeyPressed(kbState, oldKbState, Keys.Enter))
                     {
-                        switch (m.Selected)
+                        switch (menuOptions.Selected)
                         {
                             //Option 1
                             case 0:
@@ -130,8 +144,11 @@ namespace Fragments
                             //Option 2
                             //Loading the overworld map
                             case 1:
-                                GameManager.Instance.currentMap = overworld;
-                                GameManager.Instance.State = GameManager.GameState.Map;
+                                //Loads saved town and player information                              
+                                if (Load())
+                                {
+                                    MapManager.Instance.LoadMap(GameManager.Instance.CurrentMap.MapName);
+                                }                            
                                 break;
 
                             //Play Game
@@ -144,66 +161,90 @@ namespace Fragments
 
                 case GameManager.GameState.Town:
                     //State changes for testing
-                    ShopManager.Instance.Current = new Shop(GameManager.Instance.CurrentMap.MapName);
-                    if (IsKeyPressed(kbState, oldKbState, Keys.P))
+                    if (!paused)
                     {
-                        ShopManager.Instance.UpdateShop();
-                        GameManager.Instance.State = GameManager.GameState.Shop;
-                    }
-                    if (IsKeyPressed(kbState, oldKbState, Keys.A))
-                    {
-                        GameManager.Instance.State = GameManager.GameState.Menu;
-                    }
-                    else if (IsKeyPressed(kbState, oldKbState, Keys.D))
-                    {
-                        GameManager.Instance.currentMap = overworld;
-                        GameManager.Instance.State = GameManager.GameState.Map;
-                    }
-                    else if (IsKeyPressed(kbState, oldKbState, Keys.G))
-                    {
-                        GameManager.Instance.State = GameManager.GameState.Pause;
-                    }
-
-                    //Interactable
-                    else if (IsKeyPressed(kbState, oldKbState, Keys.Enter))
-                    {
-                        //We don't care if it returns true or not
-                        GameManager.Instance.Player.IsColliding(
-                            GameManager.Instance.CurrentMap.ParallaxLayer,
-                            TypeOfObject.Interactable);
-
-                        GameManager.Instance.Player.IsColliding(
-                            GameManager.Instance.CurrentMap.ParallaxLayer,
-                            TypeOfObject.Gate);
-                    }
-
-                    //Player movement
-                    GameManager.Instance.Player.Move(Keyboard.GetState(),gameTime);
-
-                    //Layer movement
-                    if (GameManager.Instance.Player.MS == Player.MovementState.WalkingRight)
-                    {
-                        GameManager.Instance.CurrentMap.MoveLayers();
-
-                        if (GameManager.Instance.Player.IsColliding(
-                            GameManager.Instance.CurrentMap.ParallaxLayer,
-                            TypeOfObject.Solid))
+                        ShopManager.Instance.Current = new Shop(GameManager.Instance.CurrentMap.MapName);
+                        if (IsKeyPressed(kbState, oldKbState, Keys.A))
                         {
-                            GameManager.Instance.CurrentMap.MoveLayers(false);
+                            GameManager.Instance.State = GameManager.GameState.Menu;
                         }
-                    }
-                    else if (GameManager.Instance.Player.MS == Player.MovementState.WalkingLeft)
-                    {
-                        GameManager.Instance.CurrentMap.MoveLayers(false);
+                        else if (IsKeyPressed(kbState, oldKbState, Keys.Escape))
+                        {
+                            pauseMenu.Selected = 0;
+                            paused = true;
+                        }
 
-                        if (GameManager.Instance.Player.IsColliding(
-                            GameManager.Instance.CurrentMap.ParallaxLayer,
-                            TypeOfObject.Solid))
+                        //Interactable
+                        else if (IsKeyPressed(kbState, oldKbState, Keys.Enter))
+                        {
+                            //We don't care if it returns true or not
+                            GameManager.Instance.Player.IsColliding(
+                                GameManager.Instance.CurrentMap.ParallaxLayer,
+                                TypeOfObject.Interactable);
+
+                            GameManager.Instance.Player.IsColliding(
+                                GameManager.Instance.CurrentMap.ParallaxLayer,
+                                TypeOfObject.Gate);
+                        }
+
+                        //Player movement
+                        GameManager.Instance.Player.Move(Keyboard.GetState(), gameTime);
+
+                        //Layer movement
+                        if (GameManager.Instance.Player.MS == Player.MovementState.WalkingRight)
                         {
                             GameManager.Instance.CurrentMap.MoveLayers();
+
+                            if (GameManager.Instance.Player.IsColliding(
+                                GameManager.Instance.CurrentMap.ParallaxLayer,
+                                TypeOfObject.Solid))
+                            {
+                                GameManager.Instance.CurrentMap.MoveLayers(false);
+                            }
+                        }
+                        else if (GameManager.Instance.Player.MS == Player.MovementState.WalkingLeft)
+                        {
+                            GameManager.Instance.CurrentMap.MoveLayers(false);
+
+                            if (GameManager.Instance.Player.IsColliding(
+                                GameManager.Instance.CurrentMap.ParallaxLayer,
+                                TypeOfObject.Solid))
+                            {
+                                GameManager.Instance.CurrentMap.MoveLayers();
+                            }
                         }
                     }
+                    else
+                    {
+                        if (IsKeyPressed(kbState, oldKbState, Keys.W))
+                        {
+                            pauseMenu.Previous();
+                        }
+                        if (IsKeyPressed(kbState, oldKbState, Keys.S))
+                        {
+                            pauseMenu.Next();
+                        }
+                        if (IsKeyPressed(kbState, oldKbState, Keys.Enter))
+                        {
+                            switch (pauseMenu.Selected)
+                            {
+                                //Resume
+                                case 0:
+                                    //GameManager.Instance.State = GameManager.Instance.PrevState;
+                                    paused = false;
+                                    break;
+                                //load
+                                case 1:
+                                    if (Load())
+                                    {
+                                        MapManager.Instance.LoadMap(GameManager.Instance.CurrentMap.MapName);
+                                        paused = false;
+                                    }
+                                    break;
 
+                            }
+                        }
+                    }
                     break;
 
                 case GameManager.GameState.Map:
@@ -264,7 +305,11 @@ namespace Fragments
                             if(player.MapPos == townLocations[0])
                             {
                                 MapManager.Instance.LoadMap("test");
+                            }else if(player.MapPos == townLocations[1])
+                            {
+                                MapManager.Instance.LoadMap("test1");
                             }
+                            
                         }
                     }
                     break;
@@ -273,9 +318,31 @@ namespace Fragments
                     BattleManager.Instance.Update();
                     break;
                 case GameManager.GameState.Pause:
-                    if (IsKeyPressed(kbState, oldKbState, Keys.G))
+                    if (IsKeyPressed(kbState, oldKbState, Keys.W))
                     {
-                        GameManager.Instance.State = GameManager.Instance.PrevState;
+                        pauseMenu.Previous();
+                    }
+                    if (IsKeyPressed(kbState, oldKbState, Keys.S))
+                    {
+                        pauseMenu.Next();
+                    }
+                    if (IsKeyPressed(kbState, oldKbState, Keys.Enter))
+                    {
+                        switch (pauseMenu.Selected)
+                        {
+                            //Resume
+                            case 0:
+                               GameManager.Instance.State = GameManager.Instance.PrevState;                       
+                            break;
+                            //load
+                            case 1:
+                                if (Load())
+                                {
+                                    MapManager.Instance.LoadMap(GameManager.Instance.CurrentMap.MapName);
+                                }
+                                break;
+
+                        }
                     }
                     break;
                 case GameManager.GameState.Shop:
@@ -313,9 +380,24 @@ namespace Fragments
                     break;
 
                 case GameManager.GameState.Town:
-                    graphics.Clear(Color.Green);
-                    GameManager.Instance.CurrentMap.Draw(spriteBatch, Color.White);
-                    GameManager.Instance.Player.Draw(spriteBatch);
+                    if (!paused)
+                    {
+                        graphics.Clear(new Color(140, 100, 0));
+                        GameManager.Instance.CurrentMap.Draw(spriteBatch, Color.White);
+                        GameManager.Instance.Player.Draw(spriteBatch, Color.White);
+                    }
+                    else
+                    {
+                        graphics.Clear(new Color(35, 25, 0));
+                        
+                        GameManager.Instance.CurrentMap.Draw(spriteBatch, new Color(50, 50, 50));
+                        GameManager.Instance.Player.Draw(spriteBatch, new Color(50, 50, 50));
+                        spriteBatch.Draw(scroll, new Rectangle(190, 125, 450, 500), Color.White);
+                        
+                        pauseMenu.Spacing = 100;
+                        pauseMenu.DrawText(spriteBatch);
+                    }
+                    
                     break;
 
                 case GameManager.GameState.Map:
@@ -337,9 +419,6 @@ namespace Fragments
                     graphics.Clear(Color.Black);
                     ShopManager.Instance.DrawItems(spriteBatch);
                     break;
-                case GameManager.GameState.Pause:
-                    GameManager.Instance.CurrentMap.Draw(spriteBatch, Color.DarkSlateGray);
-                    break;
             }
             if(pause == true)
             {
@@ -357,6 +436,74 @@ namespace Fragments
                 counter += 0.00000001;
             }
             pause = false;
+        }
+        public void Save()
+        {
+            StreamWriter output = null;
+
+            try
+            {
+                // Create the writer
+                output = new StreamWriter("../../../save.txt");
+                output.WriteLine(Player.Atk);
+                output.WriteLine(Player.Def);
+                output.WriteLine(Player.MaxHp);
+                output.WriteLine(Player.MaxSp);
+                output.WriteLine(Player.Spd);
+                output.WriteLine(Player.mapX);
+                output.WriteLine(Player.mapY);
+                output.WriteLine(GameManager.Instance.CurrentMap.MapName);
+                
+
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Problem with file: " + e.Message);
+            }
+            finally
+            {
+                // Close the file as long as it's actually open
+                if (output != null)
+                    output.Close();
+            }
+        }
+        public bool Load()
+        {
+            StreamReader input = null;
+
+            try
+            {
+                input = new StreamReader("../../../save.txt");
+                // Set up some variables for the read
+                Player.Atk = int.Parse(input.ReadLine());
+                Player.Def = int.Parse(input.ReadLine());
+                Player.MaxHp = int.Parse(input.ReadLine());
+                Player.MaxSp = int.Parse(input.ReadLine());
+                Player.Spd = int.Parse(input.ReadLine());
+                Player.MapPos = new Vector2(int.Parse(input.ReadLine()), int.Parse(input.ReadLine()));
+                GameManager.Instance.CurrentMap = new Map(input.ReadLine());
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Error reading file: " + e.Message);
+            }
+            finally
+            {
+                if (input != null)
+                {
+                    input.Close();
+                }
+                    
+            }
+            if(input != null)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+            
         }
     }
 }

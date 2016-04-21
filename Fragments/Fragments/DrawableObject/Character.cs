@@ -94,12 +94,16 @@ namespace Fragments
 
         //DRAWING FUNCTIONS
 
+<<<<<<< HEAD
         public override void Draw(SpriteBatch spriteBatch)
+=======
+        public void Draw(SpriteBatch spriteBatch,Color c)
+>>>>>>> 4623577893e511f67a735e2486b92107aba17a24
         {
             spriteBatch.Draw(
                 texture,
                 rec,
-                Color.White);
+                c);
         }
     }
 }

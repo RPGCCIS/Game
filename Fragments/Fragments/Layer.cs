@@ -25,6 +25,7 @@ namespace Fragments
         private const int houseHeight = 205;
         private const int signHeight = 100;
         private const int gateHeight = 210;
+        private const int npcHeight = 565;
 
         //Properties
         public float X
@@ -174,7 +175,30 @@ namespace Fragments
                 TypeOfObject.Gate));
         }
 
+        //NPC
+        public void AddNPC(int position, ConversationTree dialogue)
+        {
+            Texture2D npc = GameManager.Instance.CurrentMap.GetTexture("npc");
+
+            objects.Add(new NPC(
+                position,
+                npcHeight,
+                (int)(GameManager.Instance.Player.PlayerWidth * 1.5),
+                (int)(GameManager.Instance.Player.PlayerHeight * 1.2),
+                npc));
+        }
+
         //General objects
+        public void AddObject(DrawableObject obj)
+        {
+            objects.Add(obj);
+        }
+
+        public void AddObject(int index, DrawableObject obj)
+        {
+            objects.Insert(index, obj);
+        }
+
         public void AddObject (Texture2D text, Vector2 pos, TypeOfObject type = TypeOfObject.Normal)
         {
             objects.Add(new DrawableObject(

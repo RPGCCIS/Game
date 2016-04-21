@@ -22,7 +22,7 @@ namespace Fragments
         private String background;
         Map overworld;
         //Multipliers
-        private const float backgroundMultiplier = 0.2f;
+        private const float backgroundMultiplier = 1.5f;
         private const float parallaxMultiplier = 7;
         private const float superForegroundMultiplier = 0;
 
@@ -160,7 +160,7 @@ namespace Fragments
 
             layers.Add(backgroundLayer);
             layers.Add(parallaxLayer);
-            layers.Add(superForegroundLayer);
+            //layers.Add(superForegroundLayer);
         }
 
         public void ClearMap()
@@ -196,9 +196,73 @@ namespace Fragments
             foreach (Layer l in layers)
             {
                 //everything is just currently drawn to 0,0
+                if (l.Name == "background")
+                {
+                    if (l.Objects.Count == 1)
+                    {
+                        DrawableObject centerBg = l.Objects[0];
+                        
+                        DrawableObject leftBg = new DrawableObject(
+                            l.Objects[0].X,
+                            l.Objects[0].Y,
+                            l.Objects[0].Rec.Width,
+                            l.Objects[0].Rec.Height, 
+                            l.Objects[0].Texture);
+
+                        leftBg.X = -(centerBg.Rec.Width);
+
+                        DrawableObject rightBg = new DrawableObject(
+                            l.Objects[0].X,
+                            l.Objects[0].Y,
+                            l.Objects[0].Rec.Width,
+                            l.Objects[0].Rec.Height,
+                            l.Objects[0].Texture);
+
+                        rightBg.X = centerBg.Rec.Width;
+
+                        l.AddObject(0, leftBg);
+                        l.AddObject(rightBg);
+
+                        l.Objects[0].Type = TypeOfObject.BGL;
+                        l.Objects[1].Type = TypeOfObject.BGC;
+                        l.Objects[2].Type = TypeOfObject.BGR;
+                    }
+                    else
+                    {
+                        //He should be in the middle
+                        //If colliding with left
+                        if (GameManager.Instance.Player.IsColliding(l, TypeOfObject.BGL))
+                        {
+                            DrawableObject movedRightBg = l.Objects[2];
+
+                            movedRightBg.X -= 3 * l.Objects[1].Rec.Width;
+                            l.AddObject(0, movedRightBg);
+                            l.Objects.RemoveAt(3);
+
+                            l.Objects[0].Type = TypeOfObject.BGL;
+                            l.Objects[1].Type = TypeOfObject.BGC;
+                            l.Objects[2].Type = TypeOfObject.BGR;
+                        }
+
+                        //If colliding with right
+                        if (GameManager.Instance.Player.IsColliding(l, TypeOfObject.BGR))
+                        {
+                            DrawableObject movedLeftBg = l.Objects[0];
+
+                            movedLeftBg.X += 3 * l.Objects[1].Rec.Width;
+                            l.AddObject(movedLeftBg);
+                            l.Objects.RemoveAt(0);
+
+                            l.Objects[0].Type = TypeOfObject.BGL;
+                            l.Objects[1].Type = TypeOfObject.BGC;
+                            l.Objects[2].Type = TypeOfObject.BGR;
+                        }
+                    }
+
+                    Console.WriteLine(l.Objects.Count);
+                }
 
                 l.Draw(s, col);
-                                
             }
         }
         //For drawing overworld tiles

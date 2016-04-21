@@ -34,19 +34,32 @@ namespace Fragments
         double timePerFrame;
 
         // Constants for "source" rectangle (inside the image)
-        const int WALK_FRAME_COUNT = 7;         
-        const int PLAYER_RECT_Y_OFFSET = 65;    
+        const int WALK_FRAME_COUNT = 7;
+                 
+        const int PLAYER_RECT_Y_OFFSET = 65;
+            
         const int PLAYER_RECT_HEIGHT = 31;       
         const int PLAYER_RECT_WIDTH = 18;
+
         const int PLAYER_FRAME_OFFSET = 6;
         const float PLAYER_SIZE = 4.5f;
+
         public Texture2D SpriteSheet
         {
             set { spriteSheet = value; }
         }
+        public int PlayerWidth
+        {
+            get { return (int)(PLAYER_RECT_WIDTH * PLAYER_SIZE); }
+        }
+        public int PlayerHeight
+        {
+            get { return (int)(PLAYER_RECT_HEIGHT * PLAYER_SIZE); }
+        }
         public Vector2 MapPos
         {
             get { return mapPos; }
+            set { mapPos = value; }
         }
         public float mapX
         {
@@ -60,7 +73,7 @@ namespace Fragments
         }
         //Constructor
         public Player(int x, int y, int w, int h, Texture2D texture) 
-            : base(x, y, w, h, texture)
+            : base(x, y, (int)(PLAYER_RECT_WIDTH * PLAYER_SIZE), (int)(PLAYER_RECT_HEIGHT * PLAYER_SIZE), texture)
         {
             playerLoc = new Vector2(x, y);
             fps = 10.0;
@@ -151,28 +164,6 @@ namespace Fragments
             }
         }
 
-        /*
-        public bool IsColliding(Layer l)
-        {
-            foreach(DrawableObject obj in l.Objects)
-            {
-                Rectangle objRect = new Rectangle(
-                    obj.X + (int)l.X, 
-                    obj.Y, 
-                    obj.Texture.Width,
-                    obj.Texture.Height);
-
-                if (this.rec.Intersects(objRect)
-                    && (obj.Texture == GameManager.Instance.CurrentMap.Textures["wall"]))
-                {
-                    return true;
-                }
-            }
-
-            return false;
-        }
-        */
-
         public bool IsColliding(Layer l, TypeOfObject type)
         {
             foreach (DrawableObject obj in l.Objects)
@@ -194,7 +185,14 @@ namespace Fragments
                             ShopManager.Instance.UpdateShop();
                             GameManager.Instance.State = GameManager.GameState.Shop;
                         }
-                        else
+                        else if(iObj.Destination == "Inn")
+                        {
+                            GameManager.Instance.Player.Hp = MaxHp;
+                            GameManager.Instance.Player.Sp = MaxSp;
+                            GameManager.Instance.Save();
+                            
+                        }
+                        else 
                         {
                             
                             MapManager.Instance.LoadMap(iObj.Destination);
@@ -207,6 +205,11 @@ namespace Fragments
                         GameManager.Instance.State = GameManager.GameState.Map;
                     }
 
+                    if (type == TypeOfObject.NPC)
+                    {
+                        //TODO
+                    }
+
                     return true;
                 }
             }
@@ -214,7 +217,7 @@ namespace Fragments
             return false;
         }
 
-        public void Draw(SpriteBatch spriteBatch)
+        public void Draw(SpriteBatch spriteBatch,Color c)
         {
             if (flipped)
             {
@@ -238,7 +241,7 @@ namespace Fragments
                     PLAYER_RECT_Y_OFFSET,        //	   where "inside" the texture
                     PLAYER_RECT_WIDTH,           //     to get pixels (We don't want to
                     PLAYER_RECT_HEIGHT),         //     draw the whole thing)
-                    Color.White,                    // - The color
+                    c,                    // - The color
                     0,                              // - Rotation (none currently)
                     Vector2.Zero,                   // - Origin inside the image (top left)
                     PLAYER_SIZE,                           // - Scale (100% - no change)
@@ -255,7 +258,7 @@ namespace Fragments
                     PLAYER_RECT_Y_OFFSET,        //	   where "inside" the texture
                     PLAYER_RECT_WIDTH,           //     to get pixels (We don't want to
                     PLAYER_RECT_HEIGHT),         //     draw the whole thing)
-                Color.White,                    // - The color
+                c,                    // - The color
                 0,                              // - Rotation (none currently)
                 Vector2.Zero,                   // - Origin inside the image (top left)
                 PLAYER_SIZE,                           // - Scale (100% - no change)
@@ -276,7 +279,7 @@ namespace Fragments
                     PLAYER_RECT_Y_OFFSET,        //	   where "inside" the texture
                     PLAYER_RECT_WIDTH,           //     to get pixels (We don't want to
                     PLAYER_RECT_HEIGHT),         //     draw the whole thing)
-                    Color.White,                    // - The color
+                    c,                    // - The color
                     0,                              // - Rotation (none currently)
                     Vector2.Zero,                   // - Origin inside the image (top left)
                     PLAYER_SIZE,                           // - Scale (100% - no change)
@@ -293,7 +296,7 @@ namespace Fragments
                     PLAYER_RECT_Y_OFFSET,        //	   where "inside" the texture
                     PLAYER_RECT_WIDTH,           //     to get pixels (We don't want to
                     PLAYER_RECT_HEIGHT),         //     draw the whole thing)
-                Color.White,                    // - The color
+                c,                    // - The color
                 0,                              // - Rotation (none currently)
                 Vector2.Zero,                   // - Origin inside the image (top left)
                 PLAYER_SIZE,                           // - Scale (100% - no change)
