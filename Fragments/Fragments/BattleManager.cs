@@ -10,8 +10,10 @@ namespace Fragments
 {
     class BattleManager
     {
-        private BattleState state = BattleState.Start;
-        private BattleState oldstate;
+        private BattleState state;
+        private BattleState oldState;
+        private bool stateChange;
+        private Timer pauseTimer;
 
         //instance of battle manager
         private static BattleManager instance;
@@ -25,8 +27,15 @@ namespace Fragments
                 {
                     instance = new BattleManager();
                 }
+
                 return instance;
             }
+        }
+
+        public BattleState State
+        {
+            get { return state; }
+            set { state = value; }
         }
 
         //fields
@@ -55,60 +64,79 @@ namespace Fragments
             set { title = value; }
         }
 
+        //Constructor
+        public BattleManager()
+        {
+            state = BattleState.Start;
+            pauseTimer = new Timer(1500); //1.5 seconds
+        }
+
         //several parts are imcomplete, such as magic just dealing a normal amount of attack damage. 
         //Eventually, there should be separate stats, magic and resistance, that will be incorporated into character, as well as different types of magic.
-        public void Update()
+        public void Update(GameTime gameTime)
         {
             kbState = Keyboard.GetState();
-            oldstate = state;
+
+            if (state != BattleState.Paused)
+            {
+                oldState = state;
+            }
+
             switch (state)
             {
                 case BattleState.Start:
                     p.MapPos = new Vector2(12,3);
-                    int atk;
                     state = BattleState.Player;
                     break;
+
                 case BattleState.Player:
-                    title.Name = "What will you do?";
-                    title.Dialogue.Clear();
-                    title.Dialogue.Add("Fight");
-                    title.Dialogue.Add("Run");
+
+                    if (stateChange)
+                    {
+                        title.Name = "What will you do?";
+
+                        title.Dialogue.Add("Fight");
+                        title.Dialogue.Add("Run");
+                    }
+                    
                     if (IsKeyPressed(kbState, oldKbState, Keys.Enter))
                     {
                         if (title.Dialogue.Selected == 0)
                         {
                             state = BattleState.Fight;
-                            Wipe(title);
                         }
                         else if (title.Dialogue.Selected == 1)
                         {
                             state = BattleState.Run;
-                            Wipe(title);
                         }
                     }
                     break;
+
                 case BattleState.Fight:
-                    title.Name = "What will you do?";
-                    title.Dialogue.Clear();
-                    title.Dialogue.Add("Attack");
-                    title.Dialogue.Add("Magic");
-                    title.Dialogue.Add("Defend");
+
+                    //Initialization stuff
+                    if (stateChange)
+                    {
+                        title.Name = "What will you do?";
+
+                        title.Dialogue.Add("Attack");
+                        title.Dialogue.Add("Magic");
+                        title.Dialogue.Add("Defend");
+                    }
+
                     if (IsKeyPressed(kbState, oldKbState, Keys.Enter))
                     {
                         if (title.Dialogue.Selected == 0)
                         {
                             state = BattleState.Attack;
-                            Wipe(title);
                         }
                         else if (title.Dialogue.Selected == 1)
                         {
                             state = BattleState.Magic;
-                            Wipe(title);
                         }
                         else if (title.Dialogue.Selected == 2)
                         {
                             state = BattleState.Defend;
-                            Wipe(title);
                         }
                     }
                     if (IsKeyPressed(kbState, oldKbState, Keys.Back))
@@ -116,52 +144,110 @@ namespace Fragments
                         state = BattleState.Player;
                     }
                     break;
+
                 case BattleState.Attack:
-                    atk = p.Atk - e.Def;
-                    title.Name = "You swing your Sword! You deal " + atk + " damage!";
-                    Player.Attack(e);
-                    state = BattleState.Enemy;
+                    int rawAtk = p.Atk - e.Def;
+                    int dealtAtk = Player.Attack(e, rawAtk);
+                    title.Name = "You swing your Sword! You deal " + dealtAtk + " damage!";
+
+                    state = BattleState.Paused;
                     break;
+                    /*
                 case BattleState.Magic:
                     atk = p.Atk - e.Def;
                     title.Name = "You cast Magic! You deal " + atk + " damage!";
                     Player.Magic(e);
-                    state = BattleState.Enemy;
+                    state = BattleState.Paused;
                     break;
+                    */
                 case BattleState.Defend:
                     title.Name = "You raise your Shield!";
                     Player.Defending = true;
-                    state = BattleState.Enemy;
+                    state = BattleState.Paused;
                     break;
+
                 case BattleState.Run:
                     title.Name = "You got away safely!";
-                    state = BattleState.Start;   
+                    state = BattleState.Paused;   
                     break;
+
                 case BattleState.Enemy:
-                    Enemy.Act(title, state);
+                    Enemy.Act(ref title);
+
+                    state = BattleState.Paused;
+
                     if(Player.Defending == true)
                     {
                         Player.Defending = false;
                     }
                     break;
+
                 case BattleState.Win:
                     title.Name = "You won!";
-                    state = BattleState.Start;
+                    state = BattleState.Paused;
                         break;
+
                 case BattleState.Lose:
                     title.Name = "You Lost!";
-                    state = BattleState.Start;
+                    state = BattleState.Paused;
                     break;
+
+                case BattleState.Paused:
+                    if (pauseTimer.Update(gameTime))
+                    {
+                        if (oldState == BattleState.Run || oldState == BattleState.Win || oldState == BattleState.Lose)
+                        {
+                            //This is essentially our "end" state
+                            GameManager.Instance.State = GameManager.GameState.Map;
+                            state = BattleState.Start;
+                            return;
+                        }
+                        if (oldState == BattleState.Enemy)
+                        {
+                            if (p.IsAlive())
+                            {
+                                state = BattleState.Player;
+                            }
+                            else
+                            {
+                                state = BattleState.Lose;
+                            }
+                        }
+                        else
+                        {
+                            state = BattleState.Enemy;
+                        }
+                    }
+
+                    break;             
             }
+
+            //Input
             if (IsKeyPressed(kbState, oldKbState, Keys.W))
             {
                 title.Dialogue.Previous();
             }
-            if (IsKeyPressed(kbState, oldKbState, Keys.S))
+            else if (IsKeyPressed(kbState, oldKbState, Keys.S))
             {
                 title.Dialogue.Next();
             }
+
             oldKbState = kbState;
+
+            if (oldState == state)
+            {
+                stateChange = false;
+            }
+            else
+            {
+                stateChange = true;
+            }
+
+            //Wipe?
+            if (stateChange)
+            {
+                Wipe(title);
+            }
         }
 
         public void Draw(SpriteBatch spritebatch)
@@ -169,19 +255,6 @@ namespace Fragments
             p.Draw(spritebatch);
             e.Draw(spritebatch);
             title.Draw(spritebatch);
-            if (oldstate == BattleState.Attack || oldstate == BattleState.Magic || oldstate == BattleState.Defend || oldstate == BattleState.Run || oldstate == BattleState.Enemy || oldstate == BattleState.Win)
-            {
-                GameManager.Instance.TimePause(5);
-                if(oldstate == BattleState.Run)
-                {
-                    GameManager.Instance.State = GameManager.GameState.Map;
-                }
-                Wipe(title);
-            }
-            if(oldstate == BattleState.Start)
-            {
-                GameManager.Instance.State = GameManager.GameState.Map;
-            }
         }
 
         public bool IsKeyPressed(KeyboardState current, KeyboardState old, Keys k)

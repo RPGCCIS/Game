@@ -107,7 +107,15 @@ namespace Fragments
             //Temporary EnemyContent
             enemyText = Content.Load<Texture2D>("Goomba");
             Enemy e = new Enemy(EnemyType.grunt, 300, 300, 100, 100, enemyText);
+            e.Atk = 6;
+            e.Def = 1;
+            e.MaxHp = 5;
+            e.MaxSp = 20;
+            e.Spd = 6;
+            e.Sp = e.MaxSp;
+            e.Hp = e.MaxHp;
             BattleManager.Instance.Enemy = e;
+
 
             //For Battle
             messageFont = Content.Load<SpriteFont>("LCALLIG_14");
@@ -115,6 +123,7 @@ namespace Fragments
             battleOptions = new TextList(messageFont, new Vector2(battle.RectX + 175, battle.RectY + 125 ));
             battle.Texture = Content.Load<Texture2D>(battle.TextureName);
             battle = new Message(messageB, battleOptions, battle.Texture,battle.Rect);
+
             BattleManager.Instance.Title = battle;
             BattleManager.Instance.Player = p;
 

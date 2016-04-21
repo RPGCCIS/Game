@@ -4,6 +4,7 @@ namespace Fragments
     public enum BattleState
     {
         Start,
+
         Player,
         Fight,
         Attack,
@@ -13,5 +14,7 @@ namespace Fragments
         Enemy,
         Win,
         Lose,
+
+        Paused,
     }
 }

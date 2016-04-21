@@ -90,16 +90,22 @@ namespace Fragments
             return hp > 0;
         }
 
-        public void Attack(Character foe)
+        public int Attack(Character foe, int rawDamage)
         {
+            int damageDealt;
+
             if (!foe.Defending)
             {
-                foe.Hp -= this.atk;
+                damageDealt = rawDamage;
+                foe.Hp -= damageDealt;
             }
             else
             {
-                foe.Hp -= (int)((0.75) * this.atk);
+                damageDealt = (int)((0.75) * rawDamage);
+                foe.Hp -= damageDealt;
             }
+
+            return damageDealt;
         }
 
         public void Magic(Character foe)

@@ -7,6 +7,7 @@ using System.Text;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
+
 using System.IO;
 namespace Fragments
 {
@@ -403,8 +404,9 @@ namespace Fragments
                     break;
                     //battle stuffs
                 case GameManager.GameState.Battle:
-                    BattleManager.Instance.Update();
+                    BattleManager.Instance.Update(gameTime);
                     break;
+
                 case GameManager.GameState.Pause:
                     if (IsKeyPressed(kbState, oldKbState, Keys.W))
                     {
@@ -512,28 +514,14 @@ namespace Fragments
                     GameManager.Instance.CurrentMap.DrawOverworld(spriteBatch, Color.DarkSlateGray);
                     BattleManager.Instance.Draw(spriteBatch);
                     break;
+
                 case GameManager.GameState.Shop:
                     graphics.Clear(Color.Black);
                     ShopManager.Instance.DrawItems(spriteBatch);
                     break;
             }
-            if(paused == true)
-            {
-                TimePause(5);
-            }
         }
 
-
-        //pauses whatever is going on for a bit
-        public void TimePause(int seconds)
-        {
-            double counter = 0;
-            while (counter < seconds)
-            {
-                counter += 0.00000001;
-            }
-            paused = false;
-        }
         public void Save()
         {
             StreamWriter output = null;
