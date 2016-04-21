@@ -103,16 +103,17 @@ namespace Fragments
                     //---Root
 
                     //Sure
-                    shopKeeperDialogue.AddCapNode("A", "Well that's too bad"); //End
-                    //Nah
                     shopKeeperDialogue.AddNode("Good choice, what do you need");
+                    //Nah
+                    shopKeeperDialogue.AddCapNode("A", "Well that's too bad"); //End
+                    
 
                     //---Nah
 
                     //Items
-                    shopKeeperDialogue.AddCapNode("B", "Best to be prepared!", new int[] { 1 }); //End
+                    shopKeeperDialogue.AddCapNode("B", "Best to be prepared!", new int[] { 0 }); //End
                     //Gear
-                    shopKeeperDialogue.AddCapNode("C", "I'll make you tough!", new int[] { 1 }); //End
+                    shopKeeperDialogue.AddCapNode("C", "I'll make you tough!", new int[] { 0 }); //End
 
                     GameManager.Instance.CurrentMap.ParallaxLayer.AddNPC(2200, shopKeeperDialogue);
 

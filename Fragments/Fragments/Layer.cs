@@ -186,6 +186,11 @@ namespace Fragments
                 (int)(GameManager.Instance.Player.PlayerWidth * 1.5),
                 (int)(GameManager.Instance.Player.PlayerHeight * 1.2),
                 npc));
+           if(objects[objects.Count-1].Type == TypeOfObject.NPC)
+            {
+                NPC n = (NPC)(objects[objects.Count - 1]);
+                n.Conversation = dialogue;
+            }
         }
 
         //General objects

@@ -37,10 +37,11 @@ namespace Fragments
         private TextList pauseMenu;
         private Texture2D scroll;
         private SpriteFont font;
+        private SpriteFont mFont;
         private bool paused = false;
-
-        private bool pause = false;
-
+        private bool conversation = false;
+        private Message dialog;
+        private ConversationTree ct;
         //Singleton property
         public static GameManager Instance
         {
@@ -86,7 +87,14 @@ namespace Fragments
             
             get { return pauseMenu; } set { pauseMenu = value; } }
         public Texture2D ScrollTexture { set { scroll = value; } }
+
         public SpriteFont Font { set { font = value; } }
+
+        public SpriteFont MFont { set { mFont = value; } }
+        
+        public ConversationTree CT { set { ct = value; } }
+
+        public bool Conversation { set { conversation = value; } }
         //Constructor
         private GameManager()
         {
@@ -158,10 +166,17 @@ namespace Fragments
                         }
                     }
                     break;
-
+                    //
+                    //
+                    //
+                    //                     TOWN
+                    //
+                    //
+                    //
+                    //
                 case GameManager.GameState.Town:
                     //State changes for testing
-                    if (!paused)
+                    if (!paused && !conversation)
                     {
                         ShopManager.Instance.Current = new Shop(GameManager.Instance.CurrentMap.MapName);
                         if (IsKeyPressed(kbState, oldKbState, Keys.A))
@@ -173,7 +188,19 @@ namespace Fragments
                             pauseMenu.Selected = 0;
                             paused = true;
                         }
+                        else if (IsKeyPressed(kbState, oldKbState, Keys.C))
+                        {
+                            dialog = new Message("scroll", false);
+                            conversation = true;
+                            
+                            TextObject message = new TextObject(mFont, "Message.", new Vector2(dialog.RectX + 150, dialog.RectY + 25));
+                            TextList dialogOptions = new TextList(null, new Vector2(dialog.RectX + 200, dialog.RectY + 75));
+                            dialogOptions.Font = mFont;
+                            dialogOptions.Add("1");
+                            dialogOptions.Add("2");
+                            dialog = new Message(message, dialogOptions,scroll,dialog.Rect);
 
+                        }
                         //Interactable
                         else if (IsKeyPressed(kbState, oldKbState, Keys.Enter))
                         {
@@ -185,6 +212,18 @@ namespace Fragments
                             GameManager.Instance.Player.IsColliding(
                                 GameManager.Instance.CurrentMap.ParallaxLayer,
                                 TypeOfObject.Gate);
+                            if(GameManager.Instance.Player.IsColliding(
+                               GameManager.Instance.CurrentMap.ParallaxLayer,
+                               TypeOfObject.NPC))
+                            {
+                                dialog = new Message("scroll", false);
+                                TextObject message = new TextObject(mFont, ct.Current.Message, new Vector2(dialog.RectX + 150, dialog.RectY + 25));
+                                TextList dialogOptions = new TextList(null, new Vector2(dialog.RectX + 200, dialog.RectY + 75));
+                                dialogOptions.Font = mFont;
+                                dialogOptions.Add("Sure");
+                                dialogOptions.Add("Nah");
+                                dialog = new Message(message, dialogOptions, scroll, dialog.Rect);
+                            }
                         }
 
                         //Player movement
@@ -214,7 +253,7 @@ namespace Fragments
                             }
                         }
                     }
-                    else
+                    else if(paused && !conversation)
                     {
                         if (IsKeyPressed(kbState, oldKbState, Keys.W))
                         {
@@ -244,6 +283,55 @@ namespace Fragments
 
                             }
                         }
+                    }
+                    else
+                    {
+                        if (IsKeyPressed(kbState, oldKbState, Keys.Escape))
+                        {
+                            conversation = false;
+                        }
+                        if (IsKeyPressed(kbState, oldKbState, Keys.W))
+                        {
+                            dialog.Options.Previous();
+                        }
+                        if (IsKeyPressed(kbState, oldKbState, Keys.S))
+                        {
+                            dialog.Options.Next();
+                        }
+                        if (IsKeyPressed(kbState, oldKbState, Keys.Enter))
+                        {
+                            switch (dialog.Options.Selected)
+                            {
+                                case 0:
+                                    if (!ct.Current.IsCapNode)
+                                    {
+                                        ct.Current = ct.Current.NextNodes[0];              
+                                    }
+                                    else
+                                    {
+                                        conversation = false;
+                                    }
+                                                                  
+                                    break;
+                                case 1:
+                                    if (!ct.Current.IsCapNode)
+                                    {
+                                        ct.Current = ct.Current.NextNodes[1];
+                                    }
+                                    else
+                                    {
+                                        conversation = false;
+                                    }
+                                    break;
+                            }
+                            if (ct.Current.IsCapNode)
+                            {
+                                dialog.Options.Clear();
+                            }
+                            dialog.Mess = new TextObject(mFont, ct.Current.Message, new Vector2(dialog.RectX + 150, dialog.RectY + 25));
+                        }
+
+
                     }
                     break;
 
@@ -370,7 +458,8 @@ namespace Fragments
         }
 
         //Drawing
-        public void Draw(SpriteBatch spriteBatch, TextList menuOptions, Message battle, GraphicsDevice graphics)
+
+        public void Draw(SpriteBatch spriteBatch, TextList menuOptions, Message battle, GraphicsDevice graphics, Message convo)
         {
             switch (GameManager.Instance.State)
             {
@@ -380,13 +469,13 @@ namespace Fragments
                     break;
 
                 case GameManager.GameState.Town:
-                    if (!paused)
+                    if (!paused && !conversation)
                     {
                         graphics.Clear(new Color(140, 100, 0));
                         GameManager.Instance.CurrentMap.Draw(spriteBatch, Color.White);
                         GameManager.Instance.Player.Draw(spriteBatch, Color.White);
                     }
-                    else
+                    else if(paused && !conversation)
                     {
                         graphics.Clear(new Color(35, 25, 0));
                         
@@ -396,6 +485,14 @@ namespace Fragments
                         
                         pauseMenu.Spacing = 100;
                         pauseMenu.DrawText(spriteBatch);
+                    }
+                    else
+                    {
+                        graphics.Clear(new Color(35, 25, 0));
+                        GameManager.Instance.CurrentMap.Draw(spriteBatch, new Color(50, 50, 50));
+                        GameManager.Instance.Player.Draw(spriteBatch, new Color(50, 50, 50));
+                        dialog.Draw(spriteBatch);
+                        
                     }
                     
                     break;
@@ -420,7 +517,7 @@ namespace Fragments
                     ShopManager.Instance.DrawItems(spriteBatch);
                     break;
             }
-            if(pause == true)
+            if(paused == true)
             {
                 TimePause(5);
             }
@@ -435,7 +532,7 @@ namespace Fragments
             {
                 counter += 0.00000001;
             }
-            pause = false;
+            paused = false;
         }
         public void Save()
         {
