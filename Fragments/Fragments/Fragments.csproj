@@ -38,6 +38,8 @@
   <ItemGroup>
     <Compile Include="BattleManager.cs" />
     <Compile Include="BattleState.cs" />
+    <Compile Include="ConversationTree.cs" />
+    <Compile Include="DialogueNodes.cs" />
     <Compile Include="DrawableObject.cs" />
     <Compile Include="DrawableObject\Character\Enemy.cs" />
     <Compile Include="DrawableObject\Interactable.cs" />
@@ -53,6 +55,7 @@
     <Compile Include="MapManager.cs" />
     <Compile Include="Message.cs" />
     <Compile Include="MovementFlags.cs" />
+    <Compile Include="NPC.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Shop.cs" />
@@ -60,9 +63,6 @@
     <Compile Include="TextList.cs" />
     <Compile Include="TextObject.cs" />
     <Compile Include="Tile.cs" />
-    <Compile Include="Conversation\Conversation.cs" />
-    <Compile Include="Conversation\ConversationTrigger.cs" />
-    <Compile Include="Conversation\ConversationState.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />

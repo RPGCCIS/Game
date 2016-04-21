@@ -459,7 +459,7 @@ namespace Fragments
 
         //Drawing
 
-        public void Draw(SpriteBatch spriteBatch, TextList menuOptions, Message battle, GraphicsDevice graphics, Message convo)
+        public void Draw(SpriteBatch spriteBatch, TextList menuOptions, Message battle, GraphicsDevice graphics)
         {
             switch (GameManager.Instance.State)
             {
