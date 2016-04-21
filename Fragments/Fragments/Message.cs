@@ -15,6 +15,22 @@ namespace Fragments
         private TextObject message;
         private Rectangle rect;
         private string textureName;
+        public TextList Options
+        {
+            get { return dialog; }
+            set
+            {
+                dialog = value;
+            }
+        }
+        public TextObject Mess
+        {
+            get { return message; }
+            set
+            {
+                message = value;
+            }
+        }
         public Message(string textureName, bool battle)
         {
             this.textureName = textureName;

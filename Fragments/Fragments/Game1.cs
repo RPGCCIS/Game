@@ -131,6 +131,7 @@ namespace Fragments
             //GameManager.Instance.PauseMenu.DefaultColor = Color.Wheat;
             GameManager.Instance.ScrollTexture = Content.Load<Texture2D>("scroll");
             GameManager.Instance.Font = font;
+            GameManager.Instance.MFont = messageFont;
             //Menu
             menuOptions.Font = font;
             menuOptions.Add("Option 1");
