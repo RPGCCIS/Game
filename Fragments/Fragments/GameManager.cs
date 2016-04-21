@@ -303,31 +303,61 @@ namespace Fragments
                             switch (dialog.Options.Selected)
                             {
                                 case 0:
-                                    if (!ct.Current.IsCapNode)
+                                    if(ct.Current.NextNodes.Count!=0)
                                     {
-                                        ct.Current = ct.Current.NextNodes[0];              
+                                        ct.Current = ct.Current.NextNodes[0];
+
                                     }
                                     else
                                     {
-                                        conversation = false;
+                                        if(ct.CapNodes["C"] == ct.Current)
+                                        {
+                                            ShopManager.Instance.Current = new Shop(GameManager.Instance.CurrentMap.MapName);
+                                            ShopManager.Instance.UpdateShop();
+                                            GameManager.Instance.State = GameState.Shop;
+                                            ct.Current = ct.Root;
+                                            conversation = false;
+                                        }
+                                        else if (ct.CapNodes["D"] == ct.Current)
+                                        {
+                                            ct.Current = ct.Root;
+                                        }
+                                        
                                     }
-                                                                  
+                                    
                                     break;
                                 case 1:
-                                    if (!ct.Current.IsCapNode)
+                                    
+                                    if (ct.Current.NextNodes.Count != 0)
                                     {
                                         ct.Current = ct.Current.NextNodes[1];
                                     }
                                     else
                                     {
-                                        conversation = false;
+                                        if (ct.CapNodes["C"] == ct.Current)
+                                        {
+                                            ShopManager.Instance.Current = new Shop(GameManager.Instance.CurrentMap.MapName);
+                                            ShopManager.Instance.UpdateShop();
+                                            GameManager.Instance.State = GameState.Shop;
+                                            ct.Current = ct.Root;
+                                            conversation = false;
+                                        }
+                                        else if(ct.CapNodes["D"] == ct.Current)
+                                        {
+                                            ct.Current = ct.Root;
+                                        }
+                                        
                                     }
                                     break;
                             }
-                            if (ct.Current.IsCapNode)
+                            dialog.Options.Clear();
+                            TextList dialogOptions = new TextList(null, new Vector2(dialog.RectX + 200, dialog.RectY + 75));
+                            dialogOptions.Font = mFont;
+                            foreach (string s in ct.Current.Responses)
                             {
-                                dialog.Options.Clear();
+                                dialogOptions.Add(s);
                             }
+                            dialog.Options = dialogOptions;
                             dialog.Mess = new TextObject(mFont, ct.Current.Message, new Vector2(dialog.RectX + 150, dialog.RectY + 25));
                         }
 
