@@ -17,6 +17,7 @@ namespace Fragments
         BGR, //Background Right
         Solid,
         Interactable,
+        NPC,
         Gate
     }
 

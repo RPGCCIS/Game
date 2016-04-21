@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Content;
+
 namespace Fragments
 {
     /// <summary>
@@ -58,9 +59,9 @@ namespace Fragments
         {
             this.IsMouseVisible = true;
 
-            // TODO: Add your initialization logic here
             test = new Map("test");
             test2 = new Map("test2");
+
             // Singleton initialization
             GameManager.Instance.State = GameManager.GameState.Menu;
 
@@ -89,7 +90,8 @@ namespace Fragments
             MapManager.Instance.Content = Content;
             ShopManager.Instance.Font = Content.Load<SpriteFont>("LCALLIG_14");
             ShopManager.Instance.Scroll = Content.Load<Texture2D>("scroll");
-
+            
+            
             // Load the player
             //playerText = Content.Load<Texture2D>("player");
             p = new Player(400, 605, 200, 300, playerText);
@@ -128,6 +130,7 @@ namespace Fragments
             GameManager.Instance.PauseMenu = new TextList(font, new Vector2(350, 250));
             GameManager.Instance.PauseMenu.Add("Resume");
             GameManager.Instance.PauseMenu.Add("Load");
+
             //GameManager.Instance.PauseMenu.DefaultColor = Color.Wheat;
             GameManager.Instance.ScrollTexture = Content.Load<Texture2D>("scroll");
             GameManager.Instance.Font = font;

@@ -95,6 +95,27 @@ namespace Fragments
                          new Vector2(-2000, 0), 
                          TypeOfObject.Solid);
 
+                    //ADD NPCS
+
+                    //Shopkeeper
+                    ConversationTree shopKeeperDialogue = new ConversationTree("Buy something, will ya?");
+
+                    //---Root
+
+                    //Sure
+                    shopKeeperDialogue.AddCapNode("A", "Well that's too bad"); //End
+                    //Nah
+                    shopKeeperDialogue.AddNode("Good choice, what do you need");
+
+                    //---Nah
+
+                    //Items
+                    shopKeeperDialogue.AddCapNode("B", "Best to be prepared!", new int[] { 1 }); //End
+                    //Gear
+                    shopKeeperDialogue.AddCapNode("C", "I'll make you tough!", new int[] { 1 }); //End
+
+                    GameManager.Instance.CurrentMap.ParallaxLayer.AddNPC(2200, shopKeeperDialogue);
+
                     break;
 
                 case "test1":

@@ -5,12 +5,12 @@ using System.IO;
 
 namespace Fragments.Conversation
 {
-	public class Conversation
+	public class Conversation__
 	{
 		private Dictionary<String, ConversationState> states;
 		private ConversationState state;
 
-		public Conversation(String filename)
+		public Conversation__(String filename)
 		{
 			bool hasNextConversationState = true;
 			states = new Dictionary<String, ConversationState>();
@@ -57,4 +57,3 @@ namespace Fragments.Conversation
 		}
 	}
 }
-
