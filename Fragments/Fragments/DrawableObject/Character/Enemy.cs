@@ -25,9 +25,24 @@ namespace Fragments
             level = type;
         }
 
-        public void Act(Message m)
+        public void Act(Message m, BattleState state)
         {
-            //complete tomorrow
+            if (!IsAlive())
+            {
+                state = BattleState.Win;
+            }
+            else
+            {
+                Attack(BattleManager.Instance.Player);
+                if (!BattleManager.Instance.Player.IsAlive())
+                {
+                    state = BattleState.Lose;
+                }
+                else
+                {
+                    state = BattleState.Player;
+                }
+            }
         }
     }
 }

@@ -24,6 +24,7 @@ namespace Fragments
 
         Player p;
         Texture2D playerText;
+        Texture2D enemyText;
 
         //Keyboard
         KeyboardState kbState;
@@ -102,6 +103,10 @@ namespace Fragments
             GameManager.Instance.Player = p;
             GameManager.Instance.Player.SpriteSheet = Content.Load<Texture2D>("rpg_sprite_walk");
             font = Content.Load<SpriteFont>("Georgia_32");
+
+            //Temporary EnemyContent
+            enemyText = Content.Load<Texture2D>("Goomba");
+            BattleManager.Instance.ETexture = enemyText;
 
             //For Battle
             messageFont = Content.Load<SpriteFont>("LCALLIG_14");

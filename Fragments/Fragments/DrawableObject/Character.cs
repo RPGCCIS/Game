@@ -21,6 +21,7 @@ namespace Fragments
         private int atk;
         private int def;
         private int spd;
+        private bool defending = false;
 
         //Properties for stats
         public string Name
@@ -64,6 +65,12 @@ namespace Fragments
             set { spd = value; }
         }
 
+        public bool Defending
+        {
+            get { return defending; }
+            set { defending = value; }
+        }
+
         //Constructor
 
         public Character(int x, int y, int w, int h, Texture2D texture)
@@ -83,22 +90,26 @@ namespace Fragments
             return hp > 0;
         }
 
-        /// <summary>
-        /// Returns true if alive
-        /// </summary>
-        /// <returns></returns>
         public void Attack(Character foe)
+        {
+            if (!foe.Defending)
+            {
+                foe.Hp -= this.atk;
+            }
+            else
+            {
+                foe.Hp -= (int)((0.75) * this.atk);
+            }
+        }
+
+        public void Magic(Character foe)
         {
             foe.Hp = (foe.hp - this.atk);
         }
 
         //DRAWING FUNCTIONS
 
-<<<<<<< HEAD
-        public override void Draw(SpriteBatch spriteBatch)
-=======
         public void Draw(SpriteBatch spriteBatch,Color c)
->>>>>>> 4623577893e511f67a735e2486b92107aba17a24
         {
             spriteBatch.Draw(
                 texture,

@@ -10,22 +10,8 @@ namespace Fragments
 {
     class BattleManager
     {
-        //enum for every battle situation
-        private enum State
-        {
-            Start,
-            Player,
-            Fight,
-            Attack,
-            Magic,
-            Defend,
-            Run,
-            Enemy,
-            Win,
-        }
-
-        private State state;
-        private State oldstate;
+        private BattleState state;
+        private BattleState oldstate;
 
         //instance of battle manager
         private static BattleManager instance;
@@ -44,11 +30,12 @@ namespace Fragments
         }
 
         //fields
-        Player p;
-        Enemy e;
-        Message title;
-        KeyboardState kbState;
-        KeyboardState oldKbState;
+        private Player p;
+        private Enemy e;
+        private Message title;
+        private KeyboardState kbState;
+        private KeyboardState oldKbState;
+        private Texture2D eTexture;
 
         //properties to get or set the above variables
         public Player Player
@@ -63,23 +50,31 @@ namespace Fragments
             set { e = value; }
         }
 
+        public Texture2D ETexture
+        {
+            set { eTexture = value; }
+        }
+
         public Message Title
         {
             get { return title; }
             set { title = value; }
         }
 
+        //several parts are imcomplete, such as magic just dealing a normal amount of attack damage. 
+        //Eventually, there should be separate stats, magic and resistance, that will be incorporated into character, as well as different types of magic.
         public void Update()
         {
             kbState = Keyboard.GetState();
             oldstate = state;
             switch (state)
             {
-                case State.Start:
-                    //p.MapPos = new Vector2(,);
-                    //e = new Enemy(EnemyType.grunt, );
+                case BattleState.Start:
+                    p.MapPos = new Vector2(100,100);
+                    e = new Enemy(EnemyType.grunt, 300, 300, 100, 100, eTexture);
+                    int atk;
                     break;
-                case State.Player:
+                case BattleState.Player:
                     title.Name = "What will you do?";
                     title.Dialogue.Clear();
                     title.Dialogue.Add("Fight");
@@ -88,15 +83,15 @@ namespace Fragments
                     {
                         if (title.Dialogue.Selected == 0)
                         {
-                            state = State.Fight;
+                            state = BattleState.Fight;
                         }
                         else if (title.Dialogue.Selected == 1)
                         {
-                            state = State.Run;
+                            state = BattleState.Run;
                         }
                     }
                     break;
-                case State.Fight:
+                case BattleState.Fight:
                     title.Name = "What will you do?";
                     title.Dialogue.Clear();
                     title.Dialogue.Add("Attack");
@@ -106,43 +101,63 @@ namespace Fragments
                     {
                         if (title.Dialogue.Selected == 0)
                         {
-                            state = State.Attack;
+                            state = BattleState.Attack;
                         }
                         else if (title.Dialogue.Selected == 1)
                         {
-                            state = State.Magic;
+                            state = BattleState.Magic;
                         }
                         else if (title.Dialogue.Selected == 2)
                         {
-                            state = State.Defend;
+                            state = BattleState.Defend;
                         }
                     }
                     if (IsKeyPressed(kbState, oldKbState, Keys.Back))
                     {
-                        state = State.Player;
+                        state = BattleState.Player;
                     }
                     break;
-                case State.Attack:
-                    title.Name = "You swing your Sword!";
+                case BattleState.Attack:
+                    atk = p.Atk - e.Def;
+                    title.Name = "You swing your Sword! You deal " + atk + " damage!";
                     title.Dialogue.Clear();
                     Player.Attack(e);
+                    state = BattleState.Enemy;
                     break;
-                case State.Magic:
-                    title.Name = "You cast Magic!";
+                case BattleState.Magic:
+                    atk = p.Atk - e.Def;
+                    title.Name = "You cast Magic! You deal " + atk + " damage!";
                     title.Dialogue.Clear();
-                    //Player.Magic();
+                    Player.Magic(e);
+                    state = BattleState.Enemy;
                     break;
-                case State.Defend:
+                case BattleState.Defend:
                     title.Name = "You raise your Shield!";
                     title.Dialogue.Clear();
-                    //Player.Defend();
+                    Player.Defending = true;
+                    state = BattleState.Enemy;
                     break;
-                case State.Run:
+                case BattleState.Run:
                     title.Name = "You got away safely!";
                     title.Dialogue.Clear();
+                    state = BattleState.Start;
                     break;
-                case State.Enemy:
-                    Enemy.Act(title);
+                case BattleState.Enemy:
+                    Enemy.Act(title, state);
+                    if(Player.Defending == true)
+                    {
+                        Player.Defending = false;
+                    }
+                    break;
+                case BattleState.Win:
+                    title.Name = "You won!";
+                    title.Dialogue.Clear();
+                    state = BattleState.Start;
+                        break;
+                case BattleState.Lose:
+                    title.Name = "You Lost!";
+                    title.Dialogue.Clear();
+                    state = BattleState.Start;
                     break;
             }
             if (IsKeyPressed(kbState, oldKbState, Keys.W))
@@ -161,9 +176,13 @@ namespace Fragments
             p.Draw(spritebatch);
             e.Draw(spritebatch);
             title.Draw(spritebatch);
-            if (oldstate == State.Attack || oldstate == State.Magic || oldstate == State.Defend || oldstate == State.Run || oldstate == State.Enemy)
+            if (oldstate == BattleState.Attack || oldstate == BattleState.Magic || oldstate == BattleState.Defend || oldstate == BattleState.Run || oldstate == BattleState.Enemy || oldstate == BattleState.Win)
             {
                 GameManager.Instance.TimePause(5);
+            }
+            if(oldstate == BattleState.Start)
+            {
+                GameManager.Instance.State = GameManager.GameState.Map;
             }
         }
 
