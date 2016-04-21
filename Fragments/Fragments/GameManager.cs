@@ -37,7 +37,7 @@ namespace Fragments
         private TextList pauseMenu;
         private Texture2D scroll;
         private SpriteFont font;
-
+        private bool paused = false;
 
         //Singleton property
         public static GameManager Instance
@@ -159,62 +159,90 @@ namespace Fragments
 
                 case GameManager.GameState.Town:
                     //State changes for testing
-                    ShopManager.Instance.Current = new Shop(GameManager.Instance.CurrentMap.MapName);
-                    if (IsKeyPressed(kbState, oldKbState, Keys.A))
+                    if (!paused)
                     {
-                        GameManager.Instance.State = GameManager.GameState.Menu;
-                    }
-                    else if (IsKeyPressed(kbState, oldKbState, Keys.D))
-                    {
-                        GameManager.Instance.currentMap = overworld;
-                        GameManager.Instance.State = GameManager.GameState.Map;
-                    }
-                    else if (IsKeyPressed(kbState, oldKbState, Keys.Escape))
-                    {
-                        pauseMenu.Selected = 0;
-                        GameManager.Instance.State = GameManager.GameState.Pause;
-                    }
-
-                    //Interactable
-                    else if (IsKeyPressed(kbState, oldKbState, Keys.Enter))
-                    {
-                        //We don't care if it returns true or not
-                        GameManager.Instance.Player.IsColliding(
-                            GameManager.Instance.CurrentMap.ParallaxLayer,
-                            TypeOfObject.Interactable);
-
-                        GameManager.Instance.Player.IsColliding(
-                            GameManager.Instance.CurrentMap.ParallaxLayer,
-                            TypeOfObject.Gate);
-                    }
-
-                    //Player movement
-                    GameManager.Instance.Player.Move(Keyboard.GetState(),gameTime);
-
-                    //Layer movement
-                    if (GameManager.Instance.Player.MS == Player.MovementState.WalkingRight)
-                    {
-                        GameManager.Instance.CurrentMap.MoveLayers();
-
-                        if (GameManager.Instance.Player.IsColliding(
-                            GameManager.Instance.CurrentMap.ParallaxLayer,
-                            TypeOfObject.Solid))
+                        ShopManager.Instance.Current = new Shop(GameManager.Instance.CurrentMap.MapName);
+                        if (IsKeyPressed(kbState, oldKbState, Keys.A))
                         {
-                            GameManager.Instance.CurrentMap.MoveLayers(false);
+                            GameManager.Instance.State = GameManager.GameState.Menu;
                         }
-                    }
-                    else if (GameManager.Instance.Player.MS == Player.MovementState.WalkingLeft)
-                    {
-                        GameManager.Instance.CurrentMap.MoveLayers(false);
+                        else if (IsKeyPressed(kbState, oldKbState, Keys.Escape))
+                        {
+                            pauseMenu.Selected = 0;
+                            paused = true;
+                        }
 
-                        if (GameManager.Instance.Player.IsColliding(
-                            GameManager.Instance.CurrentMap.ParallaxLayer,
-                            TypeOfObject.Solid))
+                        //Interactable
+                        else if (IsKeyPressed(kbState, oldKbState, Keys.Enter))
+                        {
+                            //We don't care if it returns true or not
+                            GameManager.Instance.Player.IsColliding(
+                                GameManager.Instance.CurrentMap.ParallaxLayer,
+                                TypeOfObject.Interactable);
+
+                            GameManager.Instance.Player.IsColliding(
+                                GameManager.Instance.CurrentMap.ParallaxLayer,
+                                TypeOfObject.Gate);
+                        }
+
+                        //Player movement
+                        GameManager.Instance.Player.Move(Keyboard.GetState(), gameTime);
+
+                        //Layer movement
+                        if (GameManager.Instance.Player.MS == Player.MovementState.WalkingRight)
                         {
                             GameManager.Instance.CurrentMap.MoveLayers();
+
+                            if (GameManager.Instance.Player.IsColliding(
+                                GameManager.Instance.CurrentMap.ParallaxLayer,
+                                TypeOfObject.Solid))
+                            {
+                                GameManager.Instance.CurrentMap.MoveLayers(false);
+                            }
+                        }
+                        else if (GameManager.Instance.Player.MS == Player.MovementState.WalkingLeft)
+                        {
+                            GameManager.Instance.CurrentMap.MoveLayers(false);
+
+                            if (GameManager.Instance.Player.IsColliding(
+                                GameManager.Instance.CurrentMap.ParallaxLayer,
+                                TypeOfObject.Solid))
+                            {
+                                GameManager.Instance.CurrentMap.MoveLayers();
+                            }
                         }
                     }
+                    else
+                    {
+                        if (IsKeyPressed(kbState, oldKbState, Keys.W))
+                        {
+                            pauseMenu.Previous();
+                        }
+                        if (IsKeyPressed(kbState, oldKbState, Keys.S))
+                        {
+                            pauseMenu.Next();
+                        }
+                        if (IsKeyPressed(kbState, oldKbState, Keys.Enter))
+                        {
+                            switch (pauseMenu.Selected)
+                            {
+                                //Resume
+                                case 0:
+                                    //GameManager.Instance.State = GameManager.Instance.PrevState;
+                                    paused = false;
+                                    break;
+                                //load
+                                case 1:
+                                    if (Load())
+                                    {
+                                        MapManager.Instance.LoadMap(GameManager.Instance.CurrentMap.MapName);
+                                        paused = false;
+                                    }
+                                    break;
 
+                            }
+                        }
+                    }
                     break;
 
                 case GameManager.GameState.Map:
@@ -415,9 +443,24 @@ namespace Fragments
                     break;
 
                 case GameManager.GameState.Town:
-                    graphics.Clear(new Color(140, 100, 0));
-                    GameManager.Instance.CurrentMap.Draw(spriteBatch, Color.White);
-                    GameManager.Instance.Player.Draw(spriteBatch);
+                    if (!paused)
+                    {
+                        graphics.Clear(new Color(140, 100, 0));
+                        GameManager.Instance.CurrentMap.Draw(spriteBatch, Color.White);
+                        GameManager.Instance.Player.Draw(spriteBatch, Color.White);
+                    }
+                    else
+                    {
+                        graphics.Clear(new Color(35, 25, 0));
+                        
+                        GameManager.Instance.CurrentMap.Draw(spriteBatch, new Color(50, 50, 50));
+                        GameManager.Instance.Player.Draw(spriteBatch, new Color(50, 50, 50));
+                        spriteBatch.Draw(scroll, new Rectangle(190, 125, 450, 500), Color.White);
+                        
+                        pauseMenu.Spacing = 100;
+                        pauseMenu.DrawText(spriteBatch);
+                    }
+                    
                     break;
 
                 case GameManager.GameState.Map:
@@ -438,14 +481,6 @@ namespace Fragments
                 case GameManager.GameState.Shop:
                     graphics.Clear(Color.Black);
                     ShopManager.Instance.DrawItems(spriteBatch);
-                    break;
-                case GameManager.GameState.Pause:
-
-                    GameManager.Instance.CurrentMap.Draw(spriteBatch, new Color(50,50,50));
-                    spriteBatch.Draw(scroll, new Rectangle(190, 125, 450, 500), Color.White);
-                    pauseMenu.Spacing = 100;
-                    pauseMenu.DrawText(spriteBatch);
-                    
                     break;
             }
         }

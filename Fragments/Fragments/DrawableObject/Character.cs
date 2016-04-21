@@ -99,12 +99,12 @@ namespace Fragments
 
         //DRAWING FUNCTIONS
 
-        public void Draw(SpriteBatch spriteBatch)
+        public void Draw(SpriteBatch spriteBatch,Color c)
         {
             spriteBatch.Draw(
                 texture,
                 rec,
-                Color.White);
+                c);
         }
     }
 }
