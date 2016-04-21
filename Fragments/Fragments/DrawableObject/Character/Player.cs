@@ -48,6 +48,14 @@ namespace Fragments
         {
             set { spriteSheet = value; }
         }
+        public int PlayerWidth
+        {
+            get { return (int)(PLAYER_RECT_WIDTH * PLAYER_SIZE); }
+        }
+        public int PlayerHeight
+        {
+            get { return (int)(PLAYER_RECT_HEIGHT * PLAYER_SIZE); }
+        }
         public Vector2 MapPos
         {
             get { return mapPos; }
@@ -156,28 +164,6 @@ namespace Fragments
             }
         }
 
-        /*
-        public bool IsColliding(Layer l)
-        {
-            foreach(DrawableObject obj in l.Objects)
-            {
-                Rectangle objRect = new Rectangle(
-                    obj.X + (int)l.X, 
-                    obj.Y, 
-                    obj.Texture.Width,
-                    obj.Texture.Height);
-
-                if (this.rec.Intersects(objRect)
-                    && (obj.Texture == GameManager.Instance.CurrentMap.Textures["wall"]))
-                {
-                    return true;
-                }
-            }
-
-            return false;
-        }
-        */
-
         public bool IsColliding(Layer l, TypeOfObject type)
         {
             foreach (DrawableObject obj in l.Objects)
@@ -217,6 +203,11 @@ namespace Fragments
                     if (type == TypeOfObject.Gate)
                     {
                         GameManager.Instance.State = GameManager.GameState.Map;
+                    }
+
+                    if (type == TypeOfObject.NPC)
+                    {
+                        //TODO
                     }
 
                     return true;
@@ -288,7 +279,7 @@ namespace Fragments
                     PLAYER_RECT_Y_OFFSET,        //	   where "inside" the texture
                     PLAYER_RECT_WIDTH,           //     to get pixels (We don't want to
                     PLAYER_RECT_HEIGHT),         //     draw the whole thing)
-                    Color.White,                    // - The color
+                    Color.Red,                    // - The color
                     0,                              // - Rotation (none currently)
                     Vector2.Zero,                   // - Origin inside the image (top left)
                     PLAYER_SIZE,                           // - Scale (100% - no change)
