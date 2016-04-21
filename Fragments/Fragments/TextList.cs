@@ -93,6 +93,7 @@ namespace Fragments
         public void Clear()
         {
             textObjects.Clear();
+            selected = 0;
         }
 
         //Drawing

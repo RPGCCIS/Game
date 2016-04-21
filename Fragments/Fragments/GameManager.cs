@@ -33,6 +33,8 @@ namespace Fragments
         private Dictionary<string, bool> keyEvents;
         private List<Vector2> townLocations = new List<Vector2>();
 
+        private bool pause = false;
+
         //Singleton property
         public static GameManager Instance
         {
@@ -97,7 +99,7 @@ namespace Fragments
         }
 
         //Update and check for switches between game states
-        public void Update(TextList menuOptions, TextList messageOptions, TextList battleOptions, KeyboardState kbState, KeyboardState oldKbState,GameTime gameTime)
+        public void Update(TextList m, KeyboardState kbState, KeyboardState oldKbState,GameTime gameTime)
         {
             
             switch (GameManager.Instance.State)
@@ -105,17 +107,17 @@ namespace Fragments
                 case GameManager.GameState.Menu:
                     if (IsKeyPressed(kbState, oldKbState, Keys.W))
                     {
-                        menuOptions.Previous();
+                        m.Previous();
                         
                     }
                     if (IsKeyPressed(kbState, oldKbState, Keys.S))
                     {
-                        menuOptions.Next();
+                        m.Next();
                     }
 
                     if (IsKeyPressed(kbState, oldKbState, Keys.Enter))
                     {
-                        switch (menuOptions.Selected)
+                        switch (m.Selected)
                         {
                             //Option 1
                             case 0:
@@ -266,74 +268,9 @@ namespace Fragments
                         }
                     }
                     break;
-
+                    //battle stuffs
                 case GameManager.GameState.Battle:
-                    //BattleManager.Instance.Player = player;
-                    if (IsKeyPressed(kbState, oldKbState, Keys.W))
-                    {
-                        battleOptions.Previous();
-                    }
-                    if (IsKeyPressed(kbState, oldKbState, Keys.S))
-                    {
-                        battleOptions.Next();
-                    }
-                    if (IsKeyPressed(kbState, oldKbState, Keys.Enter))
-                    {
-                        switch (battleOptions.Selected)
-                        {
-                            //Option 1
-                            case 0:
-                                if (battleOptions.Options[0].Text.Equals("Fight"))
-                                {
-                                    battleOptions.Clear();
-                                    battleOptions.Add("Attack");
-                                    battleOptions.Add("Magic");
-                                    battleOptions.Add("Defend");
-                                }
-                                else if (battleOptions.Options[0].Text.Equals("Attack"))
-                                {
-                                    battleOptions.Clear();
-                                    battleOptions.Add("You swung your sword!");
-                                    //battle animation
-                                    battleOptions.Clear();
-                                    battleOptions.Add("Fight");
-                                    battleOptions.Add("Run");
-                                }
-                                break;
-
-                            //Option 2
-                            case 1:
-                                if (battleOptions.Options[1].Text.Equals("Run"))
-                                {
-                                    battleOptions.Clear();
-                                    battleOptions.Add("You managed to escape!(Press Esc to return to the overworld)");
-                                }
-                                else if (battleOptions.Options[1].Text.Equals("Magic"))
-                                {
-                                    battleOptions.Clear();
-                                    battleOptions.Add("You used Magic!");
-                                    //battle animation
-                                    battleOptions.Clear();
-                                    battleOptions.Add("Fight");
-                                    battleOptions.Add("Run");
-                                }
-                                break;
-                            case 2:
-                                battleOptions.Clear();
-                                battleOptions.Add("Fight");
-                                battleOptions.Add("Run");
-                                break;
-                        }
-                    }
-                    if (IsKeyPressed(kbState, oldKbState, Keys.Escape))
-                    {
-                        battleOptions.Clear();
-                        battleOptions.Add("Fight");
-                        battleOptions.Add("Run");
-                        overworld = new Map();
-                        GameManager.Instance.currentMap = overworld;
-                        GameManager.Instance.State = GameManager.GameState.Map;
-                    }
+                    BattleManager.Instance.Update();
                     break;
                 case GameManager.GameState.Pause:
                     if (IsKeyPressed(kbState, oldKbState, Keys.G))
@@ -366,7 +303,7 @@ namespace Fragments
         }
 
         //Drawing
-        public void Draw(SpriteBatch spriteBatch, TextList menuOptions, Message battle, GraphicsDevice graphics, Message m)
+        public void Draw(SpriteBatch spriteBatch, TextList menuOptions, Message battle, GraphicsDevice graphics)
         {
             switch (GameManager.Instance.State)
             {
@@ -394,7 +331,7 @@ namespace Fragments
                 case GameManager.GameState.Battle:
                     GameManager.Instance.CurrentMap = overworld;
                     GameManager.Instance.CurrentMap.DrawOverworld(spriteBatch, Color.DarkSlateGray);
-                    battle.Draw(spriteBatch);
+                    BattleManager.Instance.Draw(spriteBatch);
                     break;
                 case GameManager.GameState.Shop:
                     graphics.Clear(Color.Black);
@@ -404,6 +341,22 @@ namespace Fragments
                     GameManager.Instance.CurrentMap.Draw(spriteBatch, Color.DarkSlateGray);
                     break;
             }
+            if(pause == true)
+            {
+                TimePause(5);
+            }
+        }
+
+
+        //pauses whatever is going on for a bit
+        public void TimePause(int seconds)
+        {
+            double counter = 0;
+            while (counter < seconds)
+            {
+                counter += 0.00000001;
+            }
+            pause = false;
         }
     }
 }

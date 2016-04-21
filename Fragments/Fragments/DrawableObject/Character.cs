@@ -87,19 +87,14 @@ namespace Fragments
         /// Returns true if alive
         /// </summary>
         /// <returns></returns>
-        public void TakeDamage(int damage)
-        {
-            hp -= damage;
-        }
-
-        public void DealDamage(Character foe)
+        public void Attack(Character foe)
         {
             foe.Hp = (foe.hp - this.atk);
         }
 
         //DRAWING FUNCTIONS
 
-        public void Draw(SpriteBatch spriteBatch)
+        public override void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(
                 texture,

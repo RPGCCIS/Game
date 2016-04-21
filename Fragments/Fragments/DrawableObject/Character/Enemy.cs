@@ -24,18 +24,10 @@ namespace Fragments
         {
             level = type;
         }
-        /*
-        //a temporary draw method
-        public void Draw(SpriteBatch spriteBatch)
-        {
-            base.Draw(spriteBatch);
-        }
 
-        //what to do when enemy dies
-        public void Death()
+        public void Act(Message m)
         {
-            //what to do when an enemy is finished.
+            //complete tomorrow
         }
-        */
     }
 }

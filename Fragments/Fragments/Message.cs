@@ -51,6 +51,16 @@ namespace Fragments
         public float RectY { get { return rect.Y; } }
         public Rectangle Rect { get { return rect; }
             set { rect = value; }}
+        public TextList Dialogue
+        {
+            get { return dialog; }
+            set { dialog = value; }
+        }
+        public string Name
+        {
+            get { return message.Text; }
+            set { message.Text = value; }
+        }
         public string TextureName { get { return textureName; } }
     }
 }

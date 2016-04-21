@@ -40,6 +40,6 @@ namespace Fragments
 
 
         //Overrideable method for draw if we want to change how things are drawn
-        public void Draw(SpriteBatch spriteBatch) { }
+        public virtual void Draw(SpriteBatch spriteBatch) { }
     }
 }

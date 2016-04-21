@@ -16,9 +16,6 @@ namespace Fragments
         Map test2;
 
         //Message testing
-        Message m;
-        TextObject message;
-        TextList messageOptions;
         SpriteFont messageFont;
         TextObject messageB;
         TextList battleOptions;
@@ -65,7 +62,6 @@ namespace Fragments
             GameManager.Instance.State = GameManager.GameState.Menu;
 
             //Messages
-            m = new Message("scroll", false);
             battle = new Message("scroll", true);
 
             //Set up Menu
@@ -97,24 +93,14 @@ namespace Fragments
             GameManager.Instance.Player.SpriteSheet = Content.Load<Texture2D>("rpg_sprite_walk");
             font = Content.Load<SpriteFont>("Georgia_32");
 
-            //For Map
-            messageFont = Content.Load<SpriteFont>("LCALLIG_14");
-            message = new TextObject(messageFont, "Your adventure will be coming soon.", new Vector2(m.RectX + 150, m.RectY + 25));
-            messageOptions = new TextList(null, new Vector2(m.RectX + 175, m.RectY + 75));
-            messageOptions.Font = messageFont;
-            messageOptions.Add("Ok");
-            messageOptions.Add("Go Faster!");
-            m.Texture = Content.Load<Texture2D>(m.TextureName);
-            m = new Message(message, messageOptions,m.Texture,m.Rect);
-
             //For Battle
-            messageB = new TextObject(messageFont, "In Battle.", new Vector2(battle.RectX + 150, battle.RectY + 50));
-            battleOptions = new TextList(null, new Vector2(battle.RectX + 175, battle.RectY + 125 ));
-            battleOptions.Font = messageFont;
-            battleOptions.Add("Fight");
-            battleOptions.Add("Run");
+            messageFont = Content.Load<SpriteFont>("LCALLIG_14");
+            messageB = new TextObject(messageFont, null, new Vector2(battle.RectX + 150, battle.RectY + 50));
+            battleOptions = new TextList(messageFont, new Vector2(battle.RectX + 175, battle.RectY + 125 ));
             battle.Texture = Content.Load<Texture2D>(battle.TextureName);
             battle = new Message(messageB, battleOptions, battle.Texture,battle.Rect);
+            BattleManager.Instance.Title = battle;
+            BattleManager.Instance.Player = p;
 
             //Apply loaded Content
 
@@ -144,7 +130,7 @@ namespace Fragments
             oldKbState = kbState;
             kbState = Keyboard.GetState();
 
-            GameManager.Instance.Update(menuOptions, messageOptions, battleOptions, kbState, oldKbState,gameTime);
+            GameManager.Instance.Update(menuOptions, kbState, oldKbState,gameTime);
 
             base.Update(gameTime);
         }
@@ -162,7 +148,7 @@ namespace Fragments
             spriteBatch.Begin();
             //ShopManager.Instance.SpriteBatch = spriteBatch;
             
-            GameManager.Instance.Draw(spriteBatch, menuOptions, battle, this.GraphicsDevice, m);
+            GameManager.Instance.Draw(spriteBatch, menuOptions, battle, this.GraphicsDevice);
             
             //GameManager.Instance.Draw(spriteBatch, menuOptions, battle, this.GraphicsDevice, m);
             spriteBatch.End();
