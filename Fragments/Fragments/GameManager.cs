@@ -189,19 +189,6 @@ namespace Fragments
                             pauseMenu.Selected = 0;
                             paused = true;
                         }
-                        else if (IsKeyPressed(kbState, oldKbState, Keys.C))
-                        {
-                            dialog = new Message("scroll", false);
-                            conversation = true;
-                            
-                            TextObject message = new TextObject(mFont, "Message.", new Vector2(dialog.RectX + 150, dialog.RectY + 25));
-                            TextList dialogOptions = new TextList(null, new Vector2(dialog.RectX + 200, dialog.RectY + 75));
-                            dialogOptions.Font = mFont;
-                            dialogOptions.Add("1");
-                            dialogOptions.Add("2");
-                            dialog = new Message(message, dialogOptions,scroll,dialog.Rect);
-
-                        }
                         //Interactable
                         else if (IsKeyPressed(kbState, oldKbState, Keys.Enter))
                         {
@@ -221,8 +208,12 @@ namespace Fragments
                                 TextObject message = new TextObject(mFont, ct.Current.Message, new Vector2(dialog.RectX + 150, dialog.RectY + 25));
                                 TextList dialogOptions = new TextList(null, new Vector2(dialog.RectX + 200, dialog.RectY + 75));
                                 dialogOptions.Font = mFont;
-                                dialogOptions.Add("Sure");
-                                dialogOptions.Add("Nah");
+                                foreach (string s in ct.Current.Responses)
+                                {
+                                    dialogOptions.Add(s);
+                                }
+                                dialog.Options = dialogOptions;
+                                dialog.Mess = new TextObject(mFont, ct.Current.Message, new Vector2(dialog.RectX + 150, dialog.RectY + 25));
                                 dialog = new Message(message, dialogOptions, scroll, dialog.Rect);
                             }
                         }
@@ -287,9 +278,27 @@ namespace Fragments
                     }
                     else
                     {
+
                         if (IsKeyPressed(kbState, oldKbState, Keys.Escape))
                         {
-                            conversation = false;
+                            if(ct.Current != ct.Root)
+                            {
+                                ct.Current = ct.Previous;
+                                dialog.Options.Clear();
+                                TextList dialogOptions = new TextList(null, new Vector2(dialog.RectX + 200, dialog.RectY + 75));
+                                dialogOptions.Font = mFont;
+                                foreach (string s in ct.Current.Responses)
+                                {
+                                    dialogOptions.Add(s);
+                                }
+                                dialog.Options = dialogOptions;
+                                dialog.Mess = new TextObject(mFont, ct.Current.Message, new Vector2(dialog.RectX + 150, dialog.RectY + 25));
+                            }
+                            else
+                            {
+                                conversation = false;
+                            }
+                            
                         }
                         if (IsKeyPressed(kbState, oldKbState, Keys.W))
                         {
@@ -306,24 +315,13 @@ namespace Fragments
                                 case 0:
                                     if(ct.Current.NextNodes.Count!=0)
                                     {
+                                        ct.Previous = ct.Current;
                                         ct.Current = ct.Current.NextNodes[0];
 
                                     }
                                     else
                                     {
-                                        if(ct.CapNodes["C"] == ct.Current)
-                                        {
-                                            ShopManager.Instance.Current = new Shop(GameManager.Instance.CurrentMap.MapName);
-                                            ShopManager.Instance.UpdateShop();
-                                            GameManager.Instance.State = GameState.Shop;
-                                            ct.Current = ct.Root;
-                                            conversation = false;
-                                        }
-                                        else if (ct.CapNodes["D"] == ct.Current)
-                                        {
-                                            ct.Current = ct.Root;
-                                        }
-                                        
+                                        ConversationEndTrigger();
                                     }
                                     
                                     break;
@@ -335,19 +333,7 @@ namespace Fragments
                                     }
                                     else
                                     {
-                                        if (ct.CapNodes["C"] == ct.Current)
-                                        {
-                                            ShopManager.Instance.Current = new Shop(GameManager.Instance.CurrentMap.MapName);
-                                            ShopManager.Instance.UpdateShop();
-                                            GameManager.Instance.State = GameState.Shop;
-                                            ct.Current = ct.Root;
-                                            conversation = false;
-                                        }
-                                        else if(ct.CapNodes["D"] == ct.Current)
-                                        {
-                                            ct.Current = ct.Root;
-                                        }
-                                        
+                                        ConversationEndTrigger();
                                     }
                                     break;
                             }
@@ -617,6 +603,34 @@ namespace Fragments
             else
             {
                 return false;
+            }
+            
+        }
+        public void ConversationEndTrigger()
+        {
+            if(ct.Name == "Shop Keeper")
+            {
+                if (ct.CapNodes["C"] == ct.Current)
+                {
+                    ct.Previous = ct.Current;
+                    ShopManager.Instance.Current = new Shop(GameManager.Instance.CurrentMap.MapName);
+                    ShopManager.Instance.UpdateShop();
+                    GameManager.Instance.State = GameState.Shop;
+                    ct.Current = ct.Root;
+                    conversation = false;
+                }
+                else if (ct.CapNodes["B"] == ct.Current)
+                {
+                    ct.Current = ct.Previous;
+                }
+                else if (ct.CapNodes["D"] == ct.Current)
+                {
+                    ct.Current = ct.Root;
+                    conversation = false;
+                }else if(ct.CapNodes["E"] == ct.Current)
+                {
+                    ct.GoToNode(new int[] {0});
+                }
             }
             
         }

@@ -10,6 +10,12 @@ namespace Fragments
         private DialogueNodes rootNode;
         private DialogueNodes current;
         private Dictionary<string, DialogueNodes> capNodes;
+        private DialogueNodes previous;
+        private String name;
+        public string Name
+        {
+            get { return name; }
+        }
         public Dictionary<string,DialogueNodes> CapNodes
         {
             get { return capNodes; }
@@ -37,14 +43,20 @@ namespace Fragments
                 rootNode = value;
             }
         }
-        //Constructor
-        public ConversationTree(string rootMessage, string[] responses)
+        public DialogueNodes Previous
         {
-            
+            get { return previous; }
+            set { previous = value; }
+        }
+        //Constructor
+        public ConversationTree(string rootMessage, string[] responses,string name)
+        {
+            this.name = name;
             //Make the root
             rootNode = new DialogueNodes(rootMessage);
             rootNode.Responses = responses;
             current = rootNode;
+            previous = rootNode;
             capNodes = new Dictionary<string, DialogueNodes>();
         }
 
@@ -81,6 +93,14 @@ namespace Fragments
                 current = current.NextNodes[path[i]];
             }
             capNodes.Add(key, current.AddCapNode(message, responses));
+        }
+        public void GoToNode(int[] path)
+        {
+            current = rootNode;
+            foreach (int i in path)
+            {
+                current = current.NextNodes[i];
+            }
         }
     }
 }

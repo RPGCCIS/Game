@@ -98,24 +98,32 @@ namespace Fragments
                     //ADD NPCS
 
                     //Shopkeeper
-                    ConversationTree shopKeeperDialogue = new ConversationTree("Buy something, will ya?", new String[] {"Sure","Nah"});
+                    ConversationTree shopKeeperDialogue = new ConversationTree("Buy something, will ya?", new String[] {"Sure","Nah"}, "Shop Keeper");
                     
                     //---Root
 
                     //Sure
-                    shopKeeperDialogue.AddNode("Good choice, what do you need", new String[] { "Items", "Gear" });
+                    shopKeeperDialogue.AddNode("Good choice, what do you need?", new String[] { "Items", "Gear" });
                     //Nah
-                    shopKeeperDialogue.AddCapNode("D", "Well that's too bad", new String[] { "Back" }); //End
+                    shopKeeperDialogue.AddNode("Are ya sure?", new String[] { "Yes", "No" });
+
                     
+
                     //---Sure
 
                     //Items
-                    shopKeeperDialogue.AddCapNode("B", "Best to be prepared!", new int[] { 0 }, new String[] { "Enter" }); //End
+                    shopKeeperDialogue.AddCapNode("B", "I don't currently have any items", new int[] { 0 }, new String[] { "Ok" }); // End
                     //Gear
                     shopKeeperDialogue.AddCapNode("C", "I'll make you tough!", new int[] { 0 }, new String[] { "Enter" }); //End
 
                     //---Nah
-                    GameManager.Instance.CurrentMap.ParallaxLayer.AddNPC(2200, shopKeeperDialogue);
+
+                    //Yes
+                    shopKeeperDialogue.AddCapNode("D", "Bye now!", new int[] { 1 }, new String[] { "Ok" }); // End
+                    //No
+                    shopKeeperDialogue.AddCapNode("E", "Well, what do you want?", new int[] { 1 }, new String[] { "Let me see your wares" });
+
+                    GameManager.Instance.CurrentMap.ParallaxLayer.AddNPC(1500, shopKeeperDialogue);
 
                     break;
 
@@ -174,5 +182,6 @@ namespace Fragments
         {
             GameManager.Instance.CurrentMap.ClearMap();
         }
+        
     }
 }
