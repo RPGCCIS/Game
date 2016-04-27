@@ -25,7 +25,7 @@ namespace Fragments
             level = type;
         }
 
-        public void Act(ref Message m)
+        public void Act(Message m)
         {
             if (!IsAlive())
             {

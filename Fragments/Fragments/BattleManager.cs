@@ -45,6 +45,7 @@ namespace Fragments
         private KeyboardState kbState;
         private KeyboardState oldKbState;
 
+        #region Properties
         //properties to get or set the above variables
         public Player Player
         {
@@ -63,9 +64,10 @@ namespace Fragments
             get { return title; }
             set { title = value; }
         }
+        #endregion
 
         //Constructor
-        public BattleManager()
+        private BattleManager()
         {
             state = BattleState.Start;
             pauseTimer = new Timer(1500); //1.5 seconds
@@ -120,7 +122,6 @@ namespace Fragments
                         title.Name = "What will you do?";
 
                         title.Dialogue.Add("Attack");
-                        title.Dialogue.Add("Magic");
                         title.Dialogue.Add("Defend");
                     }
 
@@ -131,10 +132,6 @@ namespace Fragments
                             state = BattleState.Attack;
                         }
                         else if (title.Dialogue.Selected == 1)
-                        {
-                            state = BattleState.Magic;
-                        }
-                        else if (title.Dialogue.Selected == 2)
                         {
                             state = BattleState.Defend;
                         }
@@ -149,17 +146,8 @@ namespace Fragments
                     int rawAtk = p.Atk - e.Def;
                     int dealtAtk = Player.Attack(e, rawAtk);
                     title.Name = "You swing your Sword! You deal " + dealtAtk + " damage!";
-
                     state = BattleState.Paused;
                     break;
-                    /*
-                case BattleState.Magic:
-                    atk = p.Atk - e.Def;
-                    title.Name = "You cast Magic! You deal " + atk + " damage!";
-                    Player.Magic(e);
-                    state = BattleState.Paused;
-                    break;
-                    */
                 case BattleState.Defend:
                     title.Name = "You raise your Shield!";
                     Player.Defending = true;
@@ -172,8 +160,7 @@ namespace Fragments
                     break;
 
                 case BattleState.Enemy:
-                    Enemy.Act(ref title);
-
+                    e.Act(title);
                     state = BattleState.Paused;
 
                     if(Player.Defending == true)
@@ -252,9 +239,9 @@ namespace Fragments
 
         public void Draw(SpriteBatch spritebatch)
         {
-            p.Draw(spritebatch);
-            e.Draw(spritebatch);
-            title.Draw(spritebatch);
+                p.Draw(spritebatch);
+                e.Draw(spritebatch);
+                title.Draw(spritebatch);
         }
 
         public bool IsKeyPressed(KeyboardState current, KeyboardState old, Keys k)

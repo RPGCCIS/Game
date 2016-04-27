@@ -8,7 +8,6 @@ namespace Fragments
         Player,
         Fight,
         Attack,
-        Magic,
         Defend,
         Run,
         Enemy,
