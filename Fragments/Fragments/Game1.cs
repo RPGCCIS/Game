@@ -107,7 +107,7 @@ namespace Fragments
             //Temporary EnemyContent
             enemyText = Content.Load<Texture2D>("Goomba");
             Enemy e = new Enemy(EnemyType.grunt, 300, 300, 100, 100, enemyText);
-            e.Atk = 6;
+            e.Atk = 100;
             e.Def = 1;
             e.MaxHp = 5;
             e.MaxSp = 20;

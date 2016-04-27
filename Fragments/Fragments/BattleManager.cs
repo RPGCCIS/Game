@@ -189,7 +189,7 @@ namespace Fragments
                             state = BattleState.Start;
                             return;
                         }
-                        if (oldState == BattleState.Enemy)
+                        else if (oldState == BattleState.Enemy)
                         {
                             if (p.IsAlive())
                             {
@@ -199,6 +199,10 @@ namespace Fragments
                             {
                                 state = BattleState.Lose;
                             }
+                        }
+                        else if (!e.IsAlive())
+                        {
+                            state = BattleState.Win;
                         }
                         else
                         {

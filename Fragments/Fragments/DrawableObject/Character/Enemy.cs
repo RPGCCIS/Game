@@ -27,16 +27,9 @@ namespace Fragments
 
         public void Act(Message m)
         {
-            if (!IsAlive())
-            {
-                BattleManager.Instance.State = BattleState.Win;
-            }
-            else
-            {
                 int rawAtk = this.Atk - BattleManager.Instance.Player.Def;
                 int dealtAtk = Attack(BattleManager.Instance.Player, rawAtk);
                 m.Name = "The Enemy jumped at you! It dealt " + dealtAtk + " damage!";
-            }
         }
     }
 }
