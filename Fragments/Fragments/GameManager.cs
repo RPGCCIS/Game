@@ -120,7 +120,7 @@ namespace Fragments
         {
             return GameState.Town;
         }
-
+        #region Update
         //Update and check for switches between game states
         public void Update(TextList menuOptions, KeyboardState kbState, KeyboardState oldKbState,GameTime gameTime, SpriteBatch sb)
         {
@@ -460,6 +460,31 @@ namespace Fragments
                     {
                         ShopManager.Instance.Options.Next();
                     }
+                    if (IsKeyPressed(kbState, oldKbState, Keys.Enter))
+                    {
+                        switch (ShopManager.Instance.Options.Selected)
+                        {
+                            case (0):
+                                if(Player.SwordLevel < ShopManager.Instance.Current.Items[0].Level && Player.Gold >= ShopManager.Instance.Current.Items[0].Cost)
+                                {
+                                    GameManager.Instance.Player.Atk += ShopManager.Instance.Current.Items[0].Level * 4;
+                                    Player.SwordLevel = ShopManager.Instance.Current.Items[0].Level;
+                                    Player.Gold -= ShopManager.Instance.Current.Items[0].Cost;
+                                }
+                                break;
+                            case (1):
+                                if(Player.ShieldLevel < ShopManager.Instance.Current.Items[1].Level && Player.Gold >= ShopManager.Instance.Current.Items[1].Cost)
+                                {
+                                    GameManager.Instance.Player.Def += ShopManager.Instance.Current.Items[1].Level * 4;
+                                    Player.ShieldLevel = ShopManager.Instance.Current.Items[1].Level;
+                                    Player.Gold -= ShopManager.Instance.Current.Items[1].Cost;
+                                }
+                                
+                                break;
+                        }
+
+                    }
+                    
                     if (IsKeyPressed(kbState, oldKbState, Keys.Escape))
                     {
                         GameManager.Instance.State = GameManager.GameState.Town;
@@ -474,7 +499,7 @@ namespace Fragments
         {
             return (current.IsKeyDown(k) && old.IsKeyUp(k));
         }
-
+        #endregion
         //Drawing
 
         public void Draw(SpriteBatch spriteBatch, TextList menuOptions, Message battle, GraphicsDevice graphics)
@@ -500,7 +525,9 @@ namespace Fragments
                         GameManager.Instance.CurrentMap.Draw(spriteBatch, new Color(50, 50, 50));
                         GameManager.Instance.Player.Draw(spriteBatch, new Color(50, 50, 50));
                         spriteBatch.Draw(scroll, new Rectangle(190, 125, 450, 500), Color.White);
-                        
+                        spriteBatch.DrawString(mFont, "Stats:", new Vector2(735, 200), Color.White);
+                        spriteBatch.DrawString(mFont, player.GetStats(), new Vector2(710, 275), Color.White);
+
                         pauseMenu.Spacing = 100;
                         pauseMenu.DrawText(spriteBatch);
                     }
@@ -534,6 +561,7 @@ namespace Fragments
                 case GameManager.GameState.Shop:
                     graphics.Clear(Color.Black);
                     ShopManager.Instance.DrawItems(spriteBatch);
+
                     break;
             }
         }
@@ -546,6 +574,7 @@ namespace Fragments
             {
                 // Create the writer
                 output = new StreamWriter("../../../save.txt");
+                output.WriteLine(player.Gold);
                 output.WriteLine(Player.Atk);
                 output.WriteLine(Player.Def);
                 output.WriteLine(Player.MaxHp);
@@ -576,6 +605,7 @@ namespace Fragments
             {
                 input = new StreamReader("../../../save.txt");
                 // Set up some variables for the read
+                player.Gold = int.Parse(input.ReadLine());
                 Player.Atk = int.Parse(input.ReadLine());
                 Player.Def = int.Parse(input.ReadLine());
                 Player.MaxHp = int.Parse(input.ReadLine());
@@ -634,5 +664,6 @@ namespace Fragments
             }
             
         }
+        
     }
 }

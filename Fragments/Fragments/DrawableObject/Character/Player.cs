@@ -28,22 +28,56 @@ namespace Fragments
         Vector2 playerLoc;      
 
         // Animation
-        int frame;              
-        double timeCounter;     
-        double fps;             
-        double timePerFrame;
+        private int frame;              
+        private double timeCounter;     
+        private double fps;             
+        private double timePerFrame;
+        private int swordLevel = 0;
+        private int shieldLevel = 0;
+        private int gold;
+
 
         // Constants for "source" rectangle (inside the image)
-        const int WALK_FRAME_COUNT = 7;
-                 
-        const int PLAYER_RECT_Y_OFFSET = 65;
-            
+        const int WALK_FRAME_COUNT = 7;                
+        const int PLAYER_RECT_Y_OFFSET = 65;            
         const int PLAYER_RECT_HEIGHT = 31;       
         const int PLAYER_RECT_WIDTH = 18;
-
         const int PLAYER_FRAME_OFFSET = 6;
         const float PLAYER_SIZE = 4.5f;
 
+        public int Gold
+        {
+            get
+            {
+                return gold;      
+            }
+            set
+            {
+                gold = value;
+            }
+        }
+        public int SwordLevel
+        {
+            get
+            {
+                return swordLevel;
+            }
+            set
+            {
+                swordLevel = value;
+            }
+        }
+        public int ShieldLevel
+        {
+            get
+            {
+                return shieldLevel;
+            }
+            set
+            {
+                shieldLevel = value;
+            }
+        }
         public Texture2D SpriteSheet
         {
             set { spriteSheet = value; }
@@ -75,6 +109,7 @@ namespace Fragments
         public Player(int x, int y, int w, int h, Texture2D texture) 
             : base(x, y, (int)(PLAYER_RECT_WIDTH * PLAYER_SIZE), (int)(PLAYER_RECT_HEIGHT * PLAYER_SIZE), texture)
         {
+            gold = 100;
             playerLoc = new Vector2(x, y);
             fps = 10.0;
             timePerFrame = 1.0 / fps;
@@ -207,7 +242,6 @@ namespace Fragments
 
                     if (type == TypeOfObject.NPC)
                     {
-                        Console.WriteLine("ASDASDSADASDADS");
                         //TODO
                         NPC npc = (NPC)(obj);
                         GameManager.Instance.CT = npc.Conversation;
@@ -318,6 +352,15 @@ namespace Fragments
                 GameManager.Instance.CurrentMap.GetTexture("playerOverworld"), 
                 new Rectangle((900 / 14)*(int)mapPos.X, (750 / 14) *(int)mapPos.Y, 
                 900 / 14, 750 / 14), Color.White);
+        }
+        public string GetStats()
+        {
+            return " Gold - " + gold +
+                "\n\nHp - " + Hp + "/" + MaxHp + 
+                "\n\n Sp - " + Sp + "/" + MaxSp + 
+                "\n\n Attack - " + Atk +
+                "\n\n Defence - " + Def +
+                "\n\n Speed - " + Spd;
         }
     }
 }

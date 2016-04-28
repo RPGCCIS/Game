@@ -30,7 +30,7 @@ namespace Fragments
                     int count = int.Parse(input.ReadLine());
                     for(int i = 0; i < count; i++)
                     {
-                        items.Add(new Item(input.ReadLine(), int.Parse(input.ReadLine()), int.Parse(input.ReadLine()), int.Parse(input.ReadLine()), int.Parse(input.ReadLine()), int.Parse(input.ReadLine()), int.Parse(input.ReadLine())));
+                        items.Add(new Item(input.ReadLine(), int.Parse(input.ReadLine()), int.Parse(input.ReadLine()), int.Parse(input.ReadLine()), int.Parse(input.ReadLine()), int.Parse(input.ReadLine()), int.Parse(input.ReadLine()), int.Parse(input.ReadLine())));
                     }
                     input.Close();
                 }

@@ -62,7 +62,7 @@ namespace Fragments
             options.Font = font;
             foreach (Item i in ShopManager.Instance.Current.Items)
             {
-                options.Add(i.Name.ToUpper() + "  Cost: " + i.Cost+ " gold");
+                options.Add("Lvl " + i.Level + " " +i.Name.ToUpper() + "  Cost: " + i.Cost+ " gold");
             }
             shop.Texture = scroll;
             shop = new Message(message, options, scroll, shop.Rect);
