@@ -148,6 +148,7 @@ namespace Fragments
                     title.Name = "You swing your Sword! You deal " + dealtAtk + " damage!";
                     state = BattleState.Paused;
                     break;
+
                 case BattleState.Defend:
                     title.Name = "You raise your Shield!";
                     Player.Defending = true;

@@ -237,7 +237,14 @@ namespace Fragments
 
                     if (type == TypeOfObject.Gate)
                     {
-                        GameManager.Instance.State = GameManager.GameState.Map;
+                        if (Progress.Instance.Flags.HasFlag(ProgressFlags.FirstGateUnlocked))
+                        {
+                            GameManager.Instance.State = GameManager.GameState.Map;
+                        }
+                        else
+                        {
+                            //TODO
+                        }
                     }
 
                     if (type == TypeOfObject.NPC)

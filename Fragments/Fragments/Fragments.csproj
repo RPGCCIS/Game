@@ -38,6 +38,7 @@
   <ItemGroup>
     <Compile Include="BattleManager.cs" />
     <Compile Include="BattleState.cs" />
+    <Compile Include="Progress.cs" />
     <Compile Include="Timer.cs" />
     <Compile Include="ConversationTree.cs" />
     <Compile Include="DialogueNodes.cs" />

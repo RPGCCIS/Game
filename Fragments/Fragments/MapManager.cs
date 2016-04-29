@@ -97,27 +97,33 @@ namespace Fragments
 
                     //ADD NPCS
 
-                    //Shopkeeper
+                    //------Gatekeeper
+                    ConversationTree gateKeeperDialogue = new ConversationTree("You can use these gates to reach the road.", 
+                        new String[] { "Continue" }, "Gate Keeper");
+
+                    //---Root
+                    //Continue
+                    gateKeeperDialogue.AddCapNode("A", "Oh, it's locked? Let me get that for you... \n" 
+                        + "[The gate keeper unlocks the gate]", new String[] { "Continue..." }); //End
+
+                    GameManager.Instance.CurrentMap.ParallaxLayer.AddNPC(150, gateKeeperDialogue);
+
+                    //------Shopkeeper
                     ConversationTree shopKeeperDialogue = new ConversationTree("Buy something, will ya?", new String[] {"Sure","Nah"}, "Shop Keeper");
                     
                     //---Root
-
                     //Sure
                     shopKeeperDialogue.AddNode("Good choice, what do you need?", new String[] { "Items", "Gear" });
                     //Nah
                     shopKeeperDialogue.AddNode("Are ya sure?", new String[] { "Yes", "No" });
 
-                    
-
                     //---Sure
-
                     //Items
                     shopKeeperDialogue.AddCapNode("B", "I don't currently have any items", new int[] { 0 }, new String[] { "Ok" }); // End
                     //Gear
                     shopKeeperDialogue.AddCapNode("C", "I'll make you tough!", new int[] { 0 }, new String[] { "Enter" }); //End
 
                     //---Nah
-
                     //Yes
                     shopKeeperDialogue.AddCapNode("D", "Bye now!", new int[] { 1 }, new String[] { "Ok" }); // End
                     //No

@@ -200,6 +200,7 @@ namespace Fragments
                             GameManager.Instance.Player.IsColliding(
                                 GameManager.Instance.CurrentMap.ParallaxLayer,
                                 TypeOfObject.Gate);
+
                             if(GameManager.Instance.Player.IsColliding(
                                GameManager.Instance.CurrentMap.ParallaxLayer,
                                TypeOfObject.NPC))
@@ -583,8 +584,7 @@ namespace Fragments
                 output.WriteLine(Player.mapX);
                 output.WriteLine(Player.mapY);
                 output.WriteLine(GameManager.Instance.CurrentMap.MapName);
-                
-
+                output.WriteLine(Progress.Instance.ToString());
             }
             catch (Exception e)
             {
@@ -613,6 +613,12 @@ namespace Fragments
                 Player.Spd = int.Parse(input.ReadLine());
                 Player.MapPos = new Vector2(int.Parse(input.ReadLine()), int.Parse(input.ReadLine()));
                 GameManager.Instance.CurrentMap = new Map(input.ReadLine());
+
+                //Load progress
+                string flagString = input.ReadLine();
+                int flagInt;
+                Int32.TryParse(flagString, out flagInt);
+                Progress.Instance.Flags = (ProgressFlags)flagInt;
             }
             catch (Exception e)
             {
@@ -634,8 +640,8 @@ namespace Fragments
             {
                 return false;
             }
-            
         }
+
         public void ConversationEndTrigger()
         {
             if(ct.Name == "Shop Keeper")
@@ -657,12 +663,23 @@ namespace Fragments
                 {
                     ct.Current = ct.Root;
                     conversation = false;
-                }else if(ct.CapNodes["E"] == ct.Current)
+                }
+                else if(ct.CapNodes["E"] == ct.Current)
                 {
                     ct.GoToNode(new int[] {0});
                 }
             }
-            
+
+            if (ct.Name == "Gate Keeper")
+            {
+                if (ct.CapNodes["A"] == ct.Current)
+                {
+                    ct.Previous = ct.Current;
+                    ct.Current = ct.Root;
+                    Progress.Instance.SetProgress(ProgressFlags.FirstGateUnlocked);
+                    conversation = false;
+                }
+            }
         }
         
     }
