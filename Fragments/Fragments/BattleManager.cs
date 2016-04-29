@@ -8,113 +8,139 @@ using Microsoft.Xna.Framework.Input;
 
 namespace Fragments
 {
-    class BattleManager
-    {
-        private BattleState state;
-        private BattleState oldState;
-        private bool stateChange;
-        private Timer pauseTimer;
+	class BattleManager
+	{
+		private BattleState state;
+		private BattleState oldState;
+		private bool stateChange;
+		private Timer pauseTimer;
 
-        //instance of battle manager
-        private static BattleManager instance;
+		//instance of battle manager
+		private static BattleManager instance;
 
-        //creates the battle manager
-        public static BattleManager Instance
-        {
-            get
-            {
-                if (instance == null)
-                {
-                    instance = new BattleManager();
-                }
+		//creates the battle manager
+		public static BattleManager Instance
+		{
+			get
+			{
+				if(instance == null)
+				{
+					instance = new BattleManager();
+				}
 
-                return instance;
-            }
-        }
+				return instance;
+			}
+		}
 
-        public BattleState State
-        {
-            get { return state; }
-            set { state = value; }
-        }
+		public BattleState State
+		{
+			get
+			{
+				return state;
+			}
+			set
+			{
+				state = value;
+			}
+		}
 
-        //fields
-        private Player p;
-        private Enemy e;
-        private Message title;
-        private KeyboardState kbState;
-        private KeyboardState oldKbState;
+		//fields
+		private Player p;
+		private Enemy e;
+		private Message title;
+		private KeyboardState kbState;
+		private KeyboardState oldKbState;
 
-        #region Properties
-        //properties to get or set the above variables
-        public Player Player
-        {
-            get { return p; }
-            set { p = value; }
-        }
+		#region Properties
 
-        public Enemy Enemy
-        {
-            get { return e; }
-            set { e = value; }
-        }
+		//properties to get or set the above variables
+		public Player Player
+		{
+			get
+			{
+				return p;
+			}
+			set
+			{
+				p = value;
+			}
+		}
 
-        public Message Title
-        {
-            get { return title; }
-            set { title = value; }
-        }
-        #endregion
+		public Enemy Enemy
+		{
+			get
+			{
+				return e;
+			}
+			set
+			{
+				e = value;
+			}
+		}
 
-        //Constructor
-        private BattleManager()
-        {
-            state = BattleState.Start;
-            pauseTimer = new Timer(1500); //1.5 seconds
-        }
+		public Message Title
+		{
+			get
+			{
+				return title;
+			}
+			set
+			{
+				title = value;
+			}
+		}
 
-        //several parts are imcomplete, such as magic just dealing a normal amount of attack damage. 
-        //Eventually, there should be separate stats, magic and resistance, that will be incorporated into character, as well as different types of magic.
-        public void Update(GameTime gameTime)
-        {
-            kbState = Keyboard.GetState();
+		#endregion
 
-            if (state != BattleState.Paused)
-            {
-                oldState = state;
-            }
+		//Constructor
+		private BattleManager()
+		{
+			state = BattleState.Start;
+			pauseTimer = new Timer(1500); //1.5 seconds
+		}
 
-            switch (state)
-            {
-                case BattleState.Start:
-                    p.MapPos = new Vector2(12,3);
-                    state = BattleState.Player;
-                    break;
+		//several parts are imcomplete, such as magic just dealing a normal amount of attack damage.
+		//Eventually, there should be separate stats, magic and resistance, that will be incorporated into character, as well as different types of magic.
+		public void Update(GameTime gameTime)
+		{
+			kbState = Keyboard.GetState();
 
-                case BattleState.Player:
+			if(state != BattleState.Paused)
+			{
+				oldState = state;
+			}
 
-                    if (stateChange)
-                    {
-                        title.Name = "What will you do?";
+			switch(state)
+			{
+				case BattleState.Start:
+					p.MapPos = new Vector2(12, 3);
+					state = BattleState.Player;
+					break;
 
-                        title.Dialogue.Add("Fight");
-                        title.Dialogue.Add("Run");
-                    }
+				case BattleState.Player:
+
+					if(stateChange)
+					{
+						title.Name = "What will you do?";
+
+						title.Dialogue.Add("Fight");
+						title.Dialogue.Add("Run");
+					}
                     
-                    if (IsKeyPressed(kbState, oldKbState, Keys.Enter))
-                    {
-                        if (title.Dialogue.Selected == 0)
-                        {
-                            state = BattleState.Fight;
-                        }
-                        else if (title.Dialogue.Selected == 1)
-                        {
-                            state = BattleState.Run;
-                        }
-                    }
-                    break;
+					if(IsKeyPressed(kbState, oldKbState, Keys.Enter))
+					{
+						if(title.Dialogue.Selected == 0)
+						{
+							state = BattleState.Fight;
+						}
+						else if(title.Dialogue.Selected == 1)
+						{
+							state = BattleState.Run;
+						}
+					}
+					break;
 
-                case BattleState.Fight:
+				case BattleState.Fight:
 
                     //Initialization stuff
                     if (stateChange)
