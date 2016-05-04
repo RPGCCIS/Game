@@ -16,6 +16,7 @@ namespace Fragments
 	{
 		public enum GameState
 		{
+            Off,
 			Menu,
 			Town,
 			Battle,
@@ -173,6 +174,8 @@ namespace Fragments
 
 			//Overworld
 			overworld = new Map();
+
+            prevState = GameState.Off;
 		}
 
 		//Methods
@@ -191,11 +194,35 @@ namespace Fragments
 		                   GameTime gameTime,
 		                   SpriteBatch sb)
 		{
-            
-			switch(GameManager.Instance.State)
+            bool stateSwitched = false;
+            if (prevState != gameState)
+            {
+                stateSwitched = true;
+
+                //Exceptions
+                if (gameState == GameState.Town)
+                {
+                    if (prevState == GameState.Pause 
+                        || prevState == GameState.Shop)
+                    {
+                        stateSwitched = false;
+                    }
+                }
+            }
+
+            prevState = gameState;
+
+            switch (GameManager.Instance.State)
 			{
+                
 				#region menu
 				case GameManager.GameState.Menu:
+                    //If the state changed, change the music
+                    if (stateSwitched)
+                    {
+                        SoundManager.Instance.PlaySong("Prelude");
+                    }
+
 					if(IsKeyPressed(kbState, oldKbState, Keys.W))
 					{
 						menuOptions.Previous();
@@ -237,10 +264,16 @@ namespace Fragments
 					break;
 					#endregion
 
-					#region town
+				#region town
 				case GameManager.GameState.Town:
+                    //If the state changed, change the music
+                    if (stateSwitched)
+                    {
+                        SoundManager.Instance.PlaySong("WelcomeToOurTown");
+                    }
+
                     //State changes for testing
-					if(!paused && !conversation)
+                    if (!paused && !conversation)
 					{
 						ShopManager.Instance.Current = new Shop(GameManager.Instance.CurrentMap.MapName);
 						if(IsKeyPressed(kbState, oldKbState, Keys.A))
@@ -325,7 +358,6 @@ namespace Fragments
                             {
                                 //Resume
                                 case 0:
-                                    //GameManager.Instance.State = GameManager.Instance.PrevState;
 									paused = false;
 									break;
 							//load
@@ -425,9 +457,17 @@ namespace Fragments
 
 					}
 					break;
+                #endregion
 
-				case GameManager.GameState.Map:
-					if(IsKeyPressed(kbState, oldKbState, Keys.T))
+                #region Map
+                case GameManager.GameState.Map:
+                    //If the state changed, change the music
+                    if (stateSwitched)
+                    {
+                        SoundManager.Instance.PlaySong("MainTheme");
+                    }
+
+                    if (IsKeyPressed(kbState, oldKbState, Keys.T))
 					{
 						GameManager.Instance.State = GameManager.GameState.Menu;
 					}
@@ -493,13 +533,21 @@ namespace Fragments
 						}
 					}
 					break;
-					#endregion
-					#region battle
+				#endregion
+
+				#region battle
 				case GameManager.GameState.Battle:
-					BattleManager.Instance.Update(gameTime);
+                    //If the state changed, change the music
+                    if (stateSwitched)
+                    {
+                        SoundManager.Instance.PlaySong("Fight2");
+                    }
+
+                    BattleManager.Instance.Update(gameTime);
 					break;
 					#endregion
-					#region pause
+
+				#region pause
 				case GameManager.GameState.Pause:
 					if(IsKeyPressed(kbState, oldKbState, Keys.W))
 					{
@@ -515,7 +563,6 @@ namespace Fragments
 						{
 						//Resume
 							case 0:
-								GameManager.Instance.State = GameManager.Instance.PrevState;                       
 								break;
 						//load
 							case 1:
@@ -529,7 +576,8 @@ namespace Fragments
 					}
 					break;
 					#endregion
-					#region shop
+
+				#region shop
 				case GameManager.GameState.Shop:
 					if(IsKeyPressed(kbState, oldKbState, Keys.W))
 					{
@@ -570,7 +618,8 @@ namespace Fragments
 					}
 					break;
 					#endregion
-					#region over
+
+				#region over
 				case GameManager.GameState.Over:
 					if(dialog == null || dialog.Mess.Text != "You Died")
 					{
