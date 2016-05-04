@@ -59,9 +59,9 @@ namespace Fragments
 				return instance;
 			}
 		}
-
-		//Properties
-		public GameState State
+        #region Properties
+        //Properties
+        public GameState State
 		{
 			get
 			{
@@ -158,8 +158,9 @@ namespace Fragments
 				conversation = value;
 			}
 		}
-		//Constructor
-		private GameManager()
+        #endregion
+        //Constructor
+        private GameManager()
 		{
 
 			townLocations.Add(new Vector2(9, 12));
@@ -185,11 +186,52 @@ namespace Fragments
 		{
 			return GameState.Town;
 		}
+        public void ConversationEndTrigger()
+        {
+            if (ct.Name == "Shop Keeper")
+            {
+                if (ct.CapNodes["C"] == ct.Current)
+                {
+                    ct.Previous = ct.Current;
+                    ShopManager.Instance.Current = new Shop(GameManager.Instance.CurrentMap.MapName);
+                    ShopManager.Instance.UpdateShop();
+                    GameManager.Instance.State = GameState.Shop;
+                    ct.Current = ct.Root;
+                    conversation = false;
+                }
+                else if (ct.CapNodes["B"] == ct.Current)
+                {
+                    ct.Current = ct.Previous;
+                }
+                else if (ct.CapNodes["D"] == ct.Current)
+                {
+                    ct.Current = ct.Root;
+                    conversation = false;
+                }
+                else if (ct.CapNodes["E"] == ct.Current)
+                {
+                    ct.GoToNode(new int[] { 0 });
+                }
+                Progress.Instance.SetProgress(ProgressFlags.SecondTown);
+            }
 
-		#region Update
+            if (ct.Name == "Gate Keeper")
+            {
+                if (ct.CapNodes["A"] == ct.Current)
+                {
+                    ct.Previous = ct.Current;
+                    ct.Current = ct.Root;
+                    Progress.Instance.SetProgress(ProgressFlags.FirstGateUnlocked);
+                    conversation = false;
+                }
+            }
 
-		//Update and check for switches between game states
-		public void Update(TextList menuOptions,
+        }
+
+        #region Update
+
+        //Update and check for switches between game states
+        public void Update(TextList menuOptions,
 		                   KeyboardState kbState,
 		                   KeyboardState oldKbState,
 		                   GameTime gameTime,
@@ -696,11 +738,12 @@ namespace Fragments
 			return (current.IsKeyDown(k) && old.IsKeyUp(k));
 		}
 
-		#endregion
+        #endregion
 
-		//Drawing
 
-		public void Draw(SpriteBatch spriteBatch, TextList menuOptions, Message battle, GraphicsDevice graphics)
+        #region Draw
+        //Drawing
+        public void Draw(SpriteBatch spriteBatch, TextList menuOptions, Message battle, GraphicsDevice graphics)
 		{
 			switch(GameManager.Instance.State)
 			{
@@ -763,7 +806,9 @@ namespace Fragments
                     break;
             }
         }
+        #endregion
 
+        #region Save&Load
         public void Save()
         {
             StreamWriter output = null;
@@ -838,47 +883,7 @@ namespace Fragments
                 return false;
             }
         }
-
-        public void ConversationEndTrigger()
-        {
-            if(ct.Name == "Shop Keeper")
-            {
-                if (ct.CapNodes["C"] == ct.Current)
-                {
-                    ct.Previous = ct.Current;
-                    ShopManager.Instance.Current = new Shop(GameManager.Instance.CurrentMap.MapName);
-                    ShopManager.Instance.UpdateShop();
-                    GameManager.Instance.State = GameState.Shop;
-                    ct.Current = ct.Root;
-                    conversation = false;
-                }
-                else if (ct.CapNodes["B"] == ct.Current)
-                {
-                    ct.Current = ct.Previous;
-                }
-                else if (ct.CapNodes["D"] == ct.Current)
-                {
-                    ct.Current = ct.Root;
-                    conversation = false;
-                }
-                else if(ct.CapNodes["E"] == ct.Current)
-                {
-                    ct.GoToNode(new int[] {0});
-                }
-                Progress.Instance.SetProgress(ProgressFlags.SecondTown);
-            }
-
-            if (ct.Name == "Gate Keeper")
-            {
-                if (ct.CapNodes["A"] == ct.Current)
-                {
-                    ct.Previous = ct.Current;
-                    ct.Current = ct.Root;
-                    Progress.Instance.SetProgress(ProgressFlags.FirstGateUnlocked);
-                    conversation = false;
-                }
-            }
-            
-        }
+        #endregion
+        
 	}
 }
