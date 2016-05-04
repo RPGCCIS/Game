@@ -283,3 +283,28 @@
 /processorParam:TextureFormat=Color
 /build:rock.jpg
 
+#begin Prelude.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:Prelude.mp3
+
+#begin Fight2.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:Fight2.mp3
+
+#begin WelcomeToOurTown.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:WelcomeToOurTown.mp3
+
+#begin MainTheme.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:MainTheme.mp3
+
+

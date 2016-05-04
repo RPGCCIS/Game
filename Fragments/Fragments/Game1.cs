@@ -84,7 +84,10 @@ namespace Fragments
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
             GameManager.Instance.CurrentMap = test;
+
             MapManager.Instance.Content = Content;
+            SoundManager.Instance.Content = Content;
+
             ShopManager.Instance.Font = Content.Load<SpriteFont>("LCALLIG_14");
             ShopManager.Instance.Scroll = Content.Load<Texture2D>("scroll");
             
@@ -141,6 +144,7 @@ namespace Fragments
             menuOptions.Add("Option 1");
             menuOptions.Add("Load");
             menuOptions.Add("Play Game");
+
         }
 
         /// <summary>
