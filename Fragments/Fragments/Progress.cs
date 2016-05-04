@@ -10,7 +10,7 @@ namespace Fragments
     public enum ProgressFlags
     {
         FirstGateUnlocked = 1 << 0,
-        Flag2 = 1 << 1, //1
+        SecondTown = 1 << 1, //1
         Flag3 = 1 << 2, //2
         Flag4 = 1 << 3, //4
         Flag5 = 1 << 4, //8

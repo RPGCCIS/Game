@@ -273,11 +273,43 @@ namespace Fragments
             {
                 for (int j = 0; j < 14; j++)
                 {
-                    s.Draw(MapManager.Instance.Content.Load<Texture2D>(tiles[i,j].Filename), new Rectangle(900/14* i, 750/14 * j, 900/14, 750/14), col);
-                    s.Draw(
-                        GetTexture(tiles[i, j].Filename),
+                    if(tiles[i,j].Filename == "purple")
+                    {
+                        s.Draw(
+                        GetTexture("road"),
                         new Rectangle(900 / 14 * i, 750 / 14 * j, 900 / 14, 750 / 14),
                         Color.White);
+                    }
+                    else if (tiles[i, j].Filename == "green")
+                    {
+                        s.Draw(
+                        GetTexture("grass"),
+                        new Rectangle(900 / 14 * i, 750 / 14 * j, 900 / 14, 750 / 14),
+                        Color.White);
+                    }
+                    else if (tiles[i, j].Filename == "blue")
+                    {
+                        s.Draw(
+                        GetTexture("water"),
+                        new Rectangle(900 / 14 * i, 750 / 14 * j, 900 / 14, 750 / 14),
+                        Color.White);
+                    }
+                    else if (tiles[i, j].Filename == "brown")
+                    {
+                        s.Draw(
+                        GetTexture("rock"),
+                        new Rectangle(900 / 14 * i, 750 / 14 * j, 900 / 14, 750 / 14),
+                        Color.White);
+                    }
+                    else
+                    {
+                        s.Draw(
+                        GetTexture(tiles[i,j].Filename),
+                        new Rectangle(900 / 14 * i, 750 / 14 * j, 900 / 14, 750 / 14),
+                        Color.White);
+                    }
+                  
+                    
                 }
             }
 
