@@ -16,7 +16,7 @@ namespace Fragments
 	{
 		public enum GameState
 		{
-            Off,
+			Off,
 			Menu,
 			Town,
 			Battle,
@@ -59,9 +59,11 @@ namespace Fragments
 				return instance;
 			}
 		}
-        #region Properties
-        //Properties
-        public GameState State
+
+		#region Properties
+
+		//Properties
+		public GameState State
 		{
 			get
 			{
@@ -158,9 +160,11 @@ namespace Fragments
 				conversation = value;
 			}
 		}
-        #endregion
-        //Constructor
-        private GameManager()
+
+		#endregion
+
+		//Constructor
+		private GameManager()
 		{
 
 			townLocations.Add(new Vector2(9, 12));
@@ -168,16 +172,16 @@ namespace Fragments
 			townLocations.Add(new Vector2(1, 9));
 			townLocations.Add(new Vector2(5, 9));
 			townLocations.Add(new Vector2(3, 6));
-            townLocations.Add(new Vector2(12, 5));
+			townLocations.Add(new Vector2(12, 5));
 
-            pauseMenu = new TextList(
+			pauseMenu = new TextList(
 				null,
 				Vector2.Zero);
 
 			//Overworld
 			overworld = new Map();
 
-            prevState = GameState.Off;
+			prevState = GameState.Off;
 		}
 
 		//Methods
@@ -186,85 +190,86 @@ namespace Fragments
 		{
 			return GameState.Town;
 		}
-        public void ConversationEndTrigger()
-        {
-            if (ct.Name == "Shop Keeper")
-            {
-                if (ct.CapNodes["C"] == ct.Current)
-                {
-                    ct.Previous = ct.Current;
-                    ShopManager.Instance.Current = new Shop(GameManager.Instance.CurrentMap.MapName);
-                    ShopManager.Instance.UpdateShop();
-                    GameManager.Instance.State = GameState.Shop;
-                    ct.Current = ct.Root;
-                    conversation = false;
-                }
-                else if (ct.CapNodes["B"] == ct.Current)
-                {
-                    ct.Current = ct.Previous;
-                }
-                else if (ct.CapNodes["D"] == ct.Current)
-                {
-                    ct.Current = ct.Root;
-                    conversation = false;
-                }
-                else if (ct.CapNodes["E"] == ct.Current)
-                {
-                    ct.GoToNode(new int[] { 0 });
-                }
-                Progress.Instance.SetProgress(ProgressFlags.SecondTown);
-            }
 
-            if (ct.Name == "Gate Keeper")
-            {
-                if (ct.CapNodes["A"] == ct.Current)
-                {
-                    ct.Previous = ct.Current;
-                    ct.Current = ct.Root;
-                    Progress.Instance.SetProgress(ProgressFlags.FirstGateUnlocked);
-                    conversation = false;
-                }
-            }
+		public void ConversationEndTrigger()
+		{
+			if(ct.Name == "Shop Keeper")
+			{
+				if(ct.CapNodes["C"] == ct.Current)
+				{
+					ct.Previous = ct.Current;
+					ShopManager.Instance.Current = new Shop(GameManager.Instance.CurrentMap.MapName);
+					ShopManager.Instance.UpdateShop();
+					GameManager.Instance.State = GameState.Shop;
+					ct.Current = ct.Root;
+					conversation = false;
+				}
+				else if(ct.CapNodes["B"] == ct.Current)
+				{
+					ct.Current = ct.Previous;
+				}
+				else if(ct.CapNodes["D"] == ct.Current)
+				{
+					ct.Current = ct.Root;
+					conversation = false;
+				}
+				else if(ct.CapNodes["E"] == ct.Current)
+				{
+					ct.GoToNode(new int[] { 0 });
+				}
+				Progress.Instance.SetProgress(ProgressFlags.SecondTown);
+			}
 
-        }
+			if(ct.Name == "Gate Keeper")
+			{
+				if(ct.CapNodes["A"] == ct.Current)
+				{
+					ct.Previous = ct.Current;
+					ct.Current = ct.Root;
+					Progress.Instance.SetProgress(ProgressFlags.FirstGateUnlocked);
+					conversation = false;
+				}
+			}
 
-        #region Update
+		}
 
-        //Update and check for switches between game states
-        public void Update(TextList menuOptions,
+		#region Update
+
+		//Update and check for switches between game states
+		public void Update(TextList menuOptions,
 		                   KeyboardState kbState,
 		                   KeyboardState oldKbState,
 		                   GameTime gameTime,
 		                   SpriteBatch sb)
 		{
-            bool stateSwitched = false;
-            if (prevState != gameState)
-            {
-                stateSwitched = true;
+			bool stateSwitched = false;
+			if(prevState != gameState)
+			{
+				stateSwitched = true;
 
-                //Exceptions
-                if (gameState == GameState.Town)
-                {
-                    if (prevState == GameState.Pause 
-                        || prevState == GameState.Shop)
-                    {
-                        stateSwitched = false;
-                    }
-                }
-            }
+				//Exceptions
+				if(gameState == GameState.Town)
+				{
+					if(prevState == GameState.Pause
+					   || prevState == GameState.Shop)
+					{
+						stateSwitched = false;
+					}
+				}
+			}
 
-            prevState = gameState;
+			prevState = gameState;
 
-            switch (GameManager.Instance.State)
+			switch(GameManager.Instance.State)
 			{
                 
 				#region menu
 				case GameManager.GameState.Menu:
                     //If the state changed, change the music
-                    if (stateSwitched)
-                    {
-                        SoundManager.Instance.PlaySong("Prelude");
-                    }
+					if(stateSwitched)
+					{
+						SoundManager.Instance.PlaySong("Prelude");
+					}
 
 					if(IsKeyPressed(kbState, oldKbState, Keys.W))
 					{
@@ -310,13 +315,13 @@ namespace Fragments
 				#region town
 				case GameManager.GameState.Town:
                     //If the state changed, change the music
-                    if (stateSwitched)
-                    {
-                        SoundManager.Instance.PlaySong("WelcomeToOurTown");
-                    }
+					if(stateSwitched)
+					{
+						SoundManager.Instance.PlaySong("WelcomeToOurTown");
+					}
 
                     //State changes for testing
-                    if (!paused && !conversation)
+					if(!paused && !conversation)
 					{
 						
 						if(IsKeyPressed(kbState, oldKbState, Keys.A))
@@ -329,79 +334,87 @@ namespace Fragments
 							paused = true;
 						}
                         //Interactable
-                        else if (IsKeyPressed(kbState, oldKbState, Keys.Enter))
-                        {
-                            ShopManager.Instance.Current = new Shop(GameManager.Instance.CurrentMap.MapName);
-                            //We don't care if it returns true or not
-                            GameManager.Instance.Player.IsColliding(
-                                GameManager.Instance.CurrentMap.ParallaxLayer,
-                                TypeOfObject.Interactable);
+                        else if(IsKeyPressed(kbState, oldKbState, Keys.Enter))
+						{
+							ShopManager.Instance.Current = new Shop(GameManager.Instance.CurrentMap.MapName);
+							//We don't care if it returns true or not
+							GameManager.Instance.Player.IsColliding(
+								GameManager.Instance.CurrentMap.ParallaxLayer,
+								TypeOfObject.Interactable);
 
-                            GameManager.Instance.Player.IsColliding(
-                                GameManager.Instance.CurrentMap.ParallaxLayer,
-                                TypeOfObject.Gate);
+							GameManager.Instance.Player.IsColliding(
+								GameManager.Instance.CurrentMap.ParallaxLayer,
+								TypeOfObject.Gate);
 
-                            if(GameManager.Instance.Player.IsColliding(
-                               GameManager.Instance.CurrentMap.ParallaxLayer,
-                               TypeOfObject.NPC))
-                            {
-                                dialog = new Message("scroll", false);
-                                TextObject message = new TextObject(mFont, ct.Current.Message, new Vector2(dialog.RectX + 150, dialog.RectY + 25));
-                                TextList dialogOptions = new TextList(null, new Vector2(dialog.RectX + 200, dialog.RectY + 75));
-                                dialogOptions.Font = mFont;
-                                foreach (string s in ct.Current.Responses)
-                                {
-                                    dialogOptions.Add(s);
-                                }
-                                dialog.Options = dialogOptions;
-                                dialog.Mess = new TextObject(mFont, ct.Current.Message, new Vector2(dialog.RectX + 150, dialog.RectY + 25));
-                                dialog = new Message(message, dialogOptions, scroll, dialog.Rect);
-                            }
-                        }
+							if(GameManager.Instance.Player.IsColliding(
+								   GameManager.Instance.CurrentMap.ParallaxLayer,
+								   TypeOfObject.NPC))
+							{
+								dialog = new Message("scroll", false);
+								TextObject message = new TextObject(mFont,
+								                                    ct.Current.Message,
+								                                    new Vector2(dialog.RectX + 150,
+								                                                                        dialog.RectY + 25));
+								TextList dialogOptions = new TextList(null,
+								                                      new Vector2(dialog.RectX + 200,
+								                                                                          dialog.RectY + 75));
+								dialogOptions.Font = mFont;
+								foreach(string s in ct.Current.Responses)
+								{
+									dialogOptions.Add(s);
+								}
+								dialog.Options = dialogOptions;
+								dialog.Mess = new TextObject(mFont,
+								                             ct.Current.Message,
+								                             new Vector2(dialog.RectX + 150,
+								                                                                 dialog.RectY + 25));
+								dialog = new Message(message, dialogOptions, scroll, dialog.Rect);
+							}
+						}
 
-                        //Player movement
-                        GameManager.Instance.Player.Move(Keyboard.GetState(), gameTime);
+						//Player movement
+						GameManager.Instance.Player.Move(Keyboard.GetState(), gameTime);
 
-                        //Layer movement
-                        if (GameManager.Instance.Player.MS == Player.MovementState.WalkingRight)
-                        {
-                            GameManager.Instance.CurrentMap.MoveLayers();
+						//Layer movement
+						if(GameManager.Instance.Player.MS == Player.MovementState.WalkingRight)
+						{
+							GameManager.Instance.CurrentMap.MoveLayers();
 
-                            if (GameManager.Instance.Player.IsColliding(
-                                GameManager.Instance.CurrentMap.ParallaxLayer,
-                                TypeOfObject.Solid))
-                            {
-                                GameManager.Instance.CurrentMap.MoveLayers(false);
-                            }
-                        }
-                        else if (GameManager.Instance.Player.MS == Player.MovementState.WalkingLeft)
-                        {
-                            GameManager.Instance.CurrentMap.MoveLayers(false);
+							if(GameManager.Instance.Player.IsColliding(
+								   GameManager.Instance.CurrentMap.ParallaxLayer,
+								   TypeOfObject.Solid))
+							{
+								GameManager.Instance.CurrentMap.MoveLayers(false);
+							}
+						}
+						else if(GameManager.Instance.Player.MS == Player.MovementState.WalkingLeft)
+						{
+							GameManager.Instance.CurrentMap.MoveLayers(false);
 
-                            if (GameManager.Instance.Player.IsColliding(
-                                GameManager.Instance.CurrentMap.ParallaxLayer,
-                                TypeOfObject.Solid))
-                            {
-                                GameManager.Instance.CurrentMap.MoveLayers();
-                            }
-                        }
-                    }
-                    else if(paused && !conversation)
-                    {
-                        if (IsKeyPressed(kbState, oldKbState, Keys.W))
-                        {
-                            pauseMenu.Previous();
-                        }
-                        if (IsKeyPressed(kbState, oldKbState, Keys.S))
-                        {
-                            pauseMenu.Next();
-                        }
-                        if (IsKeyPressed(kbState, oldKbState, Keys.Enter))
-                        {
-                            switch (pauseMenu.Selected)
-                            {
-                                //Resume
-                                case 0:
+							if(GameManager.Instance.Player.IsColliding(
+								   GameManager.Instance.CurrentMap.ParallaxLayer,
+								   TypeOfObject.Solid))
+							{
+								GameManager.Instance.CurrentMap.MoveLayers();
+							}
+						}
+					}
+					else if(paused && !conversation)
+					{
+						if(IsKeyPressed(kbState, oldKbState, Keys.W))
+						{
+							pauseMenu.Previous();
+						}
+						if(IsKeyPressed(kbState, oldKbState, Keys.S))
+						{
+							pauseMenu.Next();
+						}
+						if(IsKeyPressed(kbState, oldKbState, Keys.Enter))
+						{
+							switch(pauseMenu.Selected)
+							{
+							//Resume
+								case 0:
 									paused = false;
 									break;
 							//load
@@ -504,14 +517,14 @@ namespace Fragments
                 #endregion
 
                 #region Map
-                case GameManager.GameState.Map:
+				case GameManager.GameState.Map:
                     //If the state changed, change the music
-                    if (stateSwitched)
-                    {
-                        SoundManager.Instance.PlaySong("MainTheme");
-                    }
+					if(stateSwitched)
+					{
+						SoundManager.Instance.PlaySong("MainTheme");
+					}
 
-                    if (IsKeyPressed(kbState, oldKbState, Keys.T))
+					if(IsKeyPressed(kbState, oldKbState, Keys.T))
 					{
 						GameManager.Instance.State = GameManager.GameState.Menu;
 					}
@@ -565,7 +578,7 @@ namespace Fragments
 					{
 						if(townLocations.Contains(player.MapPos))
 						{
-                            if (player.MapPos == townLocations[0] )
+							if(player.MapPos == townLocations[0])
 							{
 								MapManager.Instance.LoadMap("test");
 							}
@@ -573,24 +586,24 @@ namespace Fragments
 							{
 								MapManager.Instance.LoadMap("test1");
 							}
-                            else if (player.MapPos == townLocations[2] && Progress.Instance.Flags.HasFlag(ProgressFlags.SecondTown))
-                            {
-                                MapManager.Instance.LoadMap("test1");
-                            }
-                            else if (player.MapPos == townLocations[3] && Progress.Instance.Flags.HasFlag(ProgressFlags.SecondTown))
-                            {
-                                MapManager.Instance.LoadMap("test1");
-                            }
-                            else if (player.MapPos == townLocations[4] && Progress.Instance.Flags.HasFlag(ProgressFlags.SecondTown))
-                            {
-                                MapManager.Instance.LoadMap("test1");
-                            }
-                            else if (player.MapPos == townLocations[5] && Progress.Instance.Flags.HasFlag(ProgressFlags.SecondTown))
-                            {
-                                MapManager.Instance.LoadMap("test1");
-                            }
-                            conversation = false;
-                        }
+							else if(player.MapPos == townLocations[2] && Progress.Instance.Flags.HasFlag(ProgressFlags.SecondTown))
+							{
+								MapManager.Instance.LoadMap("test1");
+							}
+							else if(player.MapPos == townLocations[3] && Progress.Instance.Flags.HasFlag(ProgressFlags.SecondTown))
+							{
+								MapManager.Instance.LoadMap("test1");
+							}
+							else if(player.MapPos == townLocations[4] && Progress.Instance.Flags.HasFlag(ProgressFlags.SecondTown))
+							{
+								MapManager.Instance.LoadMap("test1");
+							}
+							else if(player.MapPos == townLocations[5] && Progress.Instance.Flags.HasFlag(ProgressFlags.SecondTown))
+							{
+								MapManager.Instance.LoadMap("test1");
+							}
+							conversation = false;
+						}
 					}
 					break;
 				#endregion
@@ -598,12 +611,12 @@ namespace Fragments
 				#region battle
 				case GameManager.GameState.Battle:
                     //If the state changed, change the music
-                    if (stateSwitched)
-                    {
-                        SoundManager.Instance.PlaySong("Fight2");
-                    }
+					if(stateSwitched)
+					{
+						SoundManager.Instance.PlaySong("Fight2");
+					}
 
-                    BattleManager.Instance.Update(gameTime);
+					BattleManager.Instance.Update(gameTime);
 					break;
 					#endregion
 
@@ -686,20 +699,20 @@ namespace Fragments
 						dialog = new Message("scroll", false);
 						dialog.Rect = new Rectangle((int)dialog.RectX - 25, 250, dialog.Rect.Width, dialog.Rect.Height);
 						TextObject overmsg = new TextObject(mFont,
-						                                   "You Died",
-						                                   new Vector2(dialog.RectX + 150,
-						                                               dialog.RectY + 25));
+						                                    "You Died",
+						                                    new Vector2(dialog.RectX + 150,
+						                                                dialog.RectY + 25));
 						TextList overopts = new TextList(null,
-						                                new Vector2(dialog.RectX + 200,
-						                                            dialog.RectY + 75));
+						                                 new Vector2(dialog.RectX + 200,
+						                                             dialog.RectY + 75));
 						overopts.Font = mFont;
 						overopts.Add("Return To Menu");
 						overopts.Add("Load Most Recent Save");
 						dialog.Options = overopts;
 						dialog.Mess = new TextObject(font,
-						                            "You Died",
-						                            new Vector2(dialog.RectX + 150,
-						                                        dialog.RectY + 25));
+						                             "You Died",
+						                             new Vector2(dialog.RectX + 150,
+						                                         dialog.RectY + 25));
 						dialog = new Message(overmsg, overopts, scroll, dialog.Rect);
 					}
 					if(IsKeyPressed(kbState, oldKbState, Keys.W))
@@ -738,12 +751,13 @@ namespace Fragments
 			return (current.IsKeyDown(k) && old.IsKeyUp(k));
 		}
 
-        #endregion
+		#endregion
 
 
-        #region Draw
-        //Drawing
-        public void Draw(SpriteBatch spriteBatch, TextList menuOptions, Message battle, GraphicsDevice graphics)
+		#region Draw
+
+		//Drawing
+		public void Draw(SpriteBatch spriteBatch, TextList menuOptions, Message battle, GraphicsDevice graphics)
 		{
 			switch(GameManager.Instance.State)
 			{
@@ -791,99 +805,109 @@ namespace Fragments
 					GameManager.Instance.Player.DrawOverworld(spriteBatch);
                     //m.Draw(spriteBatch);
                     //GameManager.Instance.CurrentMap.DrawOverworld(spriteBatch, Color.White);
-                    break;
+					break;
 
-                case GameManager.GameState.Battle:
-                    GameManager.Instance.CurrentMap = overworld;
-                    GameManager.Instance.CurrentMap.DrawOverworld(spriteBatch, Color.DarkSlateGray);
-                    BattleManager.Instance.Draw(spriteBatch);
-                    break;
+				case GameManager.GameState.Battle:
+					GameManager.Instance.CurrentMap = overworld;
+					GameManager.Instance.CurrentMap.DrawOverworld(spriteBatch, Color.DarkSlateGray);
+					BattleManager.Instance.Draw(spriteBatch);
+					break;
 
-                case GameManager.GameState.Shop:
-                    graphics.Clear(Color.Black);
-                    ShopManager.Instance.DrawItems(spriteBatch);
+				case GameManager.GameState.Shop:
+					graphics.Clear(Color.Black);
+					ShopManager.Instance.DrawItems(spriteBatch);
 
-                    break;
-            }
-        }
-        #endregion
+					break;
+				case GameManager.GameState.Over:
+					graphics.Clear(Color.Black);
+					if(dialog != null)
+					{
+						dialog.Draw(spriteBatch);
+					}
+					break;
+			}
+		}
 
-        #region Save&Load
-        public void Save()
-        {
-            StreamWriter output = null;
+		#endregion
 
-            try
-            {
-                // Create the writer
-                output = new StreamWriter("../../../save.txt");
-                output.WriteLine(player.Gold);
-                output.WriteLine(Player.Atk);
-                output.WriteLine(Player.Def);
-                output.WriteLine(Player.MaxHp);
-                output.WriteLine(Player.MaxSp);
-                output.WriteLine(Player.Spd);
-                output.WriteLine(Player.mapX);
-                output.WriteLine(Player.mapY);
-                output.WriteLine(GameManager.Instance.CurrentMap.MapName);
-                output.WriteLine(Progress.Instance.ToString());
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine("Problem with file: " + e.Message);
-            }
-            finally
-            {
-                // Close the file as long as it's actually open
-                if (output != null)
-                    output.Close();
-            }
-        }
-        public bool Load()
-        {
-            StreamReader input = null;
+		#region Save&Load
 
-            try
-            {
-                input = new StreamReader("../../../save.txt");
-                // Set up some variables for the read
-                player.Gold = int.Parse(input.ReadLine());
-                Player.Atk = int.Parse(input.ReadLine());
-                Player.Def = int.Parse(input.ReadLine());
-                Player.MaxHp = int.Parse(input.ReadLine());
-                Player.MaxSp = int.Parse(input.ReadLine());
-                Player.Spd = int.Parse(input.ReadLine());
-                Player.MapPos = new Vector2(int.Parse(input.ReadLine()), int.Parse(input.ReadLine()));
-                GameManager.Instance.CurrentMap = new Map(input.ReadLine());
+		public void Save()
+		{
+			StreamWriter output = null;
 
-                //Load progress
-                string flagString = input.ReadLine();
-                int flagInt;
-                Int32.TryParse(flagString, out flagInt);
-                Progress.Instance.Flags = (ProgressFlags)flagInt;
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine("Error reading file: " + e.Message);
-            }
-            finally
-            {
-                if (input != null)
-                {
-                    input.Close();
-                }
+			try
+			{
+				// Create the writer
+				output = new StreamWriter("../../../save.txt");
+				output.WriteLine(player.Gold);
+				output.WriteLine(Player.Atk);
+				output.WriteLine(Player.Def);
+				output.WriteLine(Player.MaxHp);
+				output.WriteLine(Player.MaxSp);
+				output.WriteLine(Player.Spd);
+				output.WriteLine(Player.mapX);
+				output.WriteLine(Player.mapY);
+				output.WriteLine(GameManager.Instance.CurrentMap.MapName);
+				output.WriteLine(Progress.Instance.ToString());
+			}
+			catch(Exception e)
+			{
+				Console.WriteLine("Problem with file: " + e.Message);
+			}
+			finally
+			{
+				// Close the file as long as it's actually open
+				if(output != null) output.Close();
+			}
+		}
+
+		public bool Load()
+		{
+			StreamReader input = null;
+
+			try
+			{
+				input = new StreamReader("../../../save.txt");
+				// Set up some variables for the read
+				player.Gold = int.Parse(input.ReadLine());
+				Player.Atk = int.Parse(input.ReadLine());
+				Player.Def = int.Parse(input.ReadLine());
+				Player.MaxHp = int.Parse(input.ReadLine());
+				Player.MaxSp = int.Parse(input.ReadLine());
+				Player.Spd = int.Parse(input.ReadLine());
+				Player.MapPos = new Vector2(int.Parse(input.ReadLine()), int.Parse(input.ReadLine()));
+				GameManager.Instance.CurrentMap = new Map(input.ReadLine());
+
+				//Load progress
+				string flagString = input.ReadLine();
+				int flagInt;
+				Int32.TryParse(flagString, out flagInt);
+				Progress.Instance.Flags = (ProgressFlags)flagInt;
+			}
+			catch(Exception e)
+			{
+				Console.WriteLine("Error reading file: " + e.Message);
+			}
+			finally
+			{
+				if(input != null)
+				{
+					input.Close();
+				}
                     
-            }
-            if(input != null)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-        #endregion
+			}
+			if(input != null)
+			{
+				return true;
+			}
+			else
+			{
+				return false;
+			}
+		}
+
+		#endregion
         
 	}
 }
