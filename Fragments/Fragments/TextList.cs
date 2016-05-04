@@ -81,6 +81,8 @@ namespace Fragments
             {
                 selected -= textObjects.Count;
             }
+
+            SoundManager.Instance.PlaySoundEffect("UI");
         }
 
         public void Previous()
@@ -90,6 +92,8 @@ namespace Fragments
             {
                 selected += textObjects.Count;
             }
+
+            SoundManager.Instance.PlaySoundEffect("UI");
         }
 
         public void Clear()

@@ -263,3 +263,15 @@
 /processorParam:Quality=Best
 /build:MainTheme.mp3
 
+#begin UI.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:UI.wav
+
+#begin UnlockDoor.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:UnlockDoor.wav
+

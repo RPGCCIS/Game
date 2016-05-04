@@ -194,6 +194,8 @@ namespace Fragments
 		                   GameTime gameTime,
 		                   SpriteBatch sb)
 		{
+            SoundManager.Instance.Update();
+
             bool stateSwitched = false;
             if (prevState != gameState)
             {
@@ -226,7 +228,6 @@ namespace Fragments
 					if(IsKeyPressed(kbState, oldKbState, Keys.W))
 					{
 						menuOptions.Previous();
-                        
 					}
 					if(IsKeyPressed(kbState, oldKbState, Keys.S))
 					{

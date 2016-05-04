@@ -54,7 +54,8 @@ namespace Fragments
         private Dictionary<string, Song> songs;
         private Dictionary<string, SoundEffect> soundEffects;
 
-        private bool playing;
+        private bool fadingIn;
+        private const float fadeConstant = 0.01f;
         #endregion
 
         #region Properties
@@ -70,7 +71,6 @@ namespace Fragments
         public SoundManager()
         {
             MediaPlayer.IsRepeating = true;
-            playing = false;
 
             songs = new Dictionary<string, Song>();
             soundEffects = new Dictionary<string, SoundEffect>();
@@ -80,11 +80,6 @@ namespace Fragments
         //Methods
         public void PlaySong(string file)
         {
-            if (playing)
-            {
-                MediaPlayer.Stop();
-            }
-
             //If the song wasn't used yet, load it in
             if (!songs.ContainsKey(file))
             {
@@ -92,17 +87,34 @@ namespace Fragments
             }
             
             MediaPlayer.Play(songs[file]);
+            MediaPlayer.IsRepeating = true;
+            MediaPlayer.Volume = 0.1f;
+            fadingIn = true;
         }
 
         public void PlaySoundEffect(string file)
         {
             //If the song wasn't used yet, load it in
-            if (!songs.ContainsKey(file))
+            if (!soundEffects.ContainsKey(file))
             {
                 soundEffects.Add(file, content.Load<SoundEffect>(file));
             }
 
             soundEffects[file].Play();
+        }
+
+        public void Update()
+        {
+            if (fadingIn)
+            {
+                MediaPlayer.Volume += fadeConstant;
+
+                if (MediaPlayer.Volume >= 1.0f)
+                {
+                    MediaPlayer.Volume = 1;
+                    fadingIn = false;
+                }
+            }
         }
 
     }
