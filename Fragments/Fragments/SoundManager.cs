@@ -85,7 +85,7 @@ namespace Fragments
             {
                 songs.Add(file, content.Load<Song>(file));
             }
-            
+
             MediaPlayer.Play(songs[file]);
             MediaPlayer.IsRepeating = true;
             MediaPlayer.Volume = 0.1f;
