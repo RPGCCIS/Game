@@ -64,12 +64,6 @@ namespace Fragments
                     //GameManager.Instance.CurrentMap = new Map("test");
                     //Draw everything
 
-                    //GameManager.Instance.CurrentMap.ParallaxLayer.AddHouse(
-                    //    100,
-                    //    "test1",
-                    //    true, 
-                    //    "Test Land");
-
                     GameManager.Instance.CurrentMap.ParallaxLayer.AddGate(100);
 
                     GameManager.Instance.CurrentMap.ParallaxLayer.AddHouse(
@@ -130,6 +124,14 @@ namespace Fragments
                     shopKeeperDialogue.AddCapNode("E", "Well, what do you want?", new int[] { 1 }, new String[] { "Let me see your wares" });
 
                     GameManager.Instance.CurrentMap.ParallaxLayer.AddNPC(1500, shopKeeperDialogue);
+
+                    ConversationTree elderDialogue = new ConversationTree("Oh... your awake", new String[] { "..." }, "Elder");
+                    elderDialogue.AddNode("Well anyway... its nice to see that you are up and about!", new String[] { "Where am I?" });
+                    elderDialogue.AddNode("You're in ________, we found you blacked out on the city limits.",new int[] { 0 }, new String[] { "I can't remeber a thing" });
+                    elderDialogue.AddNode("Well... all we know about you is that you were found \n with this helmet fragment...   [Recieves helmet fragment].", new int[] { 0,0 }, new String[] { "What should I do with this?" });
+                    elderDialogue.AddNode("I assume you would want to find the rest of the fragemnts, \n it won't hurt to check nearby towns", new int[] { 0, 0, 0 }, new String[] { "Okay, thanks for the help." });
+                    elderDialogue.AddCapNode("A", "You can come back anytime.", new int[] { 0, 0,0,0 }, new String[] { "Leave" });
+                    GameManager.Instance.CurrentMap.ParallaxLayer.AddNPC(750, elderDialogue);
 
                     break;
 

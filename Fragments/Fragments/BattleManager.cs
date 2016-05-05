@@ -14,7 +14,6 @@ namespace Fragments
 		private BattleState oldState;
 		private bool stateChange;
 		private Timer pauseTimer;
-
 		//instance of battle manager
 		private static BattleManager instance;
 
@@ -113,7 +112,8 @@ namespace Fragments
 			switch(state)
 			{
 				case BattleState.Start:
-					p.MapPos = new Vector2(12, 3);
+                    //p.MapPos = new Vector2(12, 3);
+                    e.Hp = e.MaxHp;
 					state = BattleState.Player;
 					break;
 
@@ -197,7 +197,10 @@ namespace Fragments
                     break;
 
                 case BattleState.Win:
+                    Random gen = new Random();
+                    
                     title.Name = "You won!";
+                    GameManager.Instance.Player.Gold += gen.Next(10, 25);
                     state = BattleState.Paused;
                         break;
 

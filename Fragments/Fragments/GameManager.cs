@@ -46,6 +46,7 @@ namespace Fragments
 		private bool conversation = false;
 		private Message dialog;
 		private ConversationTree ct;
+        private Random gen = new Random();
 		//Singleton property
 		public static GameManager Instance
 		{
@@ -181,7 +182,7 @@ namespace Fragments
 		}
 
 		//Methods
-
+        
 		public GameState RunMenu()
 		{
 			return GameState.Town;
@@ -212,7 +213,7 @@ namespace Fragments
                 {
                     ct.GoToNode(new int[] { 0 });
                 }
-                Progress.Instance.SetProgress(ProgressFlags.SecondTown);
+                
             }
 
             if (ct.Name == "Gate Keeper")
@@ -225,9 +226,25 @@ namespace Fragments
                     conversation = false;
                 }
             }
+            if (ct.Name == "Elder")
+            {
+                if (ct.CapNodes["A"] == ct.Current)
+                {
+                    ct.Previous = ct.Current;
+                    ct.Current = ct.Root;
+                    Progress.Instance.SetProgress(ProgressFlags.TalkedWithElder);
+                    conversation = false;
+                }
+            }
 
         }
-
+        public void RandomEncounter()
+        {
+            if (gen.Next(0, 50) == 0)
+            {
+                GameManager.Instance.State = GameManager.GameState.Battle;
+            }
+        }
         #region Update
 
         //Update and check for switches between game states
@@ -345,6 +362,7 @@ namespace Fragments
                                GameManager.Instance.CurrentMap.ParallaxLayer,
                                TypeOfObject.NPC))
                             {
+
                                 dialog = new Message("scroll", false);
                                 TextObject message = new TextObject(mFont, ct.Current.Message, new Vector2(dialog.RectX + 150, dialog.RectY + 25));
                                 TextList dialogOptions = new TextList(null, new Vector2(dialog.RectX + 200, dialog.RectY + 75));
@@ -519,11 +537,11 @@ namespace Fragments
 					{
 						GameManager.Instance.State = GameManager.GameState.Pause;
 					}
-					if(IsKeyPressed(kbState, oldKbState, Keys.Z))
-					{
-						GameManager.Instance.State = GameManager.GameState.Battle;
-					}
-                    
+					//if(IsKeyPressed(kbState, oldKbState, Keys.Z))
+					//{
+     //                   GameManager.Instance.State = GameManager.GameState.Battle;
+     //               }
+                   
                     //overworld movement
                     //Checks the movement flags
 					if(IsKeyPressed(kbState, oldKbState, Keys.Up))
@@ -532,7 +550,7 @@ namespace Fragments
 						{
 							player.mapY--;
 						}
-                        
+                        RandomEncounter();
 					}
 					else if(IsKeyPressed(kbState, oldKbState, Keys.Down))
 					{
@@ -540,7 +558,7 @@ namespace Fragments
 						{
 							player.mapY++;
 						}
-                        
+                        RandomEncounter();
 					}
 					else if(IsKeyPressed(kbState, oldKbState, Keys.Left))
 					{
@@ -548,7 +566,7 @@ namespace Fragments
 						{
 							player.mapX--;
 						}
-                        
+                        RandomEncounter();
 					}
 					else if(IsKeyPressed(kbState, oldKbState, Keys.Right))
 					{
@@ -556,7 +574,7 @@ namespace Fragments
 						{
 							player.mapX++;
 						}
-                        
+                        RandomEncounter();
 					}
 
                     //If the location of the player when they press enter is within the townLoactions list
@@ -569,23 +587,23 @@ namespace Fragments
 							{
 								MapManager.Instance.LoadMap("test");
 							}
-							else if(player.MapPos == townLocations[1] && Progress.Instance.Flags.HasFlag(ProgressFlags.SecondTown))
+							else if(player.MapPos == townLocations[1] && Progress.Instance.Flags.HasFlag(ProgressFlags.TalkedWithElder))
 							{
 								MapManager.Instance.LoadMap("test1");
 							}
-                            else if (player.MapPos == townLocations[2] && Progress.Instance.Flags.HasFlag(ProgressFlags.SecondTown))
+                            else if (player.MapPos == townLocations[2] && Progress.Instance.Flags.HasFlag(ProgressFlags.SecondFragment))
                             {
                                 MapManager.Instance.LoadMap("test1");
                             }
-                            else if (player.MapPos == townLocations[3] && Progress.Instance.Flags.HasFlag(ProgressFlags.SecondTown))
+                            else if (player.MapPos == townLocations[3] && Progress.Instance.Flags.HasFlag(ProgressFlags.ThirdFragment))
                             {
                                 MapManager.Instance.LoadMap("test1");
                             }
-                            else if (player.MapPos == townLocations[4] && Progress.Instance.Flags.HasFlag(ProgressFlags.SecondTown))
+                            else if (player.MapPos == townLocations[4] && Progress.Instance.Flags.HasFlag(ProgressFlags.FouthFragment))
                             {
                                 MapManager.Instance.LoadMap("test1");
                             }
-                            else if (player.MapPos == townLocations[5] && Progress.Instance.Flags.HasFlag(ProgressFlags.SecondTown))
+                            else if (player.MapPos == townLocations[5] && Progress.Instance.Flags.HasFlag(ProgressFlags.FifthFragment))
                             {
                                 MapManager.Instance.LoadMap("test1");
                             }

@@ -10,12 +10,12 @@ namespace Fragments
     public enum ProgressFlags
     {
         FirstGateUnlocked = 1 << 0,
-        SecondTown = 1 << 1, //1
-        Flag3 = 1 << 2, //2
-        Flag4 = 1 << 3, //4
-        Flag5 = 1 << 4, //8
-        Flag6 = 1 << 5, //16
-        Flag7 = 1 << 6 //32.......
+        TalkedWithElder = 1 << 1, //1
+        SecondFragment = 1 << 2, //2
+        ThirdFragment = 1 << 3, //4
+        FouthFragment = 1 << 4, //8
+        FifthFragment = 1 << 5, //16
+        SixthFragment = 1 << 6 //32.......
     }
     #endregion
 
