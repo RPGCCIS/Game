@@ -243,7 +243,7 @@ namespace Fragments
                         }
                         else
                         {
-                            //TODO
+                            //SoundManager.Instance.PlaySoundEffect("Lock");
                         }
                     }
 
