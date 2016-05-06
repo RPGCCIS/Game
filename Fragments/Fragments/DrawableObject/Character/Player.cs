@@ -127,11 +127,11 @@ namespace Fragments
                     {
                         case MovementState.StandingRight:
                             frame = 0;
-                            if(kb.IsKeyDown(Keys.Right))
+                            if(kb.IsKeyDown(Keys.D))
                             {
                                 movementState = MovementState.WalkingRight;
                             }
-                            else if (kb.IsKeyDown(Keys.Left))
+                            else if (kb.IsKeyDown(Keys.A))
                             {
                                 movementState = MovementState.WalkingLeft;
                             }
@@ -148,11 +148,11 @@ namespace Fragments
 
                                 timeCounter -= timePerFrame;
                             }
-                            if (kb.IsKeyUp(Keys.Right))
+                            if (kb.IsKeyUp(Keys.D))
                             {
                                 movementState = MovementState.StandingRight;
                             }
-                            else if (kb.IsKeyDown(Keys.Left))
+                            else if (kb.IsKeyDown(Keys.A))
                             {
                                 movementState = MovementState.WalkingLeft;
                             }
@@ -160,11 +160,11 @@ namespace Fragments
 
                         case MovementState.StandingLeft:
                             frame = 0;
-                            if (kb.IsKeyDown(Keys.Right))
+                            if (kb.IsKeyDown(Keys.D))
                             {
                                 movementState = MovementState.WalkingRight;
                             }
-                            else if (kb.IsKeyDown(Keys.Left))
+                            else if (kb.IsKeyDown(Keys.A))
                             {
                                 movementState = MovementState.WalkingLeft;
                             }
@@ -181,11 +181,11 @@ namespace Fragments
 
                                 timeCounter -= timePerFrame;
                             }
-                            if (kb.IsKeyDown(Keys.Right))
+                            if (kb.IsKeyDown(Keys.D))
                             {
                                 movementState = MovementState.WalkingRight;
                             }
-                            else if (kb.IsKeyUp(Keys.Left))
+                            else if (kb.IsKeyUp(Keys.A))
                             {
                                 movementState = MovementState.StandingLeft;
                             }

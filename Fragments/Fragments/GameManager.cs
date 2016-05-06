@@ -340,12 +340,7 @@ namespace Fragments
                     //State changes for testing
                     if (!paused && !conversation)
                     {
-
-                        if (IsKeyPressed(kbState, oldKbState, Keys.A))
-                        {
-                            GameManager.Instance.State = GameManager.GameState.Menu;
-                        }
-                        else if (IsKeyPressed(kbState, oldKbState, Keys.Escape))
+                        if (IsKeyPressed(kbState, oldKbState, Keys.Escape))
                         {
                             pauseMenu.Selected = 0;
                             paused = true;
@@ -541,22 +536,9 @@ namespace Fragments
                         SoundManager.Instance.PlaySong("MainTheme");
                     }
 
-                    if (IsKeyPressed(kbState, oldKbState, Keys.T))
-                    {
-                        GameManager.Instance.State = GameManager.GameState.Menu;
-                    }
-                    if (IsKeyPressed(kbState, oldKbState, Keys.G))
-                    {
-                        GameManager.Instance.State = GameManager.GameState.Pause;
-                    }
-                    //if(IsKeyPressed(kbState, oldKbState, Keys.Z))
-                    //{
-                    //                   GameManager.Instance.State = GameManager.GameState.Battle;
-                    //               }
-
                     //overworld movement
                     //Checks the movement flags
-                    if (IsKeyPressed(kbState, oldKbState, Keys.Up))
+                    if (IsKeyPressed(kbState, oldKbState, Keys.W))
                     {
                         if (CurrentMap.Tiles[(int)player.mapX, (int)player.mapY].Flags.HasFlag(MovementFlags.UP))
                         {
@@ -564,7 +546,7 @@ namespace Fragments
                         }
                         RandomEncounter();
                     }
-                    else if (IsKeyPressed(kbState, oldKbState, Keys.Down))
+                    else if (IsKeyPressed(kbState, oldKbState, Keys.S))
                     {
                         if (CurrentMap.Tiles[(int)player.mapX, (int)player.mapY].Flags.HasFlag(MovementFlags.DOWN))
                         {
@@ -572,7 +554,7 @@ namespace Fragments
                         }
                         RandomEncounter();
                     }
-                    else if (IsKeyPressed(kbState, oldKbState, Keys.Left))
+                    else if (IsKeyPressed(kbState, oldKbState, Keys.A))
                     {
                         if (CurrentMap.Tiles[(int)player.mapX, (int)player.mapY].Flags.HasFlag(MovementFlags.LEFT))
                         {
@@ -580,7 +562,7 @@ namespace Fragments
                         }
                         RandomEncounter();
                     }
-                    else if (IsKeyPressed(kbState, oldKbState, Keys.Right))
+                    else if (IsKeyPressed(kbState, oldKbState, Keys.D))
                     {
                         if (CurrentMap.Tiles[(int)player.mapX, (int)player.mapY].Flags.HasFlag(MovementFlags.RIGHT))
                         {
