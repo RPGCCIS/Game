@@ -11,111 +11,126 @@ using Microsoft.Xna.Framework.Content;
 
 namespace Fragments
 {
-    /// <summary>
-    /// Music player!
-    /// 
-    /// ---- Songs ----
-    /// All Final Fantasy IV music (for testing/consistency)
-    /// 
-    /// Main menu - Prelude
-    /// Town      - Welcome to our town
-    /// Overworld - Main theme
-    /// Battle    - Fight 2
-    /// 
-    /// </summary>
-    class SoundManager
-    {
-        #region Singleton
-        private static SoundManager instance;
+	/// <summary>
+	/// Music player!
+	/// 
+	/// ---- Songs ----
+	/// All Final Fantasy IV music (for testing/consistency)
+	/// 
+	/// Main menu - Prelude
+	/// Town      - Welcome to our town
+	/// Overworld - Main theme
+	/// Battle    - Fight 2
+	/// 
+	/// </summary>
+	class SoundManager
+	{
+		#region Singleton
 
-        public static SoundManager Instance
-        {
-            get
-            {
-                if (instance == null)
-                {
-                    instance = new SoundManager();
-                }
+		private static SoundManager instance;
 
-                return instance;
-            }
-            set
-            {
-                instance = value;
-            }
-        }
-        #endregion
+		public static SoundManager Instance
+		{
+			get
+			{
+				if(instance == null)
+				{
+					instance = new SoundManager();
+				}
 
-        #region Variables
-        //Content
-        private ContentManager content;
+				return instance;
+			}
+			set
+			{
+				instance = value;
+			}
+		}
 
-        //Sound holders
-        private Dictionary<string, Song> songs;
-        private Dictionary<string, SoundEffect> soundEffects;
+		#endregion
 
-        private bool fadingIn;
-        private const float fadeConstant = 0.01f;
-        #endregion
+		#region Variables
 
-        #region Properties
+		//Content
+		private ContentManager content;
 
-        public ContentManager Content
-        {
-            set { content = value; }
-        }
+		//Sound holders
+		private Dictionary<string, Song> songs;
+		private Dictionary<string, SoundEffect> soundEffects;
 
-        #endregion
+		private bool fadingIn;
+		private const float fadeConstant = 0.01f;
 
-        #region Constructor
-        public SoundManager()
-        {
-            MediaPlayer.IsRepeating = true;
+		#endregion
 
-            songs = new Dictionary<string, Song>();
-            soundEffects = new Dictionary<string, SoundEffect>();
-        }
-        #endregion
+		#region Properties
 
-        //Methods
-        public void PlaySong(string file)
-        {
-            //If the song wasn't used yet, load it in
-            if (!songs.ContainsKey(file))
-            {
-                songs.Add(file, content.Load<Song>(file));
-            }
+		public ContentManager Content
+		{
+			set
+			{
+				content = value;
+			}
+		}
 
-            MediaPlayer.Play(songs[file]);
-            MediaPlayer.IsRepeating = true;
-            MediaPlayer.Volume = 0.1f;
-            fadingIn = true;
-        }
+		#endregion
 
-        public void PlaySoundEffect(string file)
-        {
-            //If the song wasn't used yet, load it in
-            if (!soundEffects.ContainsKey(file))
-            {
-                soundEffects.Add(file, content.Load<SoundEffect>(file));
-            }
+		#region Constructor
 
-            soundEffects[file].Play();
-        }
+		public SoundManager()
+		{
+			MediaPlayer.IsRepeating = true;
 
-        public void Update()
-        {
-            if (fadingIn)
-            {
-                MediaPlayer.Volume += fadeConstant;
+			songs = new Dictionary<string, Song>();
+			soundEffects = new Dictionary<string, SoundEffect>();
+		}
 
-                if (MediaPlayer.Volume >= 1.0f)
-                {
-                    MediaPlayer.Volume = 1;
-                    fadingIn = false;
-                }
-            }
-        }
+		#endregion
 
-    }
+		//Methods
+		public void PlaySong(string file)
+		{
+			try
+			{
+				//If the song wasn't used yet, load it in
+				if(!songs.ContainsKey(file))
+				{
+					songs.Add(file, content.Load<Song>(file));
+				}
+
+				MediaPlayer.Play(songs[file]);
+				MediaPlayer.IsRepeating = true;
+				MediaPlayer.Volume = 0.1f;
+				fadingIn = true;
+			}
+			catch(Exception)
+			{
+			}
+		}
+
+		public void PlaySoundEffect(string file)
+		{
+			//If the song wasn't used yet, load it in
+			if(!soundEffects.ContainsKey(file))
+			{
+				soundEffects.Add(file, content.Load<SoundEffect>(file));
+			}
+
+			soundEffects[file].Play();
+		}
+
+		public void Update()
+		{
+			if(fadingIn)
+			{
+				MediaPlayer.Volume += fadeConstant;
+
+				if(MediaPlayer.Volume >= 1.0f)
+				{
+					MediaPlayer.Volume = 1;
+					fadingIn = false;
+				}
+			}
+		}
+
+	}
 }
