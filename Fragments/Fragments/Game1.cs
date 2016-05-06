@@ -69,7 +69,7 @@ namespace Fragments
 			//Set up Menu
 			menuOptions = new TextList(
 				null,
-				new Vector2(100, 100));
+				new Vector2(100, 550));
 
 			base.Initialize();
 
@@ -140,8 +140,9 @@ namespace Fragments
 			GameManager.Instance.Font = font;
 			GameManager.Instance.MFont = messageFont;
 			//Menu
+			GameManager.Instance.MenuTexture = Content.Load<Texture2D>("menu");
 			menuOptions.Font = font;
-			menuOptions.Add("Option 1");
+			//menuOptions.Add("Option 1");
 			menuOptions.Add("Load");
 			menuOptions.Add("Play Game");
 

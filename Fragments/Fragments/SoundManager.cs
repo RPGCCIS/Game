@@ -109,13 +109,19 @@ namespace Fragments
 
 		public void PlaySoundEffect(string file)
 		{
-			//If the song wasn't used yet, load it in
-			if(!soundEffects.ContainsKey(file))
+			try
 			{
-				soundEffects.Add(file, content.Load<SoundEffect>(file));
-			}
+				//If the song wasn't used yet, load it in
+				if(!soundEffects.ContainsKey(file))
+				{
+					soundEffects.Add(file, content.Load<SoundEffect>(file));
+				}
 
-			soundEffects[file].Play();
+				soundEffects[file].Play();
+			}
+			catch(Exception)
+			{
+			}
 		}
 
 		public void Update()
