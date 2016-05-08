@@ -99,7 +99,7 @@ namespace Fragments
             {
                 soundEffects.Add(file, content.Load<SoundEffect>(file));
             }
-
+            SoundEffect.MasterVolume = 1.0f;
             soundEffects[file].Play();
         }
 
