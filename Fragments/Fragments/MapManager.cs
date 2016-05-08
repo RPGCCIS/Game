@@ -131,12 +131,32 @@ namespace Fragments
                     elderDialogue.AddNode("Well... all we know about you is that you were found \n with this helmet fragment...   [Recieves helmet fragment].", new int[] { 0,0 }, new String[] { "What should I do with this?" });
                     elderDialogue.AddNode("I assume you would want to find the rest of the fragemnts, \n it won't hurt to check nearby towns", new int[] { 0, 0, 0 }, new String[] { "Okay, thanks for the help." });
                     elderDialogue.AddCapNode("A", "You can come back anytime.", new int[] { 0, 0,0,0 }, new String[] { "Leave" });
-                    GameManager.Instance.CurrentMap.ParallaxLayer.AddNPC(750, elderDialogue);
+                    GameManager.Instance.CurrentMap.ParallaxLayer.AddNPC(750, elderDialogue,"elder",1.2,1.2);
 
                     break;
 
                 case "test1":
                     LoadMapFromFile("test1");
+                   
+                    //GameManager.Instance.CurrentMap = new Map("test2");
+                    GameManager.Instance.CurrentMap.ParallaxLayer.AddObject(
+                         GameManager.Instance.CurrentMap.GetTexture("wall"),
+                         new Vector2(-4000, 0),
+                         TypeOfObject.Solid);
+
+                    //GameManager.Instance.CurrentMap.ParallaxLayer.AddHouse(
+                    //    300,
+                    //    "test");
+                    GameManager.Instance.CurrentMap.ParallaxLayer.AddHouse(
+                        800,
+                        "Inn",
+                        true,
+                        "Inn");
+                    GameManager.Instance.CurrentMap.ParallaxLayer.AddGate(0);
+                    break;
+                case "test2":
+                    LoadMapFromFile("test2");
+
                     //GameManager.Instance.CurrentMap = new Map("test2");
                     GameManager.Instance.CurrentMap.ParallaxLayer.AddObject(
                          GameManager.Instance.CurrentMap.GetTexture("wall"),

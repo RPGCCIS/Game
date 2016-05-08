@@ -161,7 +161,7 @@ namespace Fragments
                 conversation = value;
             }
         }
-
+        public List<Vector2> TownLocations { get { return townLocations; } }
         #endregion
 
         //Constructor
@@ -602,16 +602,17 @@ namespace Fragments
                             else if (player.MapPos == townLocations[1] && Progress.Instance.Flags.HasFlag(ProgressFlags.TalkedWithElder))
                             {
                                 MapManager.Instance.LoadMap("test1");
+                                Progress.Instance.SetProgress(ProgressFlags.SecondFragment);
                             }
                             else if (player.MapPos == townLocations[2] && Progress.Instance.Flags.HasFlag(ProgressFlags.SecondFragment))
                             {
-                                MapManager.Instance.LoadMap("test1");
+                                MapManager.Instance.LoadMap("test2");
                             }
                             else if (player.MapPos == townLocations[3] && Progress.Instance.Flags.HasFlag(ProgressFlags.ThirdFragment))
                             {
                                 MapManager.Instance.LoadMap("test1");
                             }
-                            else if (player.MapPos == townLocations[4] && Progress.Instance.Flags.HasFlag(ProgressFlags.FouthFragment))
+                            else if (player.MapPos == townLocations[4] && Progress.Instance.Flags.HasFlag(ProgressFlags.FourthFragment))
                             {
                                 MapManager.Instance.LoadMap("test1");
                             }

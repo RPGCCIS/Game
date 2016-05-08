@@ -22,7 +22,7 @@ namespace Fragments
         private string name;
 
         //House constants
-        private const int houseHeight = 205;
+        private const int houseHeight = -50;
         private const int signHeight = 100;
         private const int gateHeight = 210;
         private const int npcHeight = 565;
@@ -64,7 +64,8 @@ namespace Fragments
         {
             //Get the textures you need
             Texture2D house = GameManager.Instance.CurrentMap.GetTexture("house");
-            Texture2D door = GameManager.Instance.CurrentMap.GetTexture("door");
+            //Texture2D door = GameManager.Instance.CurrentMap.GetTexture("door");
+            Texture2D door = new Texture2D(house.GraphicsDevice, 100, 75);
             Texture2D sign = GameManager.Instance.CurrentMap.GetTexture("sign");
 
             //Add house
@@ -78,7 +79,7 @@ namespace Fragments
 
             //Add door
             objects.Add(new DrawableObject(
-                position + (house.Width / 2) - (door.Width / 2),
+                position + (house.Width / 2) - (door.Width / 2) +175,
                 houseHeight + (house.Height) - (door.Height),
                 door.Width,
                 door.Height,
@@ -90,7 +91,7 @@ namespace Fragments
             {
                 //Sign
                 objects.Add(new DrawableObject(
-                    position + (house.Width / 2) - (sign.Width / 2),
+                    position + (house.Width / 2) - (sign.Width / 2) + 100,
                     houseHeight + signHeight,
                     sign.Width,
                     sign.Height,
@@ -100,7 +101,7 @@ namespace Fragments
                 //Text
                 Vector2 txtPosition = new Vector2();
                 SpriteFont txtFont = GameManager.Instance.CurrentMap.GetFont("Georgia_32");
-                txtPosition.X = position + (house.Width / 2) - (txtFont.MeasureString(signTxt).X / 2);
+                txtPosition.X = position + (house.Width / 2) - (txtFont.MeasureString(signTxt).X / 2) +100;
                 txtPosition.Y = houseHeight + signHeight + (sign.Height / 2) - (txtFont.MeasureString(signTxt).Y / 2);
 
                 txtObjects.Add(new TextObject(
@@ -115,7 +116,8 @@ namespace Fragments
         {
             //Get the textures you need
             Texture2D house = GameManager.Instance.CurrentMap.GetTexture("house");
-            Texture2D door = GameManager.Instance.CurrentMap.GetTexture("door");
+            //Texture2D door = GameManager.Instance.CurrentMap.GetTexture("door");
+            Texture2D door = new Texture2D(house.GraphicsDevice,60,75);
             Texture2D sign = GameManager.Instance.CurrentMap.GetTexture("sign");
 
             //Add house
@@ -129,7 +131,7 @@ namespace Fragments
 
             //Add door
             objects.Add(new InteractableObject(
-                position + (house.Width / 2) - (door.Width / 2),
+                position + (house.Width / 2) - (door.Width / 2) + 160,
                 houseHeight + (house.Height) - (door.Height),
                 door.Width,
                 door.Height,
@@ -141,7 +143,7 @@ namespace Fragments
             {
                 //Sign
                 objects.Add(new DrawableObject(
-                    position + (house.Width / 2) - (sign.Width / 2),
+                    position + (house.Width / 2) - (sign.Width / 2) +100,
                     houseHeight + signHeight,
                     sign.Width,
                     sign.Height,
@@ -151,7 +153,7 @@ namespace Fragments
                 //Text
                 Vector2 txtPosition = new Vector2();
                 SpriteFont txtFont = GameManager.Instance.CurrentMap.GetFont("Georgia_32");
-                txtPosition.X = position + (house.Width / 2) - (txtFont.MeasureString(signTxt).X / 2);
+                txtPosition.X = position + (house.Width / 2) - (txtFont.MeasureString(signTxt).X / 2) + 100;
                 txtPosition.Y = houseHeight + signHeight + (sign.Height / 2) - (txtFont.MeasureString(signTxt).Y / 2);
 
                 txtObjects.Add(new TextObject(
@@ -176,6 +178,22 @@ namespace Fragments
         }
 
         //NPC
+        public void AddNPC(int position, ConversationTree dialogue,string textureName,double widthScale, double heightScale)
+        {
+            Texture2D npc = GameManager.Instance.CurrentMap.GetTexture(textureName);
+
+            objects.Add(new NPC(
+                position,
+                npcHeight,
+                (int)(GameManager.Instance.Player.PlayerWidth * widthScale),
+                (int)(GameManager.Instance.Player.PlayerHeight * heightScale),
+                npc));
+           if(objects[objects.Count-1].Type == TypeOfObject.NPC)
+            {
+                NPC n = (NPC)(objects[objects.Count - 1]);
+                n.Conversation = dialogue;
+            }
+        }
         public void AddNPC(int position, ConversationTree dialogue)
         {
             Texture2D npc = GameManager.Instance.CurrentMap.GetTexture("npc");
@@ -186,7 +204,7 @@ namespace Fragments
                 (int)(GameManager.Instance.Player.PlayerWidth * 1.5),
                 (int)(GameManager.Instance.Player.PlayerHeight * 1.2),
                 npc));
-           if(objects[objects.Count-1].Type == TypeOfObject.NPC)
+            if (objects[objects.Count - 1].Type == TypeOfObject.NPC)
             {
                 NPC n = (NPC)(objects[objects.Count - 1]);
                 n.Conversation = dialogue;

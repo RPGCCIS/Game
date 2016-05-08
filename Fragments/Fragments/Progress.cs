@@ -13,7 +13,7 @@ namespace Fragments
         TalkedWithElder = 1 << 1, //1
         SecondFragment = 1 << 2, //2
         ThirdFragment = 1 << 3, //4
-        FouthFragment = 1 << 4, //8
+        FourthFragment = 1 << 4, //8
         FifthFragment = 1 << 5, //16
         SixthFragment = 1 << 6 //32.......
     }

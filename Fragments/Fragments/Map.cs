@@ -196,8 +196,8 @@ namespace Fragments
             foreach (Layer l in layers)
             {
                 //everything is just currently drawn to 0,0
-                if (l.Name == "background")
-                {
+                //if (l.Name == "background" || l.Name == "ocean")
+                //{
                     if (l.Objects.Count == 1)
                     {
                         DrawableObject centerBg = l.Objects[0];
@@ -259,8 +259,8 @@ namespace Fragments
                         }
                     }
 
-                    Console.WriteLine(l.Objects.Count);
-                }
+                    //Console.WriteLine(l.Objects.Count);
+                //}
 
                 l.Draw(s, col);
             }
@@ -303,10 +303,34 @@ namespace Fragments
                     }
                     else
                     {
-                        s.Draw(
-                        GetTexture(tiles[i,j].Filename),
-                        new Rectangle(900 / 14 * i, 750 / 14 * j, 900 / 14, 750 / 14),
-                        Color.White);
+                        if(GameManager.Instance.TownLocations[1] == new Vector2(i,j) && !Progress.Instance.Flags.HasFlag(ProgressFlags.TalkedWithElder))
+                        {
+                            Blocked(s,i,j);
+                        }
+                        else if(GameManager.Instance.TownLocations[2] == new Vector2(i, j) && !Progress.Instance.Flags.HasFlag(ProgressFlags.SecondFragment))
+                        {
+                            Blocked(s, i, j);
+                        }
+                        else if (GameManager.Instance.TownLocations[3] == new Vector2(i, j) && !Progress.Instance.Flags.HasFlag(ProgressFlags.ThirdFragment))
+                        {
+                            Blocked(s, i, j);
+                        }
+                        else if (GameManager.Instance.TownLocations[4] == new Vector2(i, j) && !Progress.Instance.Flags.HasFlag(ProgressFlags.FourthFragment))
+                        {
+                            Blocked(s, i, j);
+                        }
+                        else if (GameManager.Instance.TownLocations[5] == new Vector2(i, j) && !Progress.Instance.Flags.HasFlag(ProgressFlags.FifthFragment))
+                        {
+                            Blocked(s, i, j);
+                        }
+                        else
+                        {
+                            s.Draw(
+                                GetTexture("orange"),
+                                new Rectangle(900 / 14 * i, 750 / 14 * j, 900 / 14, 750 / 14),
+                                Color.White);
+                        }
+                        
                     }
                   
                     
@@ -314,6 +338,13 @@ namespace Fragments
             }
 
             GameManager.Instance.Player.DrawOverworld(s);
+        }
+        public void Blocked(SpriteBatch s, int i, int j)
+        {
+            s.Draw(
+                                GetTexture(tiles[i, j].Filename),
+                                new Rectangle(900 / 14 * i, 750 / 14 * j, 900 / 14, 750 / 14),
+                                Color.Red);
         }
     }
 }
