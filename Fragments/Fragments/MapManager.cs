@@ -100,7 +100,7 @@ namespace Fragments
                     gateKeeperDialogue.AddCapNode("A", "Oh, it's locked? Let me get that for you... \n" 
                         + "[The gate keeper unlocks the gate]", new String[] { "Continue..." }); //End
 
-                    GameManager.Instance.CurrentMap.ParallaxLayer.AddNPC(150, gateKeeperDialogue);
+                    GameManager.Instance.CurrentMap.ParallaxLayer.AddNPC(150, gateKeeperDialogue, "gatekeeper", 1.2,1.2);
 
                     //------Shopkeeper
                     ConversationTree shopKeeperDialogue = new ConversationTree("Buy something, will ya?", new String[] {"Sure","Nah"}, "Shop Keeper");
@@ -123,7 +123,7 @@ namespace Fragments
                     //No
                     shopKeeperDialogue.AddCapNode("E", "Well, what do you want?", new int[] { 1 }, new String[] { "Let me see your wares" });
 
-                    GameManager.Instance.CurrentMap.ParallaxLayer.AddNPC(1500, shopKeeperDialogue);
+                    GameManager.Instance.CurrentMap.ParallaxLayer.AddNPC(1500, shopKeeperDialogue,"shopkeeper", 1.4,1.2);
 
                     ConversationTree elderDialogue = new ConversationTree("Oh... your awake", new String[] { "..." }, "Elder");
                     elderDialogue.AddNode("Well anyway... its nice to see that you are up and about!", new String[] { "Where am I?" });
