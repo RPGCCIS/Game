@@ -57,7 +57,7 @@ namespace Fragments
 		private Message title;
 		private KeyboardState kbState;
 		private KeyboardState oldKbState;
-
+        private GameManager.GameState homeState;
 		#region Properties
 
 		//properties to get or set the above variables
@@ -109,7 +109,8 @@ namespace Fragments
         public void Initialize(EnemyType et) 
         {
             Random rand = new Random();
-
+            homeState = GameManager.Instance.State;
+            GameManager.Instance.State = GameManager.GameState.Battle;
             state = BattleState.Start;
 
             Enemy createdEnemy = new Enemy(et, 300, 300, 100, 100, null);
@@ -228,7 +229,8 @@ namespace Fragments
 
                 case BattleState.Run:
                     title.Name = "You got away safely!";
-                    state = BattleState.Paused;   
+                    state = BattleState.Paused;
+                      
                     break;
 
                 case BattleState.Enemy:
@@ -260,7 +262,7 @@ namespace Fragments
                         if (oldState == BattleState.Run || oldState == BattleState.Win || oldState == BattleState.Lose)
                         {
                             //This is essentially our "end" state
-                            GameManager.Instance.State = GameManager.GameState.Map;
+                            GameManager.Instance.State = homeState;
                             state = BattleState.Start;
                             return;
                         }

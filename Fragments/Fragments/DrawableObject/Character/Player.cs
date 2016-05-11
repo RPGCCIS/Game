@@ -227,6 +227,12 @@ namespace Fragments
                             GameManager.Instance.Save();
                             
                         }
+                        else if (iObj.Destination == "Champion's House")
+                        {
+                            BattleManager.Instance.Initialize(EnemyType.grunt);
+                            
+
+                        }
                         else 
                         {
                             

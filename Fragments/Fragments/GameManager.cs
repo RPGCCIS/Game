@@ -12,21 +12,22 @@ using System.IO;
 
 namespace Fragments
 {
-	class GameManager
+    
+    class GameManager
 	{
-		public enum GameState
-		{
-			Off,
-			Menu,
-			Town,
-			Battle,
-			Map,
-			Shop,
-			Over
-		}
+        public enum GameState
+        {
+            Off,
+            Menu,
+            Town,
+            Battle,
+            Map,
+            Shop,
+            Over
+        }
 
-		//Member Variables
-		private static GameManager instance;
+        //Member Variables
+        private static GameManager instance;
 
 		private Map currentMap;
 		private Map overworld;
@@ -260,7 +261,31 @@ namespace Fragments
                     Progress.Instance.SetProgress(ProgressFlags.FifthFragment);
 				}
 			}
-            if(ct.Name == "Chris")
+            if (ct.Name == "Elder2")
+            {
+                if (ct.CapNodes["A"] == ct.Current)
+                {
+                    ct.Current = ct.Root;
+                    conversation = false;
+                }
+            }
+            if (ct.Name == "Elder3")
+            {
+                if (ct.CapNodes["A"] == ct.Current)
+                {
+                    ct.Current = ct.Root;
+                    conversation = false;
+                }
+            }
+            if (ct.Name == "Elder4")
+            {
+                if (ct.CapNodes["A"] == ct.Current)
+                {
+                    ct.Current = ct.Root;
+                    conversation = false;
+                }
+            }
+            if (ct.Name == "Chris")
             {
                 if(ct.CapNodes["A"] == ct.Current)
                 {
@@ -275,7 +300,6 @@ namespace Fragments
 		{
 			if(gen.Next(0, 20) == 0)
 			{
-				GameManager.Instance.State = GameManager.GameState.Battle;
                 BattleManager.Instance.Initialize(EnemyType.grunt);
 			}
 		}
@@ -845,8 +869,15 @@ namespace Fragments
 					break;
 
 				case GameManager.GameState.Battle:
-					GameManager.Instance.CurrentMap = overworld;
-					GameManager.Instance.CurrentMap.DrawOverworld(spriteBatch, Color.DarkSlateGray);
+					if(GameManager.Instance.CurrentMap == overworld)
+                    {
+                        GameManager.Instance.CurrentMap.DrawOverworld(spriteBatch, Color.DarkSlateGray);
+                    }
+                    else
+                    {
+                        GameManager.Instance.CurrentMap.Draw(spriteBatch, new Color(120, 50,50));
+                    }
+					
 					BattleManager.Instance.Draw(spriteBatch);
 					break;
 
