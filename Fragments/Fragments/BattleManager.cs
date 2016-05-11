@@ -289,7 +289,7 @@ namespace Fragments
                 case BattleState.Paused:
                     if (pauseTimer.Update(gameTime))
                     {
-                        if (oldState == BattleState.Run || oldState == BattleState.Win || oldState == BattleState.Lose)
+                        if (oldState == BattleState.Run || oldState == BattleState.Win)
                         {
                             //This is essentially our "end" state
                             if(e.Type == EnemyType.boss)
@@ -297,6 +297,12 @@ namespace Fragments
                                 Progress.Instance.Fragments += 1;
                             }
                             GameManager.Instance.State = homeState;
+                            state = BattleState.Start;
+                            return;
+                        }
+                        else if(oldState == BattleState.Lose)
+                        {
+                            GameManager.Instance.State = GameManager.GameState.Over;
                             state = BattleState.Start;
                             return;
                         }
