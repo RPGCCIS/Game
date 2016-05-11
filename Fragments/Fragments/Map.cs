@@ -22,7 +22,7 @@ namespace Fragments
         private String background;
         Map overworld;
         //Multipliers
-        private const float backgroundMultiplier = 1.5f;
+        private const float backgroundMultiplier = .3f;
         private const float parallaxMultiplier = 7;
         private const float superForegroundMultiplier = 0;
 

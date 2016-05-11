@@ -15,7 +15,7 @@ namespace Fragments
         private ContentManager content;
         private Dictionary<string, Texture2D> textures;
         private Dictionary<string, SpriteFont> fonts;
-
+        private ConversationTree shopKeeperDialogue;
         public static MapManager Instance
         {
             get
@@ -51,6 +51,27 @@ namespace Fragments
 
             //Fonts
             fonts = new Dictionary<string, SpriteFont>();
+
+            //------Shopkeeper
+            shopKeeperDialogue = new ConversationTree("Buy something, will ya?", new String[] { "Sure", "Nah" }, "Shop Keeper");
+
+            //---Root
+            //Sure
+            shopKeeperDialogue.AddNode("Good choice, what do you need?", new String[] { "Items", "Gear" });
+            //Nah
+            shopKeeperDialogue.AddNode("Are ya sure?", new String[] { "Yes", "No" });
+
+            //---Sure
+            //Items
+            shopKeeperDialogue.AddCapNode("B", "I don't currently have any items", new int[] { 0 }, new String[] { "Ok" }); // End
+                                                                                                                            //Gear
+            shopKeeperDialogue.AddCapNode("C", "I'll make you tough!", new int[] { 0 }, new String[] { "Enter" }); //End
+
+            //---Nah
+            //Yes
+            shopKeeperDialogue.AddCapNode("D", "Bye now!", new int[] { 1 }, new String[] { "Ok" }); // End
+                                                                                                    //No
+            shopKeeperDialogue.AddCapNode("E", "Well, what do you want?", new int[] { 1 }, new String[] { "Let me see your wares" });
         }
 
         // Loads the map as a whole
@@ -59,8 +80,8 @@ namespace Fragments
         {
             switch (m)
             {
-                case "test":
-                    LoadMapFromFile("test");
+                case "airedale":
+                    LoadMapFromFile("airedale");
                     //GameManager.Instance.CurrentMap = new Map("test");
                     //Draw everything
 
@@ -88,6 +109,10 @@ namespace Fragments
                          GameManager.Instance.CurrentMap.GetTexture("wall"),
                          new Vector2(-2000, 0), 
                          TypeOfObject.Solid);
+                    GameManager.Instance.CurrentMap.ParallaxLayer.AddObject(
+                        GameManager.Instance.CurrentMap.GetTexture("wall"),
+                        new Vector2(3500, 0),
+                        TypeOfObject.Solid);
 
                     //ADD NPCS
 
@@ -102,32 +127,13 @@ namespace Fragments
 
                     GameManager.Instance.CurrentMap.ParallaxLayer.AddNPC(150, gateKeeperDialogue, "gatekeeper", 1.2,1.2);
 
-                    //------Shopkeeper
-                    ConversationTree shopKeeperDialogue = new ConversationTree("Buy something, will ya?", new String[] {"Sure","Nah"}, "Shop Keeper");
                     
-                    //---Root
-                    //Sure
-                    shopKeeperDialogue.AddNode("Good choice, what do you need?", new String[] { "Items", "Gear" });
-                    //Nah
-                    shopKeeperDialogue.AddNode("Are ya sure?", new String[] { "Yes", "No" });
-
-                    //---Sure
-                    //Items
-                    shopKeeperDialogue.AddCapNode("B", "I don't currently have any items", new int[] { 0 }, new String[] { "Ok" }); // End
-                    //Gear
-                    shopKeeperDialogue.AddCapNode("C", "I'll make you tough!", new int[] { 0 }, new String[] { "Enter" }); //End
-
-                    //---Nah
-                    //Yes
-                    shopKeeperDialogue.AddCapNode("D", "Bye now!", new int[] { 1 }, new String[] { "Ok" }); // End
-                    //No
-                    shopKeeperDialogue.AddCapNode("E", "Well, what do you want?", new int[] { 1 }, new String[] { "Let me see your wares" });
 
                     GameManager.Instance.CurrentMap.ParallaxLayer.AddNPC(1500, shopKeeperDialogue,"shopkeeper", 1.4,1.2);
 
                     ConversationTree elderDialogue = new ConversationTree("Oh... your awake", new String[] { "..." }, "Elder");
                     elderDialogue.AddNode("Well anyway... its nice to see that you are up and about!", new String[] { "Where am I?" });
-                    elderDialogue.AddNode("You're in ________, we found you blacked out on the city limits.",new int[] { 0 }, new String[] { "I can't remeber a thing" });
+                    elderDialogue.AddNode("You're in Airedale, we found you blacked out on the city limits.",new int[] { 0 }, new String[] { "I can't remeber a thing" });
                     elderDialogue.AddNode("Well... all we know about you is that you were found \n with this helmet fragment...   [Recieves helmet fragment].", new int[] { 0,0 }, new String[] { "What should I do with this?" });
                     elderDialogue.AddNode("I assume you would want to find the rest of the fragemnts, \n it won't hurt to check nearby towns", new int[] { 0, 0, 0 }, new String[] { "Okay, thanks for the help." });
                     elderDialogue.AddCapNode("A", "You can come back anytime.", new int[] { 0, 0,0,0 }, new String[] { "Leave" });
@@ -135,8 +141,8 @@ namespace Fragments
 
                     break;
 
-                case "test1":
-                    LoadMapFromFile("test1");
+                case "tardide":
+                    LoadMapFromFile("tardide");
                    
                     //GameManager.Instance.CurrentMap = new Map("test2");
                     GameManager.Instance.CurrentMap.ParallaxLayer.AddObject(
@@ -144,6 +150,10 @@ namespace Fragments
                          new Vector2(-4000, 0),
                          TypeOfObject.Solid);
 
+                    GameManager.Instance.CurrentMap.ParallaxLayer.AddObject(
+                         GameManager.Instance.CurrentMap.GetTexture("wall"),
+                         new Vector2(1500, 0),
+                         TypeOfObject.Solid);
                     //GameManager.Instance.CurrentMap.ParallaxLayer.AddHouse(
                     //    300,
                     //    "test");
@@ -152,10 +162,58 @@ namespace Fragments
                         "Inn",
                         true,
                         "Inn");
+                    GameManager.Instance.CurrentMap.ParallaxLayer.AddHouse(
+                       -800,
+                        "Shop",
+                        true,
+                        "Shop");
+                    
+
+                    GameManager.Instance.CurrentMap.ParallaxLayer.AddNPC(-800, shopKeeperDialogue, "shopkeeper", 1.4, 1.2);
+
                     GameManager.Instance.CurrentMap.ParallaxLayer.AddGate(0);
                     break;
-                case "test2":
-                    LoadMapFromFile("test2");
+                case "kineallen":
+                    LoadMapFromFile("kineallen");
+
+                    //GameManager.Instance.CurrentMap = new Map("test2");
+                    GameManager.Instance.CurrentMap.ParallaxLayer.AddObject(
+                         GameManager.Instance.CurrentMap.GetTexture("wall"),
+                         new Vector2(-4000, 0),
+                         TypeOfObject.Normal);
+                    GameManager.Instance.CurrentMap.ParallaxLayer.AddObject(
+                         GameManager.Instance.CurrentMap.GetTexture("wall"),
+                         new Vector2(-6000, 0),
+                         TypeOfObject.Solid);
+                    //GameManager.Instance.CurrentMap = new Map("test2");
+                    GameManager.Instance.CurrentMap.ParallaxLayer.AddObject(
+                         GameManager.Instance.CurrentMap.GetTexture("wall"),
+                         new Vector2(800, 0),
+                         TypeOfObject.Solid);
+                    //GameManager.Instance.CurrentMap.ParallaxLayer.AddHouse(
+                    //    300,
+                    //    "test");
+                    GameManager.Instance.CurrentMap.ParallaxLayer.AddHouse(
+                        -800,
+                        "Inn",
+                        true,
+                        "Inn");
+                    GameManager.Instance.CurrentMap.ParallaxLayer.AddHouse(
+                       -1500,
+                        "Shop",
+                        true,
+                        "Shop");
+
+                    ConversationTree chrisDialogue = new ConversationTree("Oh.... you found me. Hi my name is Chris.", new String[] { "What are you doing out here?" }, "Chris");
+                    chrisDialogue.AddNode("I'm what you would call an easter egg!", new String[] { "Huh?" });
+                    chrisDialogue.AddNode("Ah it doesn't matter, do you like boats?", new int[] { 0 }, new String[] { "Uh... no." });
+                    chrisDialogue.AddCapNode("A", "Oh!... Well I like boats!", new int[] { 0,0 }, new String[] { "Ok... goodbye." });
+                    GameManager.Instance.CurrentMap.ParallaxLayer.AddNPC(-3950, chrisDialogue);
+                    GameManager.Instance.CurrentMap.ParallaxLayer.AddNPC(-1500, shopKeeperDialogue, "shopkeeper", 1.4, 1.2);
+                    GameManager.Instance.CurrentMap.ParallaxLayer.AddGate(0);
+                    break;
+                case "whitebridge":
+                    LoadMapFromFile("whitebridge");
 
                     //GameManager.Instance.CurrentMap = new Map("test2");
                     GameManager.Instance.CurrentMap.ParallaxLayer.AddObject(
@@ -163,6 +221,10 @@ namespace Fragments
                          new Vector2(-4000, 0),
                          TypeOfObject.Solid);
 
+                    GameManager.Instance.CurrentMap.ParallaxLayer.AddObject(
+                         GameManager.Instance.CurrentMap.GetTexture("wall"),
+                         new Vector2(1500, 0),
+                         TypeOfObject.Solid);
                     //GameManager.Instance.CurrentMap.ParallaxLayer.AddHouse(
                     //    300,
                     //    "test");
@@ -171,6 +233,79 @@ namespace Fragments
                         "Inn",
                         true,
                         "Inn");
+                    GameManager.Instance.CurrentMap.ParallaxLayer.AddHouse(
+                       -800,
+                        "Shop",
+                        true,
+                        "Shop");
+
+
+                    GameManager.Instance.CurrentMap.ParallaxLayer.AddNPC(-800, shopKeeperDialogue, "shopkeeper", 1.4, 1.2);
+
+                    GameManager.Instance.CurrentMap.ParallaxLayer.AddGate(0);
+                    break;
+                case "ironhaven":
+                    LoadMapFromFile("ironhaven");
+
+                    //GameManager.Instance.CurrentMap = new Map("test2");
+                    GameManager.Instance.CurrentMap.ParallaxLayer.AddObject(
+                         GameManager.Instance.CurrentMap.GetTexture("wall"),
+                         new Vector2(-3000, 0),
+                         TypeOfObject.Solid);
+
+                    GameManager.Instance.CurrentMap.ParallaxLayer.AddObject(
+                         GameManager.Instance.CurrentMap.GetTexture("wall"),
+                         new Vector2(2200, 0),
+                         TypeOfObject.Solid);
+                    //GameManager.Instance.CurrentMap.ParallaxLayer.AddHouse(
+                    //    300,
+                    //    "test");
+                    GameManager.Instance.CurrentMap.ParallaxLayer.AddHouse(
+                        -800,
+                        "Inn",
+                        true,
+                        "Inn");
+                    GameManager.Instance.CurrentMap.ParallaxLayer.AddHouse(
+                        1500,
+                        "Shop",
+                        true,
+                        "Shop");
+
+
+                    GameManager.Instance.CurrentMap.ParallaxLayer.AddNPC(1500, shopKeeperDialogue, "shopkeeper", 1.4, 1.2);
+
+                    GameManager.Instance.CurrentMap.ParallaxLayer.AddGate(0);
+                    break;
+                case "solaris":
+                    LoadMapFromFile("solaris");
+
+                    //GameManager.Instance.CurrentMap = new Map("test2");
+                    GameManager.Instance.CurrentMap.ParallaxLayer.AddObject(
+                         GameManager.Instance.CurrentMap.GetTexture("wall"),
+                         new Vector2(-4000, 0),
+                         TypeOfObject.Solid);
+
+                    GameManager.Instance.CurrentMap.ParallaxLayer.AddObject(
+                         GameManager.Instance.CurrentMap.GetTexture("wall"),
+                         new Vector2(1500, 0),
+                         TypeOfObject.Solid);
+                    //GameManager.Instance.CurrentMap.ParallaxLayer.AddHouse(
+                    //    300,
+                    //    "test");
+                    GameManager.Instance.CurrentMap.ParallaxLayer.AddHouse(
+                        800,
+                        "Inn",
+                        true,
+                        "Inn");
+                    GameManager.Instance.CurrentMap.ParallaxLayer.AddHouse(
+                       -1500,
+                        "Shop",
+                        true,
+                        "Shop");
+
+
+                    GameManager.Instance.CurrentMap.ParallaxLayer.AddNPC(-1500, shopKeeperDialogue, "shopkeeper", 1.4, 1.2);
+
                     GameManager.Instance.CurrentMap.ParallaxLayer.AddGate(0);
                     break;
             }

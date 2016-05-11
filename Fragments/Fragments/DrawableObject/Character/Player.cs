@@ -358,7 +358,7 @@ namespace Fragments
             spriteBatch.Draw(
                 GameManager.Instance.CurrentMap.GetTexture("playerOverworld"), 
                 new Rectangle((900 / 14)*(int)mapPos.X, (750 / 14) *(int)mapPos.Y, 
-                900 / 14, 750 / 14), Color.White);
+                900 / 14, 750 / 14), Color.Black);
         }
         public string GetStats()
         {
