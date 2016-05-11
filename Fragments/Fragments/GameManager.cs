@@ -256,9 +256,10 @@ namespace Fragments
 
 		public void RandomEncounter()
 		{
-			if(gen.Next(0, 50) == 0)
+			if(gen.Next(0, 20) == 0)
 			{
 				GameManager.Instance.State = GameManager.GameState.Battle;
+                BattleManager.Instance.Initialize(EnemyType.grunt);
 			}
 		}
 
