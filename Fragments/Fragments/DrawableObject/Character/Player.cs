@@ -228,6 +228,38 @@ namespace Fragments
                             GameManager.Instance.Save();
                             
                         }
+                        else if (iObj.Destination == "Champion's House1")
+                        {
+                            if (!Progress.Instance.Flags.HasFlag(ProgressFlags.SecondFragment))
+                            {
+                                BattleManager.Instance.Initialize(EnemyType.boss);
+                                Progress.Instance.SetProgress(ProgressFlags.SecondFragment);
+                            }
+                        }
+                        else if (iObj.Destination == "Champion's House2")
+                        {
+                            if (!Progress.Instance.Flags.HasFlag(ProgressFlags.ThirdFragment))
+                            {
+                                BattleManager.Instance.Initialize(EnemyType.boss);
+                                Progress.Instance.SetProgress(ProgressFlags.ThirdFragment);
+                            }
+                        }
+                        else if (iObj.Destination == "Champion's House3")
+                        {
+                            if (!Progress.Instance.Flags.HasFlag(ProgressFlags.FourthFragment))
+                            {
+                                BattleManager.Instance.Initialize(EnemyType.boss);
+                                Progress.Instance.SetProgress(ProgressFlags.FourthFragment);
+                            }
+                        }
+                        else if (iObj.Destination == "Champion's House4")
+                        {
+                            if (!Progress.Instance.Flags.HasFlag(ProgressFlags.FifthFragment))
+                            {
+                                BattleManager.Instance.Initialize(EnemyType.boss);
+                                Progress.Instance.SetProgress(ProgressFlags.FifthFragment);
+                            }
+                        }
                         else 
                         {
                             
