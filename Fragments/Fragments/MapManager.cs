@@ -102,7 +102,7 @@ namespace Fragments
                     GameManager.Instance.CurrentMap.ParallaxLayer.AddHouse(
                         2200,
                         true,
-                        "Fight Club");
+                        "Champion's\n      House");
                     
 
                     GameManager.Instance.CurrentMap.ParallaxLayer.AddObject(

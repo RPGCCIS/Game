@@ -313,12 +313,6 @@
 /processorParam:Quality=Best
 /build:UI.wav
 
-#begin UnlockDoor.wav
-/importer:WavImporter
-/processor:SoundEffectProcessor
-/processorParam:Quality=Best
-/build:UnlockDoor.wav
-
 #begin elder.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -406,4 +400,16 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:TextureFormat=Color
 /build:enemy.png
+
+#begin Locked.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Locked.wav
+
+#begin DoorOpened.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DoorOpened.wav
 

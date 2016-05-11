@@ -219,6 +219,7 @@ namespace Fragments
                         {
                             ShopManager.Instance.UpdateShop();
                             GameManager.Instance.State = GameManager.GameState.Shop;
+                            SoundManager.Instance.PlaySoundEffect("DoorOpened");
                         }
                         else if(iObj.Destination == "Inn")
                         {
@@ -240,10 +241,11 @@ namespace Fragments
                         if (Progress.Instance.Flags.HasFlag(ProgressFlags.FirstGateUnlocked))
                         {
                             GameManager.Instance.State = GameManager.GameState.Map;
+                            SoundManager.Instance.PlaySoundEffect("DoorOpened");
                         }
                         else
                         {
-                            //SoundManager.Instance.PlaySoundEffect("Lock");
+                            SoundManager.Instance.PlaySoundEffect("Locked");
                         }
                     }
 
