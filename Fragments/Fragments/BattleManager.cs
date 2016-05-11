@@ -130,6 +130,15 @@ namespace Fragments
                     break;
 
                 case EnemyType.boss:
+                    createdEnemy.Texture = content.Load<Texture2D>("enemy");
+
+                    createdEnemy.Atk = rand.Next(1, 3);
+                    createdEnemy.Def = rand.Next(0, 2);
+                    createdEnemy.MaxHp = rand.Next(3, 6);
+                    createdEnemy.MaxSp = 0;
+                    createdEnemy.Spd = 6;
+                    createdEnemy.Sp = createdEnemy.MaxSp;
+                    createdEnemy.Hp = createdEnemy.MaxHp;
                     break;
 
                 case EnemyType.final:
@@ -164,7 +173,11 @@ namespace Fragments
 						title.Name = "What will you do?";
 
 						title.Dialogue.Add("Fight");
-						title.Dialogue.Add("Run");
+                        if(e.Type != EnemyType.boss)
+                        {
+                            title.Dialogue.Add("Run");
+                        }
+						
 					}
                     
 					if(IsKeyPressed(kbState, oldKbState, Keys.Enter))
@@ -249,6 +262,7 @@ namespace Fragments
                     title.Name = "You won!";
                     GameManager.Instance.Player.Gold += gen.Next(10, 25);
                     state = BattleState.Paused;
+                    
                         break;
 
                 case BattleState.Lose:
@@ -262,6 +276,10 @@ namespace Fragments
                         if (oldState == BattleState.Run || oldState == BattleState.Win || oldState == BattleState.Lose)
                         {
                             //This is essentially our "end" state
+                            if(e.Type == EnemyType.boss)
+                            {
+                                Progress.Instance.Fragments += 1;
+                            }
                             GameManager.Instance.State = homeState;
                             state = BattleState.Start;
                             return;

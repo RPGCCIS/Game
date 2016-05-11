@@ -10,19 +10,19 @@ namespace Fragments
     class Enemy : Character
     {
         //holds an instance's type
-        private EnemyType level;
+        private EnemyType type;
 
         //gets the instance's type
-        public EnemyType Level
+        public EnemyType Type
         {
-            get { return level; }
-            set { level = value; }
+            get { return type; }
+            set { type = value; }
         }
 
         //initial constructor for the enemy class
         public Enemy(EnemyType type, int x, int y, int w, int h, Texture2D text) : base(x, y, w, h, text)
         {
-            level = type;
+            this.type = type;
         }
 
         public void Act(Message m)

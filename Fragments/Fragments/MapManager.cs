@@ -98,11 +98,6 @@ namespace Fragments
                         true,
                         "Shop");
 
-                    GameManager.Instance.CurrentMap.ParallaxLayer.AddHouse(
-                        2200,
-                        "Champion's House",
-                        true,
-                        "Champion's \n      House");
 
                     GameManager.Instance.CurrentMap.ParallaxLayer.AddObject(
                          GameManager.Instance.CurrentMap.GetTexture("wall"),
@@ -164,7 +159,7 @@ namespace Fragments
                         "Shop");
                     GameManager.Instance.CurrentMap.ParallaxLayer.AddHouse(
                        -1500,
-                        "Champion's House",
+                        "Champion's House1",
                         true,
                         "Champion's \n      House");
 
@@ -204,7 +199,7 @@ namespace Fragments
                         "Shop");
                     GameManager.Instance.CurrentMap.ParallaxLayer.AddHouse(
                        -2200,
-                        "Champion's House",
+                        "Champion's House2",
                         true,
                         "Champion's \n      House");
 
@@ -249,7 +244,7 @@ namespace Fragments
                         "Shop");
                     GameManager.Instance.CurrentMap.ParallaxLayer.AddHouse(
                        -1500,
-                        "Champion's House",
+                        "Champion's House3",
                         true,
                         "Champion's \n      House");
 
@@ -283,6 +278,11 @@ namespace Fragments
                         "Shop",
                         true,
                         "Shop");
+                    GameManager.Instance.CurrentMap.ParallaxLayer.AddHouse(
+                        800,
+                        "Champion's House3",
+                        true,
+                        "Champion's \n      House");
                     ConversationTree elderDialogue5 = new ConversationTree("Welcome to Ironhaven.", new String[] { "I have come for the final helmet fragment." }, "Elder5");
                     elderDialogue5.AddNode("You have come a long way since you lost your memory.", new String[] { "Yes, but I need to remeber who I am." });
                     elderDialogue5.AddCapNode("A", "Remembering isn't always necessary to know who you truly are.", new int[] { 0 }, new String[] { "..." });
