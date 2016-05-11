@@ -57,8 +57,7 @@ namespace Fragments
 		{
 			this.IsMouseVisible = true;
 
-			test = new Map("test");
-			test2 = new Map("test2");
+			test = new Map("airedale");
 
 			// Singleton initialization
 			GameManager.Instance.State = GameManager.GameState.Menu;

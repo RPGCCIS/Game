@@ -253,8 +253,21 @@ namespace Fragments
                     {
                         Progress.Instance.Fragments = Progress.Instance.Fragments + 1;
                     }
+
+                    Progress.Instance.SetProgress(ProgressFlags.SecondFragment);
+                    Progress.Instance.SetProgress(ProgressFlags.ThirdFragment);
+                    Progress.Instance.SetProgress(ProgressFlags.FourthFragment);
+                    Progress.Instance.SetProgress(ProgressFlags.FifthFragment);
 				}
 			}
+            if(ct.Name == "Chris")
+            {
+                if(ct.CapNodes["A"] == ct.Current)
+                {
+                    ct.Current = ct.Root;
+                    conversation = false;
+                }
+            }
 
 		}
 
@@ -331,8 +344,8 @@ namespace Fragments
 
 						//Play Game
 							case 1:
-								MapManager.Instance.LoadMap("test");
                                 gameState = GameState.Town;
+			                    MapManager.Instance.LoadMap("airedale");
 								break;
 						}
 					}
@@ -588,28 +601,31 @@ namespace Fragments
                         {
                             if (player.MapPos == townLocations[0])
                             {
-                                MapManager.Instance.LoadMap("test");
+                                MapManager.Instance.LoadMap("airedale");
                             }
                             else if (player.MapPos == townLocations[1] && Progress.Instance.Flags.HasFlag(ProgressFlags.TalkedWithElder))
                             {
-                                MapManager.Instance.LoadMap("test1");
+                                MapManager.Instance.LoadMap("tardide");
                                 Progress.Instance.SetProgress(ProgressFlags.SecondFragment);
                             }
                             else if (player.MapPos == townLocations[2] && Progress.Instance.Flags.HasFlag(ProgressFlags.SecondFragment))
                             {
-                                MapManager.Instance.LoadMap("test2");
+                                MapManager.Instance.LoadMap("kineallen");
+                                Progress.Instance.SetProgress(ProgressFlags.ThirdFragment);
                             }
                             else if (player.MapPos == townLocations[3] && Progress.Instance.Flags.HasFlag(ProgressFlags.ThirdFragment))
                             {
-                                MapManager.Instance.LoadMap("test1");
+                                MapManager.Instance.LoadMap("whitebridge");
+                                Progress.Instance.SetProgress(ProgressFlags.FourthFragment);
                             }
                             else if (player.MapPos == townLocations[4] && Progress.Instance.Flags.HasFlag(ProgressFlags.FourthFragment))
                             {
-                                MapManager.Instance.LoadMap("test1");
+                                MapManager.Instance.LoadMap("ironhaven");
+                                Progress.Instance.SetProgress(ProgressFlags.FifthFragment);
                             }
                             else if (player.MapPos == townLocations[5] && Progress.Instance.Flags.HasFlag(ProgressFlags.FifthFragment))
                             {
-                                MapManager.Instance.LoadMap("test1");
+                                MapManager.Instance.LoadMap("solaris");
                             }
                             conversation = false;
                         }
