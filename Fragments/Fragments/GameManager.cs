@@ -21,7 +21,6 @@ namespace Fragments
 			Town,
 			Battle,
 			Map,
-			Pause,
 			Shop,
 			Over
 		}
@@ -249,6 +248,11 @@ namespace Fragments
 					ct.Current = ct.Root;
 					Progress.Instance.SetProgress(ProgressFlags.TalkedWithElder);
 					conversation = false;
+
+                    if (Progress.Instance.Fragments == 0)
+                    {
+                        Progress.Instance.Fragments = Progress.Instance.Fragments + 1;
+                    }
 				}
 			}
 
@@ -282,8 +286,7 @@ namespace Fragments
 				//Exceptions
 				if(gameState == GameState.Town)
 				{
-					if(prevState == GameState.Pause
-					   || prevState == GameState.Shop)
+					if(prevState == GameState.Shop)
 					{
 						stateSwitched = false;
 					}
@@ -316,15 +319,7 @@ namespace Fragments
 					{
 						switch(menuOptions.Selected)
 						{
-						//Option 1
-						/*case 0:
-								overworld = new Map();
-								overworld.Load(overworld.MapName);
-								GameManager.Instance.CurrentMap = overworld;
-								GameManager.Instance.State = GameManager.GameState.Battle;
-								break;
-*/
-						//Option 2
+
 						//Loading the overworld map
 							case 0:
                                 //Loads saved town and player information                              
@@ -337,6 +332,7 @@ namespace Fragments
 						//Play Game
 							case 1:
 								MapManager.Instance.LoadMap("test");
+                                gameState = GameState.Town;
 								break;
 						}
 					}
@@ -634,6 +630,7 @@ namespace Fragments
                 #endregion
 
                 #region pause
+                    /*
 				case GameManager.GameState.Pause:
 					if(IsKeyPressed(kbState, oldKbState, Keys.W))
 					{
@@ -661,6 +658,7 @@ namespace Fragments
 						}
 					}
 					break;
+                    */
                 #endregion
 
                 #region shop
@@ -792,11 +790,21 @@ namespace Fragments
 
 						GameManager.Instance.CurrentMap.Draw(spriteBatch, new Color(50, 50, 50));
 						GameManager.Instance.Player.Draw(spriteBatch, new Color(50, 50, 50));
+
+                        //Center
 						spriteBatch.Draw(scroll, new Rectangle(190, 125, 450, 500), Color.White);
-						spriteBatch.DrawString(mFont, "Stats:", new Vector2(735, 200), Color.White);
+
+                        //Stats
+						spriteBatch.DrawString(mFont, "Stats:", new Vector2(735, 200), Color.Gold);
 						spriteBatch.DrawString(mFont, player.GetStats(), new Vector2(710, 275), Color.White);
 
-						pauseMenu.Spacing = 100;
+                        //Left progress stuff
+                        spriteBatch.DrawString(mFont, "Fragments:", new Vector2(30, 200), Color.Gold);
+                        spriteBatch.DrawString(mFont, Progress.Instance.Fragments.ToString() + " pieces", new Vector2(40, 250), Color.White);
+                        spriteBatch.DrawString(mFont, "Equipment:", new Vector2(30, 350), Color.Gold);
+                        spriteBatch.DrawString(mFont, player.GetEquipment(), new Vector2(20, 400), Color.White);
+
+                        pauseMenu.Spacing = 100;
 						pauseMenu.DrawText(spriteBatch);
 					}
 					else
@@ -860,8 +868,10 @@ namespace Fragments
 				output.WriteLine(Player.MaxSp);
 				output.WriteLine(Player.Spd);
 				output.WriteLine(Player.mapX);
-				output.WriteLine(Player.mapY);
-				output.WriteLine(GameManager.Instance.CurrentMap.MapName);
+                output.WriteLine(Player.mapY);
+                output.WriteLine(Player.SwordLevel);
+                output.WriteLine(Player.ShieldLevel);
+                output.WriteLine(GameManager.Instance.CurrentMap.MapName);
 				output.WriteLine(Progress.Instance.ToString());
 			}
 			catch(Exception e)
@@ -890,6 +900,8 @@ namespace Fragments
 				Player.MaxSp = int.Parse(input.ReadLine());
 				Player.Spd = int.Parse(input.ReadLine());
 				Player.MapPos = new Vector2(int.Parse(input.ReadLine()), int.Parse(input.ReadLine()));
+                Player.SwordLevel = int.Parse(input.ReadLine());
+                Player.ShieldLevel = int.Parse(input.ReadLine());
 				GameManager.Instance.CurrentMap = new Map(input.ReadLine());
 
 				//Load progress
@@ -897,7 +909,12 @@ namespace Fragments
 				int flagInt;
 				Int32.TryParse(flagString, out flagInt);
 				Progress.Instance.Flags = (ProgressFlags)flagInt;
-			}
+
+                string fragmentsString = input.ReadLine();
+                int fragmentsInt;
+                Int32.TryParse(fragmentsString, out fragmentsInt);
+                Progress.Instance.Fragments = fragmentsInt;
+            }
 			catch(Exception e)
 			{
 				Console.WriteLine("Error reading file: " + e.Message);

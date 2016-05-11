@@ -42,20 +42,31 @@ namespace Fragments
         }
         #endregion
 
-        //Variables
+        #region Variables
         private ProgressFlags flags;
+        private int fragments;
 
-        //Properties
+        #endregion
+
+        #region Properties
         public ProgressFlags Flags
         {
             get { return flags; }
             set { flags = value; }
         }
 
+        public int Fragments
+        {
+            get { return fragments; }
+            set { fragments = value; }
+        }
+        #endregion
+
         //Constructor
         public Progress()
         {
             flags = 0;
+            fragments = 0;
         }
 
         //Methods
@@ -69,7 +80,9 @@ namespace Fragments
 
         public override string ToString()
         {
-            string value = "" + (int)flags;
+            string value = "" + (int)flags
+                + "\n" + fragments;
+
             return value;
         }
     }

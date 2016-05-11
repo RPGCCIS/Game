@@ -369,5 +369,11 @@ namespace Fragments
                 "\n\n Defence - " + Def +
                 "\n\n Speed - " + Spd;
         }
+
+        public string GetEquipment()
+        {
+            return "Weapon Lvl - " + swordLevel +
+                "\n\n  Shield Lvl - " + shieldLevel;
+        }
     }
 }
