@@ -38,6 +38,7 @@
   <ItemGroup>
     <Compile Include="BattleManager.cs" />
     <Compile Include="BattleState.cs" />
+    <Compile Include="HealthBar.cs" />
     <Compile Include="Progress.cs" />
     <Compile Include="SoundManager.cs" />
     <Compile Include="Timer.cs" />
@@ -78,6 +79,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\whitesquare.png" />
     <Content Include="Icon.ico" />
   </ItemGroup>
   <ItemGroup>
@@ -90,6 +92,7 @@
     <None Include="Content\LCALLIG_14.xnb">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="Content\TimesNewRoman_12.xnb" />
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

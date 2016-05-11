@@ -16,6 +16,10 @@ namespace Fragments
 		Map test;
 		Map test2;
 
+        //universals
+        public static Texture2D whiteSquareText;
+        public static SpriteFont universalFont;
+
 		//Message testing
 		SpriteFont messageFont;
 		TextObject messageB;
@@ -109,6 +113,10 @@ namespace Fragments
 			//Temporary EnemyContent
 			enemyText = Content.Load<Texture2D>("Goomba");
             BattleManager.Instance.Content = Content;
+
+            //exclusively to get healthbars working
+            whiteSquareText = Content.Load<Texture2D>("whitesquare");
+            universalFont = Content.Load<SpriteFont>("TimesNewRoman_12");
 
 			//For Battle
 			messageFont = Content.Load<SpriteFont>("LCALLIG_14");

@@ -23,6 +23,9 @@ namespace Fragments
         private int spd;
         private bool defending = false;
 
+        //health information
+        private HealthBar health;
+
         //Properties for stats
         public string Name
         {
@@ -76,7 +79,7 @@ namespace Fragments
         public Character(int x, int y, int w, int h, Texture2D texture)
             : base(x, y, w, h, texture)
         {
-            //EMPTY
+            health = new HealthBar(this.hp, this.maxHp, (this.X - 15), (this.Y - 10), Game1.universalFont);
         }
 
         //BATTLE FUNCTIONS
@@ -121,6 +124,10 @@ namespace Fragments
                 texture,
                 rec,
                 c);
+            if(GameManager.Instance.State == GameManager.GameState.Battle)
+            {
+                health.Draw(spriteBatch, Game1.whiteSquareText);
+            }
         }
     }
 }
