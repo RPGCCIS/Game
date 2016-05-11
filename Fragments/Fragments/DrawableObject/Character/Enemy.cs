@@ -27,9 +27,13 @@ namespace Fragments
 
         public void Act(Message m)
         {
-                int rawAtk = this.Atk - BattleManager.Instance.Player.Def;
-                int dealtAtk = Attack(BattleManager.Instance.Player, rawAtk);
-                m.Name = "The Enemy jumped at you! It dealt " + dealtAtk + " damage!";
+            int rawAtk = this.Atk - BattleManager.Instance.Player.Def;
+            if (rawAtk < 0)
+            {
+                rawAtk = 0;
+            }
+            int dealtAtk = Attack(BattleManager.Instance.Player, rawAtk);
+            m.Name = "The Enemy jumped at you! It dealt " + dealtAtk + " damage!";
         }
     }
 }

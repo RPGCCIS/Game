@@ -5,11 +5,14 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Content;
 
 namespace Fragments
 {
 	class BattleManager
 	{
+        private ContentManager content;
+
 		private BattleState state;
 		private BattleState oldState;
 		private bool stateChange;
@@ -30,6 +33,11 @@ namespace Fragments
 				return instance;
 			}
 		}
+
+        public ContentManager Content
+        {
+            set { content = value; }
+        }
 
 		public BattleState State
 		{
@@ -94,13 +102,44 @@ namespace Fragments
 		//Constructor
 		private BattleManager()
 		{
-			state = BattleState.Start;
 			pauseTimer = new Timer(1500); //1.5 seconds
 		}
 
-		//several parts are imcomplete, such as magic just dealing a normal amount of attack damage.
-		//Eventually, there should be separate stats, magic and resistance, that will be incorporated into character, as well as different types of magic.
-		public void Update(GameTime gameTime)
+        //Initialize
+        public void Initialize(EnemyType et) 
+        {
+            Random rand = new Random();
+
+            state = BattleState.Start;
+
+            Enemy createdEnemy = new Enemy(et, 300, 300, 100, 100, null);
+            switch (et)
+            {
+                case EnemyType.grunt:
+                    createdEnemy.Texture = content.Load<Texture2D>("Goomba");
+
+                    createdEnemy.Atk    = rand.Next(1, 3);
+                    createdEnemy.Def    = rand.Next(0, 2);
+                    createdEnemy.MaxHp  = rand.Next(3, 6);
+                    createdEnemy.MaxSp  = 0;
+                    createdEnemy.Spd    = 6;
+                    createdEnemy.Sp     = createdEnemy.MaxSp;
+                    createdEnemy.Hp     = createdEnemy.MaxHp;
+
+                    break;
+
+                case EnemyType.boss:
+                    break;
+
+                case EnemyType.final:
+                    break;
+            }
+            e = createdEnemy;
+        }
+
+        //several parts are imcomplete, such as magic just dealing a normal amount of attack damage.
+        //Eventually, there should be separate stats, magic and resistance, that will be incorporated into character, as well as different types of magic.
+        public void Update(GameTime gameTime)
 		{
 			kbState = Keyboard.GetState();
 
@@ -171,7 +210,12 @@ namespace Fragments
 
                 case BattleState.Attack:
                     int rawAtk = p.Atk - e.Def;
+                    if (rawAtk < 0)
+                    {
+                        rawAtk = 0;
+                    }
                     int dealtAtk = Player.Attack(e, rawAtk);
+
                     title.Name = "You swing your Sword! You deal " + dealtAtk + " damage!";
                     state = BattleState.Paused;
                     break;

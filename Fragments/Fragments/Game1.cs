@@ -94,10 +94,10 @@ namespace Fragments
 			// Load the player
 			//playerText = Content.Load<Texture2D>("player");
 			p = new Player(400, 605, 200, 300, playerText);
-			p.Atk = 5;
-			p.Def = 4;
-			p.MaxHp = 55;
-			p.MaxSp = 20;
+			p.Atk = 2;
+			p.Def = 0;
+			p.MaxHp = 10;
+			p.MaxSp = 10;
 			p.Spd = 6;
 			p.Sp = p.MaxSp;
 			p.Hp = p.MaxHp;
@@ -108,16 +108,7 @@ namespace Fragments
 
 			//Temporary EnemyContent
 			enemyText = Content.Load<Texture2D>("Goomba");
-			Enemy e = new Enemy(EnemyType.grunt, 300, 300, 100, 100, enemyText);
-			e.Atk = 200;
-			e.Def = 1;
-			e.MaxHp = 5;
-			e.MaxSp = 20;
-			e.Spd = 6;
-			e.Sp = e.MaxSp;
-			e.Hp = e.MaxHp;
-			BattleManager.Instance.Enemy = e;
-
+            BattleManager.Instance.Content = Content;
 
 			//For Battle
 			messageFont = Content.Load<SpriteFont>("LCALLIG_14");
