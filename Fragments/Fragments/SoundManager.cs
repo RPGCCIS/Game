@@ -88,7 +88,12 @@ namespace Fragments
 
             MediaPlayer.Play(songs[file]);
             MediaPlayer.IsRepeating = true;
-            MediaPlayer.Volume = 0.1f;
+            //for some reason this breaks with a nullpointerexception
+            try
+            {
+                MediaPlayer.Volume = 0.1f;
+            }
+            catch (Exception) { }
             fadingIn = true;
         }
 
@@ -107,7 +112,11 @@ namespace Fragments
         {
             if (fadingIn)
             {
-                MediaPlayer.Volume += fadeConstant;
+                try
+                {
+                    MediaPlayer.Volume += fadeConstant;
+                }
+                catch (Exception) { }
 
                 if (MediaPlayer.Volume >= 1.0f)
                 {
