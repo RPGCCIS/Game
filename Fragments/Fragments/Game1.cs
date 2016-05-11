@@ -110,8 +110,11 @@ namespace Fragments
 			GameManager.Instance.Player.SpriteSheet = Content.Load<Texture2D>("rpg_sprite_walk");
 			font = Content.Load<SpriteFont>("Georgia_32");
 
-			//Temporary EnemyContent
-			enemyText = Content.Load<Texture2D>("Goomba");
+            //Temporary EnemyContent
+            
+            BattleManager.Instance.PlayerTexture = Content.Load<Texture2D>("player");
+            BattleManager.Instance.EnemyTexture = Content.Load<Texture2D>("enemy");
+            //MapManager.Instance.Textures.Add("Goomba", enemyText);
             BattleManager.Instance.Content = Content;
 
             //exclusively to get healthbars working

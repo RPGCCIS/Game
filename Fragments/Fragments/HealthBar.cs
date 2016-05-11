@@ -12,8 +12,8 @@ namespace Fragments
     {
         #region Fields and Properties
         //fields
-        private int totalHealth;
-        private int health;
+        private double totalHealth;
+        private double health;
         private Rectangle max;
         private Rectangle cur;
         private TextObject textObj;
@@ -34,7 +34,7 @@ namespace Fragments
             set
             {
                 health = value;
-                cur.Width = (health / totalHealth) * max.Width;
+                cur.Width = (int)((health / totalHealth) * (double)max.Width);
                 textObj.Text = health + "/" + totalHealth;
             }
         }
@@ -47,13 +47,14 @@ namespace Fragments
             cur = new Rectangle(xpos, ypos, 150, 30);
             totalHealth = maxhp;
             health = hp;
-            textObj = new TextObject(font, hp + "/" + maxhp, new Vector2(xpos, ypos + 35));
+            textObj = new TextObject(font, hp + "/" + maxhp, new Vector2(xpos, ypos + 5));
         }
 
         public void Draw(SpriteBatch sb, Texture2D text)
         {
             sb.Draw(text, max, Color.Red);
             sb.Draw(text, cur, Color.Green);
+            textObj.DrawText(sb);
         }
         #endregion
     }

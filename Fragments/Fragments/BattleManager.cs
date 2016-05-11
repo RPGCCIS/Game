@@ -17,8 +17,22 @@ namespace Fragments
 		private BattleState oldState;
 		private bool stateChange;
 		private Timer pauseTimer;
-		//instance of battle manager
-		private static BattleManager instance;
+        private Texture2D playerTexture;
+        private Texture2D enemyTexture;
+
+        private HealthBar playerHealth;
+        private HealthBar EnemyHealth;
+
+        public Texture2D PlayerTexture
+        {
+            set { playerTexture = value; }
+        }
+        public Texture2D EnemyTexture
+        {
+            set { enemyTexture = value; }
+        }
+        //instance of battle manager
+        private static BattleManager instance;
 
 		//creates the battle manager
 		public static BattleManager Instance
@@ -145,6 +159,8 @@ namespace Fragments
                     break;
             }
             e = createdEnemy;
+            playerHealth = new HealthBar(p.Hp, p.MaxHp, 100, 100, Game1.universalFont);
+            EnemyHealth = new HealthBar(e.Hp, e.MaxHp, 100, 400, Game1.universalFont);
         }
 
         //several parts are imcomplete, such as magic just dealing a normal amount of attack damage.
@@ -334,13 +350,18 @@ namespace Fragments
             {
                 Wipe(title);
             }
+
+            playerHealth.Health = p.Hp;
+            EnemyHealth.Health = e.Hp;
         }
 
         public void Draw(SpriteBatch spritebatch)
         {
-                p.Draw(spritebatch);
-                e.Draw(spritebatch);
-                title.Draw(spritebatch);
+            title.Draw(spritebatch);
+            spritebatch.Draw(playerTexture, new Rectangle(0, 0, 200, 200), Color.White);
+            spritebatch.Draw(enemyTexture, new Rectangle(600, 0, 200, 200), Color.White);
+            playerHealth.Draw(spritebatch, Game1.whiteSquareText);
+            EnemyHealth.Draw(spritebatch, Game1.whiteSquareText);
         }
 
         public bool IsKeyPressed(KeyboardState current, KeyboardState old, Keys k)

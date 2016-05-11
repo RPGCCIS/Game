@@ -278,57 +278,57 @@ namespace Fragments
                         s.Draw(
                         GetTexture("road"),
                         new Rectangle(900 / 14 * i, 750 / 14 * j, 900 / 14, 750 / 14),
-                        Color.White);
+                        col);
                     }
                     else if (tiles[i, j].Filename == "green")
                     {
                         s.Draw(
                         GetTexture("grass"),
                         new Rectangle(900 / 14 * i, 750 / 14 * j, 900 / 14, 750 / 14),
-                        Color.White);
+                        col);
                     }
                     else if (tiles[i, j].Filename == "blue")
                     {
                         s.Draw(
                         GetTexture("water"),
                         new Rectangle(900 / 14 * i, 750 / 14 * j, 900 / 14, 750 / 14),
-                        Color.White);
+                        col);
                     }
                     else if (tiles[i, j].Filename == "brown")
                     {
                         s.Draw(
                         GetTexture("rock"),
                         new Rectangle(900 / 14 * i, 750 / 14 * j, 900 / 14, 750 / 14),
-                        Color.White);
+                        col);
                     }
                     else
                     {
                         if(GameManager.Instance.TownLocations[1] == new Vector2(i,j) && !Progress.Instance.Flags.HasFlag(ProgressFlags.TalkedWithElder))
                         {
-                            Blocked(s,i,j);
+                            Blocked(s,i,j, col);
                         }
                         else if(GameManager.Instance.TownLocations[2] == new Vector2(i, j) && !Progress.Instance.Flags.HasFlag(ProgressFlags.SecondFragment))
                         {
-                            Blocked(s, i, j);
+                            Blocked(s, i, j, col);
                         }
                         else if (GameManager.Instance.TownLocations[3] == new Vector2(i, j) && !Progress.Instance.Flags.HasFlag(ProgressFlags.ThirdFragment))
                         {
-                            Blocked(s, i, j);
+                            Blocked(s, i, j, col);
                         }
                         else if (GameManager.Instance.TownLocations[4] == new Vector2(i, j) && !Progress.Instance.Flags.HasFlag(ProgressFlags.FourthFragment))
                         {
-                            Blocked(s, i, j);
+                            Blocked(s, i, j, col);
                         }
                         else if (GameManager.Instance.TownLocations[5] == new Vector2(i, j) && !Progress.Instance.Flags.HasFlag(ProgressFlags.FifthFragment))
                         {
-                            Blocked(s, i, j);
+                            Blocked(s, i, j, col);
                         }
                         else
                         {
                             s.Draw(
                                 GetTexture("orange"),
                                 new Rectangle(900 / 14 * i, 750 / 14 * j, 900 / 14, 750 / 14),
-                                Color.White);
+                                col);
                         }
                         
                     }
@@ -339,12 +339,12 @@ namespace Fragments
 
             GameManager.Instance.Player.DrawOverworld(s);
         }
-        public void Blocked(SpriteBatch s, int i, int j)
+        public void Blocked(SpriteBatch s, int i, int j, Color col)
         {
-            s.Draw(
-                                GetTexture(tiles[i, j].Filename),
-                                new Rectangle(900 / 14 * i, 750 / 14 * j, 900 / 14, 750 / 14),
-                                Color.Red);
+                s.Draw(
+                                    GetTexture(tiles[i, j].Filename),
+                                    new Rectangle(900 / 14 * i, 750 / 14 * j, 900 / 14, 750 / 14),
+                                    new Color(Color.Red.ToVector3()*col.ToVector3()));
         }
     }
 }
