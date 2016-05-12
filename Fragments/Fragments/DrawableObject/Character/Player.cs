@@ -35,7 +35,7 @@ namespace Fragments
         private int swordLevel = 0;
         private int shieldLevel = 0;
         private int gold;
-
+        private int level = 1;
 
         // Constants for "source" rectangle (inside the image)
         const int WALK_FRAME_COUNT = 7;                
@@ -45,6 +45,7 @@ namespace Fragments
         const int PLAYER_FRAME_OFFSET = 6;
         const float PLAYER_SIZE = 4.5f;
 
+        public int Level { get { return level; } set { level = value; } }
         public int Gold
         {
             get
@@ -260,6 +261,11 @@ namespace Fragments
                                 Progress.Instance.SetProgress(ProgressFlags.FifthFragment);
                             }
                         }
+                        else if (iObj.Destination == "Evil Mansion")
+                        {
+                                BattleManager.Instance.Initialize(EnemyType.final);
+                                Progress.Instance.SetProgress(ProgressFlags.SixthFragment);
+                        }
                         else 
                         {
                             
@@ -396,8 +402,9 @@ namespace Fragments
         }
         public string GetStats()
         {
-            return " Gold - " + gold +
-                "\n\nHp - " + Hp + "/" + MaxHp + 
+            return " Level - "+ level +
+                "\n\n Gold - " + gold +
+                "\n\n Hp - " + Hp + "/" + MaxHp + 
                 "\n\n Sp - " + Sp + "/" + MaxSp + 
                 "\n\n Attack - " + Atk +
                 "\n\n Defence - " + Def +

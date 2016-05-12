@@ -16,6 +16,8 @@ namespace Fragments
         private Dictionary<string, Texture2D> textures;
         private Dictionary<string, SpriteFont> fonts;
         private ConversationTree shopKeeperDialogue;
+        private Texture2D boatTexture;
+        public Texture2D boat { set { boatTexture = value; } }
         public static MapManager Instance
         {
             get
@@ -180,6 +182,10 @@ namespace Fragments
                          new Vector2(-4500, 0),
                          TypeOfObject.Normal);
                     GameManager.Instance.CurrentMap.ParallaxLayer.AddObject(
+                         GameManager.Instance.CurrentMap.GetTexture("boat"),
+                         new Vector2(-4150, 400),
+                         TypeOfObject.Normal);
+                    GameManager.Instance.CurrentMap.ParallaxLayer.AddObject(
                          GameManager.Instance.CurrentMap.GetTexture("wall"),
                          new Vector2(-6500, 0),
                          TypeOfObject.Solid);
@@ -280,7 +286,7 @@ namespace Fragments
                         "Shop");
                     GameManager.Instance.CurrentMap.ParallaxLayer.AddHouse(
                         800,
-                        "Champion's House3",
+                        "Champion's House4",
                         true,
                         "Champion's \n      House");
                     ConversationTree elderDialogue5 = new ConversationTree("Welcome to Ironhaven.", new String[] { "I have come for the final helmet fragment." }, "Elder5");
@@ -310,13 +316,22 @@ namespace Fragments
                         "Inn",
                         true,
                         "Inn");
+                    //GameManager.Instance.CurrentMap.ParallaxLayer.AddHouse(
+                    //    -800,
+                    //    "Evil Mansion",
+                    //    true,
+                    //    "Evil Mansion");
                     GameManager.Instance.CurrentMap.ParallaxLayer.AddHouse(
                        -1500,
                         "Shop",
                         true,
                         "Shop");
 
-
+                    ConversationTree emperorDialogue = new ConversationTree("Welcome to Solaris.", new String[] { "You tryed to destroy me." }, "Emperor");
+                    emperorDialogue.AddNode("I did something you never could.", new String[] { "What, betray a friend?" });
+                    emperorDialogue.AddNode("No, I gained true power.", new int[] { 0 }, new String[] { "You've gained nothing." });
+                    emperorDialogue.AddCapNode("A", "Maybe, but you lost everything!", new int[] { 0,0 }, new String[] { "Have I?" });
+                    GameManager.Instance.CurrentMap.ParallaxLayer.AddNPC(-400, emperorDialogue, "enemy", 1.2, 1.2);
                     GameManager.Instance.CurrentMap.ParallaxLayer.AddNPC(-1500, shopKeeperDialogue, "shopkeeper", 1.4, 1.2);
 
                     GameManager.Instance.CurrentMap.ParallaxLayer.AddGate(0);

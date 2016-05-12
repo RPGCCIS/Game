@@ -9,6 +9,7 @@ namespace Fragments
     {
         grunt,
         boss,
-        final
+        final,
+        chris
     }
 }

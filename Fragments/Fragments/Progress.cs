@@ -15,7 +15,7 @@ namespace Fragments
         ThirdFragment = 1 << 3, //4
         FourthFragment = 1 << 4, //8
         FifthFragment = 1 << 5, //16
-        SixthFragment = 1 << 6 //32.......
+        SixthFragment = 1 << 6, //32.......
     }
     #endregion
 

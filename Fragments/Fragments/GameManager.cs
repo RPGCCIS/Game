@@ -287,12 +287,23 @@ namespace Fragments
             {
                 if(ct.CapNodes["A"] == ct.Current)
                 {
+                    
                     ct.Current = ct.Root;
                     conversation = false;
+                    BattleManager.Instance.Initialize(EnemyType.chris);
                 }
             }
+            if (ct.Name == "Emperor")
+            {
+                if (ct.CapNodes["A"] == ct.Current)
+                {
 
-		}
+                    ct.Current = ct.Root;
+                    conversation = false;
+                    BattleManager.Instance.Initialize(EnemyType.final);
+                }
+            }
+        }
 
 		public void RandomEncounter()
 		{
@@ -678,7 +689,8 @@ namespace Fragments
 						switch(ShopManager.Instance.Options.Selected)
 						{
 							case (0):
-								if(Player.SwordLevel < ShopManager.Instance.Current.Items[0].Level && Player.Gold >= ShopManager.Instance.Current.Items[0].Cost)
+								if(Player.SwordLevel < ShopManager.Instance.Current.Items[0].Level && Player.Gold >= ShopManager.Instance.Current.Items[0].Cost
+                                    && GameManager.Instance.Player.Level >= ShopManager.Instance.Current.Items[0].Level)
 								{
 									GameManager.Instance.Player.Atk += ShopManager.Instance.Current.Items[0].Level*4;
 									Player.SwordLevel = ShopManager.Instance.Current.Items[0].Level;
@@ -686,7 +698,8 @@ namespace Fragments
 								}
 								break;
 							case (1):
-								if(Player.ShieldLevel < ShopManager.Instance.Current.Items[1].Level && Player.Gold >= ShopManager.Instance.Current.Items[1].Cost)
+								if(Player.ShieldLevel < ShopManager.Instance.Current.Items[1].Level && Player.Gold >= ShopManager.Instance.Current.Items[1].Cost
+                                    && GameManager.Instance.Player.Level >= ShopManager.Instance.Current.Items[1].Level)
 								{
 									GameManager.Instance.Player.Def += ShopManager.Instance.Current.Items[1].Level*4;
 									Player.ShieldLevel = ShopManager.Instance.Current.Items[1].Level;
@@ -882,6 +895,7 @@ namespace Fragments
                 output.WriteLine(Player.ShieldLevel);
                 output.WriteLine(GameManager.Instance.CurrentMap.MapName);
 				output.WriteLine(Progress.Instance.ToString());
+                output.WriteLine(player.Level);
 			}
 			catch(Exception e)
 			{
@@ -923,6 +937,9 @@ namespace Fragments
                 int fragmentsInt;
                 Int32.TryParse(fragmentsString, out fragmentsInt);
                 Progress.Instance.Fragments = fragmentsInt;
+
+                Player.Level = int.Parse(input.ReadLine());
+                Player.Hp = Player.MaxHp;
             }
 			catch(Exception e)
 			{

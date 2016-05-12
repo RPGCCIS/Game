@@ -116,7 +116,7 @@ namespace Fragments
 		//Constructor
 		private BattleManager()
 		{
-			pauseTimer = new Timer(1500); //1.5 seconds
+			pauseTimer = new Timer(2000); //1.5 seconds
 		}
 
         //Initialize
@@ -128,14 +128,15 @@ namespace Fragments
             state = BattleState.Start;
 
             Enemy createdEnemy = new Enemy(et, 300, 300, 100, 100, null);
+            enemyTexture = GameManager.Instance.CurrentMap.GetTexture("enemy");
             switch (et)
             {
                 case EnemyType.grunt:
-                    createdEnemy.Texture = content.Load<Texture2D>("Goomba");
+                    createdEnemy.Texture = enemyTexture;
 
                     createdEnemy.Atk    = rand.Next(1, 3);
                     createdEnemy.Def    = rand.Next(0, 2);
-                    createdEnemy.MaxHp  = rand.Next(3, 6);
+                    createdEnemy.MaxHp  = rand.Next(3, 6)*2;
                     createdEnemy.MaxSp  = 0;
                     createdEnemy.Spd    = 6;
                     createdEnemy.Sp     = createdEnemy.MaxSp;
@@ -144,11 +145,10 @@ namespace Fragments
                     break;
 
                 case EnemyType.boss:
-                    createdEnemy.Texture = content.Load<Texture2D>("enemy");
-
+                    createdEnemy.Texture = enemyTexture;
                     createdEnemy.Atk = rand.Next(3, 6);
                     createdEnemy.Def = rand.Next(2, 4);
-                    createdEnemy.MaxHp = rand.Next(6, 9);
+                    createdEnemy.MaxHp = rand.Next(6, 9) * 3;
                     createdEnemy.MaxSp = 0;
                     createdEnemy.Spd = 9;
                     createdEnemy.Sp = createdEnemy.MaxSp;
@@ -156,6 +156,26 @@ namespace Fragments
                     break;
 
                 case EnemyType.final:
+                    createdEnemy.Texture = enemyTexture;
+
+                    createdEnemy.Atk = 5000;
+                    createdEnemy.Def = 0;
+                    createdEnemy.MaxHp = 100000;
+                    createdEnemy.MaxSp = 0;
+                    createdEnemy.Spd = 1;
+                    createdEnemy.Sp = createdEnemy.MaxSp;
+                    createdEnemy.Hp = createdEnemy.MaxHp;
+                    break;
+                case EnemyType.chris:
+                    createdEnemy.Texture = enemyTexture;
+                    enemyTexture = GameManager.Instance.CurrentMap.GetTexture("npc");
+                    createdEnemy.Atk = 38;
+                    createdEnemy.Def = 2;
+                    createdEnemy.MaxHp = 150;
+                    createdEnemy.MaxSp = 0;
+                    createdEnemy.Spd = 2;
+                    createdEnemy.Sp = createdEnemy.MaxSp;
+                    createdEnemy.Hp = createdEnemy.MaxHp;
                     break;
             }
             e = createdEnemy;
@@ -189,7 +209,7 @@ namespace Fragments
 						title.Name = "What will you do?";
 
 						title.Dialogue.Add("Fight");
-                        if(e.Type != EnemyType.boss)
+                        if(e.Type != EnemyType.boss && e.Type != EnemyType.final)
                         {
                             title.Dialogue.Add("Run");
                         }
@@ -274,8 +294,15 @@ namespace Fragments
 
                 case BattleState.Win:
                     Random gen = new Random();
+                    if(e.Type == EnemyType.final)
+                    {
+                        title.Name = "You won! Thanks for playing!";
+                    }
+                    else
+                    {
+                        title.Name = "You won!";
+                    }
                     
-                    title.Name = "You won!";
                     GameManager.Instance.Player.Gold += gen.Next(10, 25);
                     state = BattleState.Paused;
                     
@@ -292,12 +319,24 @@ namespace Fragments
                         if (oldState == BattleState.Run || oldState == BattleState.Win)
                         {
                             //This is essentially our "end" state
-                            if(e.Type == EnemyType.boss)
+                            if(e.Type != EnemyType.final)
                             {
-                                Progress.Instance.Fragments += 1;
+                                if (e.Type == EnemyType.boss)
+                                {
+                                    Progress.Instance.Fragments += 1;
+                                    GameManager.Instance.Player.Level += 1;
+                                }
+                                if (e.Type == EnemyType.chris && oldState == BattleState.Win)
+                                {
+                                    GameManager.Instance.Player.Atk += 100000;
+                                }
+                                GameManager.Instance.State = homeState;
+                                state = BattleState.Start;
+                            }else if ( oldState == BattleState.Win)
+                            {
+                                GameManager.Instance.State = GameManager.GameState.Menu;
                             }
-                            GameManager.Instance.State = homeState;
-                            state = BattleState.Start;
+                            
                             return;
                         }
                         else if(oldState == BattleState.Lose)
@@ -356,15 +395,30 @@ namespace Fragments
             {
                 Wipe(title);
             }
+            if (p.Hp < 0)
+            {
+                playerHealth.Health = 0;
+            }
+            else
+            {
+                playerHealth.Health = p.Hp;
+            }
+            if (e.Hp < 0)
+            {
+                EnemyHealth.Health = 0;
+            }
+            else
+            {
+                EnemyHealth.Health = e.Hp;
+            }
 
-            playerHealth.Health = p.Hp;
-            EnemyHealth.Health = e.Hp;
         }
 
         public void Draw(SpriteBatch spritebatch)
         {
+            
             title.Draw(spritebatch);
-            spritebatch.Draw(playerTexture, new Rectangle(175, 250, 150, 200), Color.White);
+            spritebatch.Draw(playerTexture, new Rectangle(175, 250, 100, 200), Color.White);
             spritebatch.Draw(enemyTexture, new Rectangle(575, 250, 150, 200), Color.White);
             playerHealth.Draw(spritebatch, Game1.whiteSquareText);
             EnemyHealth.Draw(spritebatch, Game1.whiteSquareText);
@@ -381,155 +435,5 @@ namespace Fragments
             m.Dialogue.Selected = 0;
         }
     }
-
-	//				if(stateChange)
-	//				{
-	//					title.Name = "What will you do?";
-
-	//					title.Dialogue.Add("Attack");
-	//					title.Dialogue.Add("Defend");
-	//				}
-
-	//				if(IsKeyPressed(kbState, oldKbState, Keys.Enter))
-	//				{
-	//					if(title.Dialogue.Selected == 0)
-	//					{
-	//						state = BattleState.Attack;
-	//					}
-	//					else if(title.Dialogue.Selected == 1)
-	//					{
-	//						state = BattleState.Defend;
-	//					}
-	//				}
-	//				if(IsKeyPressed(kbState, oldKbState, Keys.Back))
-	//				{
-	//					state = BattleState.Player;
-	//				}
-	//				break;
-
-	//			case BattleState.Attack:
-	//				int rawAtk = p.Atk - e.Def;
-	//				int dealtAtk = Player.Attack(e, rawAtk);
-	//				title.Name = "You swing your Sword! You deal " + dealtAtk + " damage!";
-	//				state = BattleState.Paused;
-	//				break;
-
-	//			case BattleState.Defend:
-	//				title.Name = "You raise your Shield!";
-	//				Player.Defending = true;
-	//				state = BattleState.Paused;
-	//				break;
-
-	//			case BattleState.Run:
-	//				title.Name = "You got away safely!";
-	//				state = BattleState.Paused;   
-	//				break;
-
-	//			case BattleState.Enemy:
-	//				e.Act(title);
-	//				state = BattleState.Paused;
-
-	//				if(Player.Defending == true)
-	//				{
-	//					Player.Defending = false;
-	//				}
-	//				break;
-
-	//			case BattleState.Win:
-	//				title.Name = "You won!";
-	//				state = BattleState.Paused;
-	//				break;
-
-	//			case BattleState.Lose:
-	//				title.Name = "You Lost!";
-	//				state = BattleState.Paused;
-	//				break;
-
-	//			case BattleState.Paused:
-	//				if(pauseTimer.Update(gameTime))
-	//				{
-	//					if(oldState == BattleState.Run || oldState == BattleState.Win)
-	//					{
-	//						//This is essentially our "end" state
-	//						GameManager.Instance.State = GameManager.GameState.Map;
-	//						state = BattleState.Start;
-	//						return;
-	//					}
-	//					else if(oldState == BattleState.Lose)
-	//					{
-	//						GameManager.Instance.State = GameManager.GameState.Over;
-	//						state = BattleState.Start;
-	//						return;
-	//					}
-	//					else if(oldState == BattleState.Enemy)
-	//					{
-	//						if(p.IsAlive())
-	//						{
-	//							state = BattleState.Player;
-	//						}
-	//						else
-	//						{
-	//							state = BattleState.Lose;
-	//						}
-	//					}
-	//					else if(!e.IsAlive())
-	//					{
-	//						state = BattleState.Win;
-	//					}
-	//					else
-	//					{
-	//						state = BattleState.Enemy;
-	//					}
-	//				}
-
-	//				break;             
-	//		}
-
-	//		//Input
-	//		if(IsKeyPressed(kbState, oldKbState, Keys.W))
-	//		{
-	//			title.Dialogue.Previous();
-	//		}
-	//		else if(IsKeyPressed(kbState, oldKbState, Keys.S))
-	//		{
-	//			title.Dialogue.Next();
-	//		}
-
-	//		oldKbState = kbState;
-
-	//		if(oldState == state)
-	//		{
-	//			stateChange = false;
-	//		}
-	//		else
-	//		{
-	//			stateChange = true;
-	//		}
-
-	//		//Wipe?
-	//		if(stateChange)
-	//		{
-	//			Wipe(title);
-	//		}
-	//	}
-
-	//	public void Draw(SpriteBatch spritebatch)
-	//	{
-	//		p.Draw(spritebatch);
-	//		e.Draw(spritebatch);
-	//		title.Draw(spritebatch);
-	//	}
-
-	//	public bool IsKeyPressed(KeyboardState current, KeyboardState old, Keys k)
-	//	{
-	//		return (current.IsKeyDown(k) && old.IsKeyUp(k));
-	//	}
-
-	//	public void Wipe(Message m)
-	//	{
-	//		m.Dialogue.Clear();
-	//		m.Dialogue.Selected = 0;
-	//	}
-	//}
 
 }

@@ -100,7 +100,7 @@ namespace Fragments
 			p = new Player(400, 605, 200, 300, playerText);
 			p.Atk = 2;
 			p.Def = 0;
-			p.MaxHp = 10;
+			p.MaxHp = 25;
 			p.MaxSp = 10;
 			p.Spd = 6;
 			p.Sp = p.MaxSp;
@@ -147,6 +147,7 @@ namespace Fragments
 			menuOptions.Add("Load");
 			menuOptions.Add("Play Game");
 
+            MapManager.Instance.boat = Content.Load<Texture2D>("boat");
 		}
 
 		/// <summary>
