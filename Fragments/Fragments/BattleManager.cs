@@ -146,11 +146,11 @@ namespace Fragments
                 case EnemyType.boss:
                     createdEnemy.Texture = content.Load<Texture2D>("enemy");
 
-                    createdEnemy.Atk = rand.Next(1, 3);
-                    createdEnemy.Def = rand.Next(0, 2);
-                    createdEnemy.MaxHp = rand.Next(3, 6);
+                    createdEnemy.Atk = rand.Next(3, 6);
+                    createdEnemy.Def = rand.Next(2, 4);
+                    createdEnemy.MaxHp = rand.Next(6, 9);
                     createdEnemy.MaxSp = 0;
-                    createdEnemy.Spd = 6;
+                    createdEnemy.Spd = 9;
                     createdEnemy.Sp = createdEnemy.MaxSp;
                     createdEnemy.Hp = createdEnemy.MaxHp;
                     break;
