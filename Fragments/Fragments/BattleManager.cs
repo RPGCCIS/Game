@@ -146,11 +146,11 @@ namespace Fragments
                 case EnemyType.boss:
                     createdEnemy.Texture = content.Load<Texture2D>("enemy");
 
-                    createdEnemy.Atk = rand.Next(1, 3);
-                    createdEnemy.Def = rand.Next(0, 2);
-                    createdEnemy.MaxHp = rand.Next(3, 6);
+                    createdEnemy.Atk = rand.Next(3, 6);
+                    createdEnemy.Def = rand.Next(2, 4);
+                    createdEnemy.MaxHp = rand.Next(6, 9);
                     createdEnemy.MaxSp = 0;
-                    createdEnemy.Spd = 6;
+                    createdEnemy.Spd = 9;
                     createdEnemy.Sp = createdEnemy.MaxSp;
                     createdEnemy.Hp = createdEnemy.MaxHp;
                     break;
@@ -159,8 +159,8 @@ namespace Fragments
                     break;
             }
             e = createdEnemy;
-            playerHealth = new HealthBar(p.Hp, p.MaxHp, 100, 100, Game1.universalFont);
-            EnemyHealth = new HealthBar(e.Hp, e.MaxHp, 100, 400, Game1.universalFont);
+            playerHealth = new HealthBar(p.Hp, p.MaxHp, 150, 200, Game1.universalFont);
+            EnemyHealth = new HealthBar(e.Hp, e.MaxHp, 565, 200, Game1.universalFont);
         }
 
         //several parts are imcomplete, such as magic just dealing a normal amount of attack damage.
@@ -364,8 +364,8 @@ namespace Fragments
         public void Draw(SpriteBatch spritebatch)
         {
             title.Draw(spritebatch);
-            spritebatch.Draw(playerTexture, new Rectangle(0, 0, 200, 200), Color.White);
-            spritebatch.Draw(enemyTexture, new Rectangle(600, 0, 200, 200), Color.White);
+            spritebatch.Draw(playerTexture, new Rectangle(175, 250, 150, 200), Color.White);
+            spritebatch.Draw(enemyTexture, new Rectangle(575, 250, 150, 200), Color.White);
             playerHealth.Draw(spritebatch, Game1.whiteSquareText);
             EnemyHealth.Draw(spritebatch, Game1.whiteSquareText);
         }
