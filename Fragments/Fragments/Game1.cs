@@ -46,8 +46,8 @@ namespace Fragments
 		{
 			graphics = new GraphicsDeviceManager(this);
 			Content.RootDirectory = "Content";
-			graphics.PreferredBackBufferWidth = 900;  // width of the window
-			graphics.PreferredBackBufferHeight = 750;   // height of the window
+			graphics.PreferredBackBufferWidth = 890;  // width of the window
+			graphics.PreferredBackBufferHeight = 740;   // height of the window
 			graphics.ApplyChanges();
 		}
 

@@ -36,12 +36,12 @@ namespace Fragments
             this.textureName = textureName;
             if (battle)
             {
-                rect = new Rectangle(0, 450, 1000, 300);
+                rect = new Rectangle(0, 450, 900, 300);
 
             }
             else
             {
-                rect = new Rectangle(0, 0, 1000, 200);
+                rect = new Rectangle(0, 0, 900, 200);
             }
         }
         public Message(TextObject message, TextList dialog,Texture2D texture,Rectangle rect)
