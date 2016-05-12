@@ -789,6 +789,7 @@ namespace Fragments
 			{
 				case GameManager.GameState.Menu:
 					spriteBatch.Draw(menu, Vector2.Zero);
+                    spriteBatch.DrawString(mFont, "Instructions: \nUse WASD to move and \nEnter to interact with doors and NPCs", new Vector2(400,550),Color.Black);
 					menuOptions.DrawText(spriteBatch);
 					break;
 
