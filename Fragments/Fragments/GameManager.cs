@@ -283,6 +283,22 @@ namespace Fragments
                     conversation = false;
                 }
             }
+            if (ct.Name == "Elder5")
+            {
+                if (ct.CapNodes["A"] == ct.Current)
+                {
+                    ct.Current = ct.Root;
+                    conversation = false;
+                }
+            }
+            if (ct.Name == "Elder6")
+            {
+                if (ct.CapNodes["A"] == ct.Current)
+                {
+                    ct.Current = ct.Root;
+                    conversation = false;
+                }
+            }
             if (ct.Name == "Chris")
             {
                 if(ct.CapNodes["A"] == ct.Current)

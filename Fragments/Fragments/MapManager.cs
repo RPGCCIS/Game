@@ -316,11 +316,6 @@ namespace Fragments
                         "Inn",
                         true,
                         "Inn");
-                    //GameManager.Instance.CurrentMap.ParallaxLayer.AddHouse(
-                    //    -800,
-                    //    "Evil Mansion",
-                    //    true,
-                    //    "Evil Mansion");
                     GameManager.Instance.CurrentMap.ParallaxLayer.AddHouse(
                        -1500,
                         "Shop",
@@ -332,6 +327,13 @@ namespace Fragments
                     emperorDialogue.AddNode("No, I gained true power.", new int[] { 0 }, new String[] { "You've gained nothing." });
                     emperorDialogue.AddCapNode("A", "Maybe, but you lost everything!", new int[] { 0,0 }, new String[] { "Have I?" });
                     GameManager.Instance.CurrentMap.ParallaxLayer.AddNPC(-400, emperorDialogue, "enemy", 1.2, 1.2);
+
+                    ConversationTree elderDialogue6 = new ConversationTree("...", new String[] { "..." }, "Elder6");
+                    elderDialogue6.AddNode(".....", new String[] { "..." });
+                    elderDialogue6.AddNode("Good Luck", new int[] { 0 }, new String[] { "Thanks..." });
+                    elderDialogue6.AddCapNode("A", "If not find a mentor.", new int[] { 0, 0 }, new String[] { "*Leave*" });
+                    GameManager.Instance.CurrentMap.ParallaxLayer.AddNPC(700, elderDialogue6, "elder", 1.2, 1.2);
+
                     GameManager.Instance.CurrentMap.ParallaxLayer.AddNPC(-1500, shopKeeperDialogue, "shopkeeper", 1.4, 1.2);
 
                     GameManager.Instance.CurrentMap.ParallaxLayer.AddGate(0);
